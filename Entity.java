@@ -1,7 +1,7 @@
 public class Entity{
 
-	double x;
-	double y;
+	double x; //x increases from left/west to right/east
+	double y; //y increases from top/north to bottom/south
 	double w;
 	double h;
 
@@ -16,13 +16,34 @@ public class Entity{
 		NORTH, EAST, SOUTH, WEST, NONE
 	}
 
-	public boolean between(double x, double low, double high){
-		if(x < high && x > low) return true;
-		return false;
+	public double intersect(double x1, double x2, double x3, double x4){
+		//x1 and x2 from entity 1, x1 < x2, x3 and x4 from entity 2, x3< x4
+		//returns overlap
+		if(x1 > x3 && x1 < x4) return x4 - x1;
+		if(x2 > x3 && x2 < x4) return x2 - x3;
+		return 0;
 	}
 
 	public Side collision(Entity e){
-		
+		Side nsOption = NORTH;
+		Side ewOption = WEST;
+		if(e.getMidX() > getMidX()) ewOption = EAST;
+		if(e.getMidY() > getMidY()) nsOption = SOUTH;
+		double ns = intersect(e.getX(), e.getX() + e.getW, x, x + w); //north south intersection
+		double ew = intersect(e.getY(), e.getY() + e.getH, y, y + h); //east west interstction
+		if(ns + ew > 0){
+			if(ns > ew) return nsOption;
+			return ewOption;
+		}
+		return NONE;
+	}
+
+	public double getMidX(){
+		return x + w/2;
+	}
+
+	public double getMidY(){
+		return y + h/2;
 	}
 
 	public double getX(){
