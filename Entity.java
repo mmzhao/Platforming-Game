@@ -4,16 +4,18 @@ public class Entity{
 	double y; //y increases from top/north to bottom/south
 	double w;
 	double h;
+	boolean collidable;
 
-	public Entity(double x, double y, double w, double h){
+	public Entity(double x, double y, double w, double h, boolean c){
 		this.x = x;
 		this.y = y;
 		this.w = w;
 		this.h = h;
+		collidable = c;
 	}
 
 	public enum Side{
-		NORTH, EAST, SOUTH, WEST, NONE
+		NORTH, EAST, SOUTH, WEST, GENERAL, NONE
 	}
 
 	public double intersect(double x1, double x2, double x3, double x4){
@@ -25,6 +27,12 @@ public class Entity{
 	}
 
 	public Side collision(Entity e){
+		double ns = intersect(e.getX(), e.getX() + e.getW, x, x + w); //north south intersection
+		double ew = intersect(e.getY(), e.getY() + e.getH, y, y + h); //east west interstction
+		if(!(e.getC() && collidable)){
+			if(ns + ew > 0) return GENERAL;
+			return NONE;
+		}
 		Side nsOption = NORTH;
 		Side ewOption = WEST;
 		if(e.getMidX() > getMidX()) ewOption = EAST;
@@ -76,6 +84,14 @@ public class Entity{
 
 	public void setH(double h){
 		this.h = h;
+	}
+
+	public boolean getC(){
+		return collidable;
+	}
+
+	publci void setC(boolean c){
+		collidable = c;
 	}
 
 }

@@ -5,6 +5,9 @@ public class Movable extends Entity{
 	private double xa;
 	private double ya;
 	private boolean grounded;
+	private boolean eastC;
+	private boolean westC;
+	private boolean northC;
 
 	private double final GRAVITY = -9.81;
 	private double final TIME_UNIT = 1;
@@ -23,14 +26,23 @@ public class Movable extends Entity{
 	}
 
 	public next_instant(double time){
-		x += time * xv;
 		if(grounded){
 			if(yv < 0) yv = 0;
 			if(ya < 0) ya = 0;
 		}
 		else ya = GRAVITY;
+		if(eastC){
+			if(xv > 0) xv = 0;
+		}
+		if(westC){
+			if(xv < 0) xv = 0;
+		}
+		if(northC){
+			if(yv > 0) yv = 0;
+		}
+
+		x += time * xv;
 		y += time * yv;
-		xv += time * xa;
 		yv += time * ya;
 	}
 
@@ -67,10 +79,34 @@ public class Movable extends Entity{
 	}
 
 	public boolean getG(){
-		return g;
+		return grounded;
 	}
 
 	public void setG(boolean g){
 		this.g = g;
+	}
+
+	public boolean getNorthC(){
+		return northC;
+	}
+
+	public void setNorthC(boolean c){
+		northC = c;
+	}
+
+	public boolean getEastC(){
+		return eastC;
+	}
+
+	public void setEastC(boolean c){
+		eastC = c;
+	}
+
+	public boolean getWestC(){
+		return westC;
+	}
+
+	public void setWestC(boolean c){
+		westC = c;
 	}
 }
