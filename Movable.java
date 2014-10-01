@@ -1,13 +1,13 @@
-public class Movable {
+public class Movable extends Entity{
 
-	double xv;
-	double yv;
-	double xa;
-	double ya;
-	boolean grounded;
+	private double xv;
+	private double yv;
+	private double xa;
+	private double ya;
+	private boolean grounded;
 
-	double final GRAVITY = -9.81;
-	double final TIME_UNIT = 1;
+	private double final GRAVITY = -9.81;
+	private double final TIME_UNIT = 1;
 
 	public Movable(double x, double y, double w, double h, double xv, double yv, double xa, double ya, boolean g){
 		super.Entity(x, y, w, h);
@@ -34,4 +34,43 @@ public class Movable {
 		yv += time * ya;
 	}
 
+	public double getXV(){
+		return xv;
+	}
+
+	public void setXV(double xv){
+		this.xv = xv;
+	}
+
+	public double getYV(){
+		return yv;
+	}
+
+	public void setYV(double yv){
+		this.yv = yv;
+	}
+
+	public double getXA(){
+		return xa;
+	}
+
+	public void setXA(double xa){
+		this.xa = xa;
+	}
+
+	public double getYA(){
+		return ya;
+	}
+
+	public void setYA(double ya){
+		this.ya = ya;
+	}
+
+	public boolean getG(){
+		return g;
+	}
+
+	public void setG(boolean g){
+		this.g = g;
+	}
 }

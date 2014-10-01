@@ -1,9 +1,9 @@
 public class Entity{
 
-	double x;
-	double y;
-	double w;
-	double h;
+	private double x;
+	private double y;
+	private double w;
+	private double h;
 
 	public Entity(double x, double y, double w, double h){
 		this.x = x;
@@ -17,7 +17,8 @@ public class Entity{
 	}
 
 	public boolean between(double x, double low, double high){
-		if(x < high && x > low) return true;
+		if(x < high && x > low) 
+			return true;
 		return false;
 	}
 
@@ -30,31 +31,31 @@ public class Entity{
 	}
 
 	public void setX(double x){
-		this.x = x
+		this.x = x;
 	}
 
 	public double getY(){
-
+		return y;
 	}
 
-	public double setY(){
-		
+	public void setY(double y){
+		this.y = y;
 	}
 
 	public double getW(){
-
+		return w;
 	}
 
-	public double setW(){
-		
+	public void setW(double w){
+		this.w = w;
 	}
 
 	public double getH(){
-
+		return h;
 	}
 
-	public double setH(){
-		
+	public void setH(double h){
+		this.h = h;
 	}
 
 }
