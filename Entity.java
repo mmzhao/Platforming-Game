@@ -25,11 +25,11 @@ public class Entity{
 	}
 
 	public double getX(){
-
+		return x;
 	}
 
-	public double setX(){
-
+	public void setX(double x){
+		this.x = x
 	}
 
 	public double getY(){
