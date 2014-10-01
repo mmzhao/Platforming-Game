@@ -22,6 +22,7 @@ public class Entity{
 	}
 
 	public Side collision(Entity e){
+		
 	}
 
 	public double getX(){
