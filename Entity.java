@@ -51,31 +51,31 @@ public class Entity{
 	}
 
 	public void setX(double x){
-		this.x = x
+		this.x = x;
 	}
 
 	public double getY(){
-
+		return y;
 	}
 
-	public double setY(){
-		
+	public void setY(double y){
+		this.y = y;
 	}
 
 	public double getW(){
-
+		return w;
 	}
 
-	public double setW(){
-		
+	public void setW(double w){
+		this.w = w;
 	}
 
 	public double getH(){
-
+		return h;
 	}
 
-	public double setH(){
-		
+	public void setH(double h){
+		this.h = h;
 	}
 
 }
