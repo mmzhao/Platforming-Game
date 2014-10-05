@@ -28,6 +28,8 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	private Player player;
 	
+	private Platform platform;
+	
 	public GamePanel(){
 		this(500, 400);
 	}
@@ -35,15 +37,10 @@ public class GamePanel extends JPanel implements Runnable{
 	public GamePanel(int width, int height){
 		w = width;
 		h = height;
+
+		player = new Player(null, 100, 100, 50, 50);
+		platform = new Platform(null, 50, 200, 200, 20);
 		
-		BufferedImage img = null;
-		try{
-			img = ImageIO.read(new File("circle.png"));
-		} catch(IOException e) {
-			
-		}
-		
-		player = new Player(img, 100, 100, 50, 50);
 		setBackground(Color.white);
 		setPreferredSize(new Dimension(w, h));
 		setFocusable(true);
@@ -98,6 +95,7 @@ public class GamePanel extends JPanel implements Runnable{
 		if(!gameOver){
 			//update game state
 			player.update();
+			player.sidesCollided(platform);
 		}
 	}
 	
@@ -115,8 +113,9 @@ public class GamePanel extends JPanel implements Runnable{
 		dbg.setColor(Color.white);
 		dbg.fillRect(0, 0, w, h);
 		
-		dbg.setColor(Color.black);
 		player.draw(dbg);
+		platform.draw(dbg);
+		
 		
 		// draw game elements
 		

@@ -35,8 +35,7 @@ public class Entity {
 	} 
 	
 	public void draw(Graphics g, int x, int y) {
-		//g.drawImage(bi, x, y, null);
-		g.drawOval(x, y, w, h);
+		g.drawImage(bi, x, y, null);
 	}
 	
 	public void draw(Graphics g){
@@ -54,8 +53,8 @@ public class Entity {
 	}
 
 	public Side collision(Entity e) {
-		double ns = intersect(e.getX(), e.getX() + e.getW(), x, x + w); // north south intersection
-		double ew = intersect(e.getY(), e.getY() + e.getH(), y, y + h); // east west interaction
+		double ew = intersect(e.getX(), e.getX() + e.getW(), x, x + w); // east west intersection
+		double ns = intersect(e.getY(), e.getY() + e.getH(), y, y + h); // north south interaction
 		if (!(e.getC() && collidable)) {
 			if (ns + ew > 0)
 				return Side.GENERAL;
@@ -68,8 +67,11 @@ public class Entity {
 		if (e.getMidY() > getMidY())
 			nsOption = Side.SOUTH;
 		if (ns + ew > 0) {
-			if (ns > ew)
+			if (ns > ew){
+				System.out.println(nsOption);
 				return nsOption;
+			}
+			System.out.println(ewOption);
 			return ewOption;
 		}
 		return Side.NONE;

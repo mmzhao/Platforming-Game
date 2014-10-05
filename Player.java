@@ -1,3 +1,5 @@
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
@@ -9,7 +11,12 @@ public class Player extends Movable{
 		super(b, x, y, w, h, true, 0, 0);
 	}
 	
-	 public void keyPressed(KeyEvent e) {
+	public void draw(Graphics g) {
+		g.setColor(Color.black);
+		g.drawOval(x, y, w, h);
+	}
+	
+	public void keyPressed(KeyEvent e) {
 	        int key = e.getKeyCode();
 
 	        if (key == KeyEvent.VK_LEFT) {
@@ -50,11 +57,11 @@ public class Player extends Movable{
 	        	setXV(0);
 	        }
 	        
-	        if (key == KeyEvent.VK_LEFT) {
+	        if (key == KeyEvent.VK_A) {
 	        	setXV(0);
 	        }
 	        
-	        if (key == KeyEvent.VK_RIGHT) {
+	        if (key == KeyEvent.VK_D) {
 	        	setXV(0);
 	        }
 
