@@ -66,7 +66,12 @@ public class Entity {
 			ewOption = Side.EAST;
 		if (e.getMidY() > getMidY())
 			nsOption = Side.SOUTH;
-		if (ns + ew > 0) {
+		
+		if(Math.abs(e.getMidY() - getMidY()) - (e.getH() + h) / 2 <= 0 && Math.abs(e.getMidX() - getMidX()) - (e.getW() + w) / 2 <= 0){
+			if(x > e.getX() && x < e.getX() + e.getW()) return nsOption;
+			return ewOption;
+		}
+/**		if (ns + ew > 0) {
 			if (ns > ew){
 				System.out.println(nsOption);
 				return nsOption;
@@ -74,7 +79,7 @@ public class Entity {
 			System.out.println(ewOption);
 			return ewOption;
 		}
-		return Side.NONE;
+**/		return Side.NONE;
 	}
 
 	public int getMidX() {
