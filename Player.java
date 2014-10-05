@@ -5,10 +5,43 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
 public class Player extends Movable{
-	//implement some more attributes
+	protected boolean isRightHeld = false;
+	protected boolean isLeftHeld = false;
+	protected boolean isUpHeld = false;
 	
 	public Player(BufferedImage b, int x, int y, int w, int h){
 		super(b, x, y, w, h, true, 0, 0);
+	}
+	
+	public void update(int time){
+		if(yv > TERMINAL_VELOCITY) yv = TERMINAL_VELOCITY;
+		if(!(isRightHeld && isLeftHeld)){
+			if(isRightHeld){
+				xv = 5;
+			}
+			else if(isLeftHeld){
+				xv = -5;
+			}
+		}
+		if(isUpHeld){
+			if(southC) yv = -10;
+		}
+		if(southC){
+			if(yv > 0) yv = 0;
+		}
+		else yv += time * GRAVITY;
+		if(eastC){
+			if(xv > 0) xv = 0;
+		}
+		if(westC){
+			if(xv < 0) xv = 0;
+		}
+		if(northC){
+			if(yv < 0) yv = 0;
+		}
+
+		x += time * xv;
+		y += time * yv;
 	}
 	
 	public void draw(Graphics g) {
@@ -20,27 +53,33 @@ public class Player extends Movable{
 	        int key = e.getKeyCode();
 
 	        if (key == KeyEvent.VK_LEFT) {
+	        	isLeftHeld = true;
 	        	setXV(-5);
 	        }
 	        
 	        if (key == KeyEvent.VK_RIGHT) {
+	        	isRightHeld = true;
 	        	setXV(5);
 	        }
 	        
 	        if (key == KeyEvent.VK_UP) {
-	        	setYV(-10);
+	        	isUpHeld = true;
+	        	if(southC) setYV(-10);
 	        }
 	        
 	        if (key == KeyEvent.VK_A) {
+	        	isLeftHeld = true;
 	        	setXV(-5);
 	        }
 	        
 	        if (key == KeyEvent.VK_D) {
+	        	isRightHeld = true;
 	        	setXV(5);
 	        }
 	        
 	        if (key == KeyEvent.VK_W) {
-	        	setYV(-10);
+	        	isUpHeld = true;
+	        	if(southC) setYV(-10);
 	        }
 
 
@@ -50,19 +89,31 @@ public class Player extends Movable{
 	        int key = e.getKeyCode();
 
 	        if (key == KeyEvent.VK_LEFT) {
+	        	isLeftHeld = false;
 	        	setXV(0);
 	        }
 	        
 	        if (key == KeyEvent.VK_RIGHT) {
+	        	isRightHeld = false;
 	        	setXV(0);
 	        }
 	        
+	        if (key == KeyEvent.VK_UP) {
+	        	isUpHeld = false;
+	        }
+	        
 	        if (key == KeyEvent.VK_A) {
+	        	isLeftHeld = false;
 	        	setXV(0);
 	        }
 	        
 	        if (key == KeyEvent.VK_D) {
+	        	isRightHeld = false;
 	        	setXV(0);
+	        }
+	        
+	        if (key == KeyEvent.VK_W) {
+	        	isUpHeld = false;
 	        }
 
 	}
