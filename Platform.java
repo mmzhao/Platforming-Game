@@ -10,7 +10,8 @@ public class Platform extends Movable{
 	}
 	
 	public void draw(Graphics g) {
-		g.setColor(Color.black);
+		g.setColor(Color.red);
+		g.fillRect(x, y, w, h);
 		g.drawRect(x, y, w, h);
 	}
 

@@ -7,11 +7,11 @@ import java.awt.image.BufferedImage;
 public class Entity {
 
 	protected BufferedImage bi;
-	int x; // x increases from left/west to right/east
-	int y; // y increases from top/north to bottom/south
-	int w;
-	int h;
-	boolean collidable;
+	protected int x; // x increases from left/west to right/east
+	protected int y; // y increases from top/north to bottom/south
+	protected int w;
+	protected int h;
+	protected boolean collidable;
 
 	public Entity(BufferedImage b, int x, int y, int w, int h, boolean c) {
 //		bi = resize(b, w, h);
