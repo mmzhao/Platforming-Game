@@ -8,6 +8,7 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -95,9 +96,11 @@ public class GamePanel extends JPanel implements Runnable{
 	public void gameUpdate(){
 		if(!gameOver){
 			//update game state
-			player.sidesCollided(platform);
+			ArrayList<Entity> p = new ArrayList<Entity>();
+			p.add(platform);
+			player.sidesCollided(p);
 			player.update();
-			baddie.sidesCollided(platform);
+			baddie.sidesCollided(p);
 			baddie.update();
 		}
 	}

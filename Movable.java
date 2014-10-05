@@ -1,4 +1,5 @@
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 public class Movable extends Entity{
 
@@ -9,9 +10,9 @@ public class Movable extends Entity{
 	protected boolean westC;
 	protected boolean northC;
 
-	private final int GRAVITY = 1; //positive acceleration goes SOUTH and EAST
-	private final int TIME_UNIT = 1;
-	private final int TERMINAL_VELOCITY = 3;
+	protected final int GRAVITY = 1; //positive acceleration goes SOUTH and EAST
+	protected final int TIME_UNIT = 1;
+	protected final int TERMINAL_VELOCITY = 3;
 
 	public Movable(BufferedImage b, int x, int y, int w, int h, boolean c, int xv, int yv){
 		super(b, x, y, w, h, c);
@@ -41,18 +42,20 @@ public class Movable extends Entity{
 
 		x += time * xv;
 		y += time * yv;
+	}
+	
+	public void sidesCollided(ArrayList<Entity> es){
 		northC = false;
 		eastC = false;
 		southC = false;
 		westC= false;
-	}
-	
-	public void sidesCollided(Entity e){
-		Side s = collision(e);
-		if(s == Side.NORTH) northC = true;
-		if(s == Side.EAST) eastC = true;
-		if(s == Side.SOUTH) southC = true;
-		if(s == Side.WEST) westC = true;
+		for(Entity e: es){
+			Side s = collision(e);
+			if(s == Side.NORTH) northC = true;
+			if(s == Side.EAST) eastC = true;
+			if(s == Side.SOUTH) southC = true;
+			if(s == Side.WEST) westC = true;
+		}
 	}
 
 	public int getXV(){
