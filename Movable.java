@@ -1,32 +1,44 @@
+import java.awt.Graphics;
+
 public class Movable extends Entity{
 
 	private double xv;
 	private double yv;
 	private double xa;
 	private double ya;
-	private boolean grounded;
+	private boolean southC;
 	private boolean eastC;
 	private boolean westC;
 	private boolean northC;
+	private boolean alive;
+	private boolean platform;
+	private boolean sleeping;
+	private boolean invisible;
+	private boolean onScreen;
+	private boolean relevant;
 
-	private double final GRAVITY = -9.81;
-	private double final TIME_UNIT = 1;
+	private final double GRAVITY = -9.81;
+	private final double TIME_UNIT = 1;
 
-	public Movable(double x, double y, double w, double h, double xv, double yv, double xa, double ya, boolean g){
-		super.Entity(x, y, w, h);
+	public Movable(double x, double y, double w, double h, boolean c, double xv, double yv, double xa, double ya, boolean p){
+		super(x, y, w, h, c);
 		this.xv = xv;
 		this.yv = yv;
 		this.xa = xa;
 		this.ya = ya;
-		grounded = g;
+		alive = true;
+		platform = p;
+		sleeping = true;
+		onScreen = false;
+		relevant = true;
 	}
 
-	public next_instant(){
-		next_instant(TIME_UNIT);
+	public void update(){
+		update(TIME_UNIT);
 	}
 
-	public next_instant(double time){
-		if(grounded){
+	public void update(double time){
+		if(southC){
 			if(yv < 0) yv = 0;
 			if(ya < 0) ya = 0;
 		}
@@ -44,6 +56,14 @@ public class Movable extends Entity{
 		x += time * xv;
 		y += time * yv;
 		yv += time * ya;
+	}
+	
+	public void draw(Graphics g, int x, int y) {
+		g.drawImage(bi, x, y, null);
+	}
+	
+	public void draw(Graphics g, int x, int y, int offsetX, int offsetY) {
+		draw(g, x + offsetX, y + offsetY);
 	}
 
 	public double getXV(){
@@ -78,12 +98,12 @@ public class Movable extends Entity{
 		this.ya = ya;
 	}
 
-	public boolean getG(){
-		return grounded;
+	public boolean getSouthC(){
+		return southC;
 	}
 
-	public void setG(boolean g){
-		this.g = g;
+	public void setSouthC(boolean c){
+		this.southC = c;
 	}
 
 	public boolean getNorthC(){
@@ -108,5 +128,49 @@ public class Movable extends Entity{
 
 	public void setWestC(boolean c){
 		westC = c;
+	}
+	
+	public boolean isAlive(){
+		return alive;
+	}
+	
+	public void kill(){
+		alive = false;
+	}
+	
+	public boolean isPlatform(){
+		return platform;
+	}
+	
+	public boolean isSleeping(){
+		return sleeping;
+	}
+	
+	public void wakeUp(){
+		sleeping = true;
+	}
+	
+	public boolean isInvisible(){
+		return invisible;
+	}
+	
+	public void setInvisible(boolean i){
+		invisible = i;
+	}
+	
+	public boolean isOnScreen(){
+		return onScreen;
+	}
+	
+	public void setOnScreen(boolean onScreen){
+		this.onScreen = onScreen;
+	}
+	
+	public boolean isRelevant(){
+		return relevant;
+	}
+	
+	public void becomeRevelant(){
+		relevant = true;
 	}
 }
