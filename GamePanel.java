@@ -27,7 +27,7 @@ public class GamePanel extends JPanel implements Runnable{
 	private long period = 20;
 	
 	private Player player;
-	
+	private Baddie baddie;	
 	private Platform platform;
 	
 	public GamePanel(){
@@ -40,6 +40,7 @@ public class GamePanel extends JPanel implements Runnable{
 
 		player = new Player(null, 100, 100, 20, 20);
 		platform = new Platform(null, 50, 200, 200, 20);
+		baddie = new Baddie(null, 150, 100, 20, 20, gameOver, height, height);
 		
 		setBackground(Color.white);
 		setPreferredSize(new Dimension(w, h));
@@ -96,6 +97,7 @@ public class GamePanel extends JPanel implements Runnable{
 			//update game state
 			player.sidesCollided(platform);
 			player.update();
+			baddie.update();
 		}
 	}
 	
@@ -115,6 +117,7 @@ public class GamePanel extends JPanel implements Runnable{
 		
 		player.draw(dbg);
 		platform.draw(dbg);
+		baddie.draw(dbg);
 		
 		
 		// draw game elements

@@ -13,7 +13,7 @@ public class Player extends Movable{
 	
 	public void draw(Graphics g) {
 		g.setColor(Color.black);
-		g.drawOval(x, y, w, h);
+		g.fillOval(x, y, w, h);
 	}
 	
 	public void keyPressed(KeyEvent e) {

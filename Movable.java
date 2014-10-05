@@ -2,12 +2,12 @@ import java.awt.image.BufferedImage;
 
 public class Movable extends Entity{
 
-	private int xv;
-	private int yv;
-	private boolean southC;
-	private boolean eastC;
-	private boolean westC;
-	private boolean northC;
+	protected int xv;
+	protected int yv;
+	protected boolean southC;
+	protected boolean eastC;
+	protected boolean westC;
+	protected boolean northC;
 
 	private final int GRAVITY = 1; //positive acceleration goes SOUTH and EAST
 	private final int TIME_UNIT = 1;
