@@ -40,7 +40,7 @@ public class GamePanel extends JPanel implements Runnable{
 
 		player = new Player(null, 100, 100, 20, 20);
 		platform = new Platform(null, 50, 200, 200, 20);
-		baddie = new Baddie(null, 150, 100, 20, 20, gameOver, height, height);
+		baddie = new Baddie(null, 150, 100, 20, 20, gameOver, -5, 0);
 		
 		setBackground(Color.white);
 		setPreferredSize(new Dimension(w, h));
@@ -97,6 +97,7 @@ public class GamePanel extends JPanel implements Runnable{
 			//update game state
 			player.sidesCollided(platform);
 			player.update();
+			baddie.sidesCollided(platform);
 			baddie.update();
 		}
 	}
