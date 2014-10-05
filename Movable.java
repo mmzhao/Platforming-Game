@@ -23,7 +23,7 @@ public class Movable extends Entity{
 		update(TIME_UNIT);
 	}
 
-	public void update(double time){
+	public void update(int time){
 		if(yv > TERMINAL_VELOCITY) yv = TERMINAL_VELOCITY;
 		if(southC){
 			if(yv > 0) yv = 0;

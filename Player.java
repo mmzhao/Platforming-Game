@@ -28,7 +28,7 @@ public class Player extends Movable{
 	        }
 	        
 	        if (key == KeyEvent.VK_UP) {
-	        	setYV(10);
+	        	setYV(-10);
 	        }
 	        
 	        if (key == KeyEvent.VK_A) {
@@ -40,7 +40,7 @@ public class Player extends Movable{
 	        }
 	        
 	        if (key == KeyEvent.VK_W) {
-	        	setYV(10);
+	        	setYV(-10);
 	        }
 
 

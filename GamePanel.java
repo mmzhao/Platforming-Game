@@ -38,7 +38,7 @@ public class GamePanel extends JPanel implements Runnable{
 		w = width;
 		h = height;
 
-		player = new Player(null, 100, 100, 50, 50);
+		player = new Player(null, 100, 100, 20, 20);
 		platform = new Platform(null, 50, 200, 200, 20);
 		
 		setBackground(Color.white);
@@ -94,8 +94,8 @@ public class GamePanel extends JPanel implements Runnable{
 	public void gameUpdate(){
 		if(!gameOver){
 			//update game state
-			player.update();
 			player.sidesCollided(platform);
+			player.update();
 		}
 	}
 	
