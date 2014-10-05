@@ -49,6 +49,7 @@ public class GamePanel extends JPanel implements Runnable{
 		setFocusable(true);
 		requestFocus();
 		readyToQuit();
+		this.addKeyListener(new EntityListener(player));
 	}
 	
 	public void addNotify(){
