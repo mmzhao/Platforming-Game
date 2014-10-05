@@ -1,4 +1,6 @@
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
@@ -12,6 +14,7 @@ public class Entity {
 	boolean collidable;
 
 	public Entity(BufferedImage b, int x, int y, int w, int h, boolean c) {
+//		bi = resize(b, w, h);
 		bi = b;
 		this.x = x;
 		this.y = y;
@@ -20,8 +23,20 @@ public class Entity {
 		collidable = c;
 	}
 	
+	public static BufferedImage resize(BufferedImage img, int newW, int newH) { 
+	    Image tmp = img.getScaledInstance(200, 200, Image.SCALE_SMOOTH);
+	    BufferedImage dimg = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
+
+	    Graphics2D g2d = dimg.createGraphics();
+	    g2d.drawImage(tmp, 0, 0, null);
+	    g2d.dispose();
+
+	    return dimg;
+	} 
+	
 	public void draw(Graphics g, int x, int y) {
-		g.drawImage(bi, x, y, null);
+		//g.drawImage(bi, x, y, null);
+		g.drawOval(x, y, w, h);
 	}
 	
 	public void draw(Graphics g){

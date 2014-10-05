@@ -43,7 +43,7 @@ public class GamePanel extends JPanel implements Runnable{
 			
 		}
 		
-		player = new Player(img, 250, 250, 100, 100);
+		player = new Player(img, 100, 100, 50, 50);
 		setBackground(Color.white);
 		setPreferredSize(new Dimension(w, h));
 		setFocusable(true);
