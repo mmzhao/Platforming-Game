@@ -1,8 +1,10 @@
+import java.awt.image.BufferedImage;
+
 
 public class Baddie extends Movable{
 
-	public Baddie(double x, double y, double w, double h, boolean c, double xv,double yv, double xa, double ya) {
-		super(x, y, w, h, c, xv, yv, xa, ya, false);
+	public Baddie(BufferedImage b, int x, int y, int w, int h, boolean c, int xv,int yv) {
+		super(b, x, y, w, h, c, xv, yv);
 	}
 
 }

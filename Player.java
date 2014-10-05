@@ -1,10 +1,11 @@
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 
 public class Player extends Movable{
 	//implement some more attributes
 	
-	public Player(double x, double y, double w, double h, boolean c, double xv, double yv, double xa, double ya){
-		super(x, y, w, h, c, xv, yv, xa, ya, false);
+	public Player(BufferedImage b, int x, int y, int w, int h){
+		super(b, x, y, w, h, true, 0, 0);
 	}
 	
 	 public void keyPressed(KeyEvent e) {

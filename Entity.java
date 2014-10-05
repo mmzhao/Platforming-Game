@@ -1,20 +1,31 @@
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 
-public class Entity extends Thing{
+public class Entity {
 
-	double x; // x increases from left/west to right/east
-	double y; // y increases from top/north to bottom/south
-	double w;
-	double h;
+	protected BufferedImage bi;
+	int x; // x increases from left/west to right/east
+	int y; // y increases from top/north to bottom/south
+	int w;
+	int h;
 	boolean collidable;
 
-	public Entity(double x, double y, double w, double h, boolean c) {
+	public Entity(BufferedImage b, int x, int y, int w, int h, boolean c) {
+		bi = b;
 		this.x = x;
 		this.y = y;
 		this.w = w;
 		this.h = h;
 		collidable = c;
+	}
+	
+	public void draw(Graphics g, int x, int y) {
+		g.drawImage(bi, x, y, null);
+	}
+	
+	public void draw(Graphics g){
+		draw(g, x, y);
 	}
 
 	public double intersect(double x1, double x2, double x3, double x4) {
@@ -28,12 +39,8 @@ public class Entity extends Thing{
 	}
 
 	public Side collision(Entity e) {
-		double ns = intersect(e.getX(), e.getX() + e.getW(), x, x + w); // north
-																		// south
-																		// intersection
-		double ew = intersect(e.getY(), e.getY() + e.getH(), y, y + h); // east
-																		// west
-																		// interaction
+		double ns = intersect(e.getX(), e.getX() + e.getW(), x, x + w); // north south intersection
+		double ew = intersect(e.getY(), e.getY() + e.getH(), y, y + h); // east west interaction
 		if (!(e.getC() && collidable)) {
 			if (ns + ew > 0)
 				return Side.GENERAL;
@@ -53,43 +60,43 @@ public class Entity extends Thing{
 		return Side.NONE;
 	}
 
-	public double getMidX() {
+	public int getMidX() {
 		return x + w / 2;
 	}
 
-	public double getMidY() {
+	public int getMidY() {
 		return y + h / 2;
 	}
 
-	public double getX() {
+	public int getX() {
 		return x;
 	}
 
-	public void setX(double x) {
+	public void setX(int x) {
 		this.x = x;
 	}
 
-	public double getY() {
+	public int getY() {
 		return y;
 	}
 
-	public void setY(double y) {
+	public void setY(int y) {
 		this.y = y;
 	}
 
-	public double getW() {
+	public int getW() {
 		return w;
 	}
 
-	public void setW(double w) {
+	public void setW(int w) {
 		this.w = w;
 	}
 
-	public double getH() {
+	public int getH() {
 		return h;
 	}
 
-	public void setH(double h) {
+	public void setH(int h) {
 		this.h = h;
 	}
 
@@ -101,26 +108,25 @@ public class Entity extends Thing{
 		collidable = c;
 	}
 	
+	public BufferedImage getImage(){
+		return bi;
+	}
+	
+	public BufferedImage setImage(BufferedImage b){
+		return b;
+	}
+	
 	public void keyPressed(KeyEvent e) {
 
     }
     
     public void keyReleased(KeyEvent e) {
+    	
     }
     
     public void keyTyped(KeyEvent e) {
     
     }
 
-	public void draw(Graphics g, int pixelX, int pixelY) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void draw(Graphics g, int pixelX, int pixelY, int offsetX,
-			int offsetY) {
-		// TODO Auto-generated method stub
-		
-	}
 
 }

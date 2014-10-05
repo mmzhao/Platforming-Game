@@ -1,8 +1,10 @@
+import java.awt.image.BufferedImage;
+
 
 public class Platform extends Movable{
 
-	public Platform(double x, double y, double w, double h) {
-		super(x, y, w, h, true, 0, 0, 0, 0, true);
+	public Platform(BufferedImage b, int x, int y, int w, int h) {
+		super(b, x, y, w, h, true, 0, 0);
 	}
 
 }
