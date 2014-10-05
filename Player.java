@@ -6,14 +6,21 @@ import java.awt.image.BufferedImage;
 
 public class Player extends Movable{
 	//implement some more attributes
+	private boolean hasWeapon;
+	private ArrayList<Item> toolbelt;
+	private Weapon currentWeapon;
 	
 	public Player(BufferedImage b, int x, int y, int w, int h){
 		super(b, x, y, w, h, true, 0, 0);
+		hasWeapon = false;
+		toolbelt = new ArrayList<>();
+		currentWeapon = Null; 
 	}
 	
 	public void draw(Graphics g) {
 		g.setColor(Color.black);
 		g.fillOval(x, y, w, h);
+
 	}
 	
 	public void keyPressed(KeyEvent e) {
@@ -67,6 +74,10 @@ public class Player extends Movable{
 
 	}
 
-
+	public void giveCurrentWeapon(Weapon w){
+		hasWeapon = true;
+		toolbelt.add(w);
+		currentWeapon = w;
+	}
 
 }

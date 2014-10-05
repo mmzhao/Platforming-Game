@@ -20,11 +20,7 @@ public class Baddie extends Movable{
 			xv = 0;
 		}
 		super.update();
-<<<<<<< HEAD
-=======
 		xv = tempXV;
->>>>>>> 0a4ccd18a81146a920be896e5d2cad71cf6d6276
 	}
-	
 	
 }
