@@ -16,7 +16,6 @@ public class Baddie extends Movable{
 	
 	public void update(){
 		super.update();
-		
 	}
 	
 	
