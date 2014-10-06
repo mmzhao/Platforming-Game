@@ -3,18 +3,18 @@ import java.util.ArrayList;
 
 public class Movable extends Entity{
 
-	protected int xv;
-	protected int yv;
+	protected double xv;
+	protected double yv;
 	protected boolean southC;
 	protected boolean eastC;
 	protected boolean westC;
 	protected boolean northC;
 
-	protected final int GRAVITY = 1; //positive acceleration goes SOUTH and EAST
-	protected final int TIME_UNIT = 1;
-	protected final int TERMINAL_VELOCITY = 3;
+	protected final double GRAVITY = 1; //positive acceleration goes SOUTH and EAST
+	protected final double TIME_UNIT = .5;
+	protected final double TERMINAL_VELOCITY = 5;
 
-	public Movable(BufferedImage b, int x, int y, int w, int h, boolean c, int xv, int yv){
+	public Movable(BufferedImage b, double x, double y, double w, double h, boolean c, double xv, double yv){
 		super(b, x, y, w, h, c);
 		this.xv = xv;
 		this.yv = yv;
@@ -24,7 +24,7 @@ public class Movable extends Entity{
 		update(TIME_UNIT);
 	}
 
-	public void update(int time){
+	public void update(double time){
 		if(yv > TERMINAL_VELOCITY) yv = TERMINAL_VELOCITY;
 		if(southC){
 			if(yv > 0) yv = 0;
@@ -59,19 +59,19 @@ public class Movable extends Entity{
 		}
 	}
 
-	public int getXV(){
+	public double getXV(){
 		return xv;
 	}
 
-	public void setXV(int xv){
+	public void setXV(double xv){
 		this.xv = xv;
 	}
 	
-	public int getYV(){
+	public double getYV(){
 		return yv;
 	}
 
-	public void setYV(int yv){
+	public void setYV(double yv){
 		this.yv = yv;
 	}
 	

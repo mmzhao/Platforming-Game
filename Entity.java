@@ -1,20 +1,21 @@
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
 public class Entity {
 
 	protected BufferedImage bi;
-	protected int x; // x increases from left/west to right/east
-	protected int y; // y increases from top/north to bottom/south
-	protected int w;
-	protected int h;
+	protected double x; // x increases from left/west to right/east
+	protected double y; // y increases from top/north to bottom/south
+	protected double w;
+	protected double h;
 	protected boolean collidable;
 	protected boolean isPlatform;
 
-	public Entity(BufferedImage b, int x, int y, int w, int h, boolean c) {
+	public Entity(BufferedImage b, double x, double y, double w, double h, boolean c) {
 //		bi = resize(b, w, h);
 		bi = b;
 		this.x = x;
@@ -41,7 +42,7 @@ public class Entity {
 	}
 	
 	public void draw(Graphics g){
-		draw(g, x, y);
+		draw(g, (int) x, (int) y);
 	}
 
 	public double intersect(double x1, double x2, double x3, double x4) {
@@ -55,6 +56,28 @@ public class Entity {
 	}
 	
 	public Side collision(Entity e) {
+		if(e.getC() && collidable){
+			Rectangle r1 = new Rectangle((int) e.getX(), (int) e.getY(), (int) e.getW(), (int) e.getH());
+			Rectangle r2 = new Rectangle((int) x, (int) y, (int) w, (int) h);
+			if(r1.intersects(r2)){
+				Rectangle inter = r1.intersection(r2);
+				Side nsOption = Side.NORTH;
+				Side ewOption = Side.WEST;
+				if (e.getMidX() > getMidX())
+					ewOption = Side.EAST;
+				if (e.getMidY() > getMidY())
+					nsOption = Side.SOUTH;
+				if(inter.getHeight() <= inter.getWidth()){
+					return nsOption;
+				}
+				else
+					return ewOption;
+			}
+		}
+		return Side.NONE;
+	}
+	
+	public Side collision2(Entity e) {
 		if (e.getC() && collidable) {
 			double ew = intersect(e.getX(), e.getX() + e.getW(), x, x + w); // east west intersection
 			double ns = intersect(e.getY(), e.getY() + e.getH(), y, y + h); // north south interaction
@@ -96,43 +119,43 @@ public class Entity {
 	}
 **/
 	
-	public int getMidX() {
+	public double getMidX() {
 		return x + w / 2;
 	}
 
-	public int getMidY() {
+	public double getMidY() {
 		return y + h / 2;
 	}
 
-	public int getX() {
+	public double getX() {
 		return x;
 	}
 
-	public void setX(int x) {
+	public void setX(double x) {
 		this.x = x;
 	}
 
-	public int getY() {
+	public double getY() {
 		return y;
 	}
 
-	public void setY(int y) {
+	public void setY(double y) {
 		this.y = y;
 	}
 
-	public int getW() {
+	public double getW() {
 		return w;
 	}
 
-	public void setW(int w) {
+	public void setW(double w) {
 		this.w = w;
 	}
 
-	public int getH() {
+	public double getH() {
 		return h;
 	}
 
-	public void setH(int h) {
+	public void setH(double h) {
 		this.h = h;
 	}
 

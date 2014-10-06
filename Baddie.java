@@ -5,17 +5,17 @@ import java.awt.image.BufferedImage;
 
 public class Baddie extends Movable{
 
-	public Baddie(BufferedImage b, int x, int y, int w, int h, boolean c, int xv,int yv) {
+	public Baddie(BufferedImage b, double x, double y, double w, double h, boolean c, double xv, double yv) {
 		super(b, x, y, w, h, true, xv, yv);
 	}
 	
 	public void draw(Graphics g) {
 		g.setColor(Color.red);
-		g.fillOval(x, y, w, h);
+		g.fillOval((int) x, (int) y, (int) w, (int) h);
 	}
 	
-	public void update(int time){
-		int tempXV = xv;
+	public void update(double time){
+		double tempXV = xv;
 		if(!southC){
 			xv = 0;
 		}

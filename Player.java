@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -12,7 +13,9 @@ public class Player extends Movable{
 	protected boolean isHit = false;
 	protected long hitTimer = 0;
 	
-	public Player(BufferedImage b, int x, int y, int w, int h){
+	private final double AIR_RESISTANCE = .5;
+	
+	public Player(BufferedImage b, double x, double y, double w, double h){
 		super(b, x, y, w, h, true, 0, 0);
 	}
 	
@@ -31,40 +34,44 @@ public class Player extends Movable{
 			else if(s == Side.BADDIE){
 				//take dmg, flinch, etc
 				//FIX SOMETIME WON'T HIT UNTIL JUMP
-				System.out.println("hit");
-				isHit = true;
-				hitTimer = System.currentTimeMillis();
+				if(!isHit){
+					isHit = true;
+					hitTimer = System.currentTimeMillis();
+				}
 			}
 		}
 	}
 	
 	public Side collision(Entity e) {
 		if(e instanceof Baddie){
-			double ew = intersect(e.getX(), e.getX() + e.getW(), x, x + w); // east west intersection
-			double ns = intersect(e.getY(), e.getY() + e.getH(), y, y + h); // north south interaction
-			if (ns > 0 && ew > 0)
+			Rectangle r1 = new Rectangle((int) e.getX(), (int) e.getY(), (int) e.getW(), (int) e.getH());
+			Rectangle r2 = new Rectangle((int) x, (int) y, (int) w, (int) h);
+			if(r1.intersects(r2))
 				return Side.BADDIE;
 			return Side.NONE;
 		}
-		if (e instanceof Platform) {
-			double ew = intersect(e.getX(), e.getX() + e.getW(), x, x + w); // east west intersection
-			double ns = intersect(e.getY(), e.getY() + e.getH(), y, y + h); // north south interaction
-			Side nsOption = Side.NORTH;
-			Side ewOption = Side.WEST;
-			if (e.getMidX() > getMidX())
-				ewOption = Side.EAST;
-			if (e.getMidY() > getMidY())
-				nsOption = Side.SOUTH;
-			
-			if(Math.abs(e.getMidY() - getMidY()) - (e.getH() + h) / 2 <= 0 && Math.abs(e.getMidX() - getMidX()) - (e.getW() + w) / 2 <= 0){
-				if(x > e.getX() && x < e.getX() + e.getW()) return nsOption;
-				return ewOption;
+		else if(e instanceof Platform){
+			Rectangle r1 = new Rectangle((int) e.getX(), (int) e.getY(), (int) e.getW(), (int) e.getH());
+			Rectangle r2 = new Rectangle((int) x, (int) y, (int) w, (int) h);
+			if(r1.intersects(r2)){
+				Rectangle inter = r1.intersection(r2);
+				Side nsOption = Side.NORTH;
+				Side ewOption = Side.WEST;
+				if (e.getMidX() > getMidX())
+					ewOption = Side.EAST;
+				if (e.getMidY() > getMidY())
+					nsOption = Side.SOUTH;
+				if(inter.getHeight() <= inter.getWidth()){
+					return nsOption;
+				}
+				else
+					return ewOption;
 			}
 		}
 		return Side.NONE;
 	}
 	
-	public void update(int time){
+	public void update(double time){
 		if(yv > TERMINAL_VELOCITY) yv = TERMINAL_VELOCITY;
 		if(!(isRightHeld && isLeftHeld)){
 			if(isRightHeld){
@@ -103,7 +110,7 @@ public class Player extends Movable{
 		else
 			g.setColor(Color.black);
 		
-		g.fillOval(x, y, w, h);
+		g.fillOval((int) x, (int) y, (int) w, (int) h);
 	}
 	
 	public void keyPressed(KeyEvent e) {
