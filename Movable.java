@@ -50,6 +50,7 @@ public class Movable extends Entity{
 		southC = false;
 		westC= false;
 		for(Entity e: es){
+			if(this == e) continue;
 			Side s = collision(e);
 			if(s == Side.NORTH) northC = true;
 			if(s == Side.EAST) eastC = true;

@@ -14,16 +14,29 @@ public class Baddie extends Movable{
 		g.fillOval(x, y, w, h);
 	}
 	
-	public void update(){
+	public void update(int time){
 		int tempXV = xv;
 		if(!southC){
 			xv = 0;
 		}
-		super.update();
-<<<<<<< HEAD
-=======
-		xv = tempXV;
->>>>>>> 0a4ccd18a81146a920be896e5d2cad71cf6d6276
+		if(yv > TERMINAL_VELOCITY) yv = TERMINAL_VELOCITY;
+		if(southC){
+			if(yv > 0) yv = 0;
+		}
+		else yv += time * GRAVITY;
+		if(eastC){
+			if(xv > 0) xv = -xv;
+		}
+		if(westC){
+			if(xv < 0) xv = -xv;
+		}
+		if(northC){
+			if(yv < 0) yv = 0;
+		}
+
+		x += time * xv;
+		y += time * yv;
+		if(xv == 0) xv = tempXV;
 	}
 	
 	

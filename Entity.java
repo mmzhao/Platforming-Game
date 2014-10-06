@@ -12,6 +12,7 @@ public class Entity {
 	protected int w;
 	protected int h;
 	protected boolean collidable;
+	protected boolean isPlatform;
 
 	public Entity(BufferedImage b, int x, int y, int w, int h, boolean c) {
 //		bi = resize(b, w, h);
@@ -21,6 +22,7 @@ public class Entity {
 		this.w = w;
 		this.h = h;
 		collidable = c;
+		isPlatform = false;
 	}
 	
 	public static BufferedImage resize(BufferedImage img, int newW, int newH) { 
@@ -51,8 +53,27 @@ public class Entity {
 			return x2 - x3;
 		return 0;
 	}
-
+	
 	public Side collision(Entity e) {
+		if (e.getC() && collidable) {
+			double ew = intersect(e.getX(), e.getX() + e.getW(), x, x + w); // east west intersection
+			double ns = intersect(e.getY(), e.getY() + e.getH(), y, y + h); // north south interaction
+			Side nsOption = Side.NORTH;
+			Side ewOption = Side.WEST;
+			if (e.getMidX() > getMidX())
+				ewOption = Side.EAST;
+			if (e.getMidY() > getMidY())
+				nsOption = Side.SOUTH;
+			
+			if(Math.abs(e.getMidY() - getMidY()) - (e.getH() + h) / 2 <= 0 && Math.abs(e.getMidX() - getMidX()) - (e.getW() + w) / 2 <= 0){
+				if(x > e.getX() && x < e.getX() + e.getW()) return nsOption;
+				return ewOption;
+			}
+		}
+		return Side.NONE;
+	}
+
+/**	public Side collision(Entity e) {
 		double ew = intersect(e.getX(), e.getX() + e.getW(), x, x + w); // east west intersection
 		double ns = intersect(e.getY(), e.getY() + e.getH(), y, y + h); // north south interaction
 		if (!(e.getC() && collidable)) {
@@ -71,17 +92,10 @@ public class Entity {
 			if(x > e.getX() && x < e.getX() + e.getW()) return nsOption;
 			return ewOption;
 		}
-/**		if (ns + ew > 0) {
-			if (ns > ew){
-				System.out.println(nsOption);
-				return nsOption;
-			}
-			System.out.println(ewOption);
-			return ewOption;
-		}
-**/		return Side.NONE;
+		return Side.NONE;
 	}
-
+**/
+	
 	public int getMidX() {
 		return x + w / 2;
 	}

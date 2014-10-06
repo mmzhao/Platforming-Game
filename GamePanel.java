@@ -29,7 +29,7 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	private Player player;
 	private Baddie baddie;	
-	private Platform platform;
+	private ArrayList<Entity> es;
 	
 	public GamePanel(){
 		this(500, 400);
@@ -40,8 +40,12 @@ public class GamePanel extends JPanel implements Runnable{
 		h = height;
 
 		player = new Player(null, 100, 100, 20, 20);
-		platform = new Platform(null, 50, 200, 200, 20);
-		baddie = new Baddie(null, 150, 100, 20, 20, gameOver, -5, 0);
+		es = new ArrayList<Entity>();
+		es.add(new Platform(null, 50, 200, 200, 20));
+		es.add(new Platform(null, 50, 180, 20, 20));
+		es.add(new Platform(null, 230, 180, 20, 20));
+		baddie = new Baddie(null, 150, 100, 20, 20, true, -5, 0);
+		es.add(baddie);
 		
 		setBackground(Color.white);
 		setPreferredSize(new Dimension(w, h));
@@ -96,11 +100,9 @@ public class GamePanel extends JPanel implements Runnable{
 	public void gameUpdate(){
 		if(!gameOver){
 			//update game state
-			ArrayList<Entity> p = new ArrayList<Entity>();
-			p.add(platform);
-			player.sidesCollided(p);
+			player.sidesCollided(es);
 			player.update();
-			baddie.sidesCollided(p);
+			baddie.sidesCollided(es);
 			baddie.update();
 		}
 	}
@@ -120,8 +122,9 @@ public class GamePanel extends JPanel implements Runnable{
 		dbg.fillRect(0, 0, w, h);
 		
 		player.draw(dbg);
-		platform.draw(dbg);
-		baddie.draw(dbg);
+		for(Entity e: es){
+			e.draw(dbg);
+		}
 		
 		
 		// draw game elements
