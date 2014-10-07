@@ -12,25 +12,50 @@ public class Player extends Movable{
 	protected boolean isUpHeld = false;
 	protected boolean isHit = false;
 	protected long hitTimer = 0;
+	protected Player save;
 	
 	private final double AIR_RESISTANCE = .5;
+	private final double MIN_FOR_DOUBLE_COLLISION = 3;
 	
 	public Player(BufferedImage b, double x, double y, double w, double h){
 		super(b, x, y, w, h, true, 0, 0);
+		save = null;
+	}
+	
+	public Player(BufferedImage b, double x, double y, double w, double h, double xv, double yv){
+		super(b, x, y, w, h, true, xv, yv);
 	}
 	
 	public void sidesCollided(ArrayList<Entity> es){
+		saveCurrentState();
 		northC = false;
 		eastC = false;
 		southC = false;
 		westC= false;
 		isHit = false;
+		updateC();
 		for(Entity e: es){
 			Side s = collision(e);
 			if(s == Side.NORTH) northC = true;
 			else if(s == Side.EAST) eastC = true;
 			else if(s == Side.SOUTH) southC = true;
 			else if(s == Side.WEST) westC = true;
+			else if(s == Side.NORTHEAST){
+				northC = true;
+				eastC = true;
+			}
+			else if(s == Side.NORTHWEST){
+				northC = true;
+				westC = true;
+			}
+			else if(s == Side.SOUTHEAST){
+				southC = true;
+				eastC = true;
+			}
+			else if(s == Side.SOUTHWEST){
+				southC = true;
+				westC = true;
+			}
 			else if(s == Side.BADDIE){
 				//take dmg, flinch, etc
 				//FIX SOMETIME WON'T HIT UNTIL JUMP
@@ -40,6 +65,7 @@ public class Player extends Movable{
 				}
 			}
 		}
+		reset();
 	}
 	
 	public Side collision(Entity e) {
@@ -57,10 +83,19 @@ public class Player extends Movable{
 				Rectangle inter = r1.intersection(r2);
 				Side nsOption = Side.NORTH;
 				Side ewOption = Side.WEST;
-				if (e.getMidX() > getMidX())
+				Side bothOption = Side.NORTHWEST;
+				if (e.getMidX() > getMidX()){
 					ewOption = Side.EAST;
-				if (e.getMidY() > getMidY())
+					bothOption = Side.NORTHEAST;
+				}
+				if (e.getMidY() > getMidY()){
 					nsOption = Side.SOUTH;
+					if(bothOption == Side.NORTHEAST) bothOption = Side.SOUTHEAST;
+					else bothOption = Side.SOUTHWEST;
+				}
+				if(inter.getHeight() >= MIN_FOR_DOUBLE_COLLISION && inter.getWidth() >= MIN_FOR_DOUBLE_COLLISION){
+					return bothOption;
+				}
 				if(inter.getHeight() <= inter.getWidth()){
 					return nsOption;
 				}
@@ -72,7 +107,6 @@ public class Player extends Movable{
 	}
 	
 	public void update(double time){
-		if(yv > TERMINAL_VELOCITY) yv = TERMINAL_VELOCITY;
 		if(!(isRightHeld && isLeftHeld)){
 			if(isRightHeld){
 				xv = 5;
@@ -81,9 +115,9 @@ public class Player extends Movable{
 				xv = -5;
 			}
 		}
-		if(isUpHeld){
-			if(southC) yv = -10;
-		}
+//		if(isUpHeld){
+//			if(southC) yv = -10;
+//		}
 		if(southC){
 			if(yv > 0) yv = 0;
 		}
@@ -97,14 +131,47 @@ public class Player extends Movable{
 		if(northC){
 			if(yv < 0) yv = 0;
 		}
-
+		if(yv > TERMINAL_VELOCITY) yv = TERMINAL_VELOCITY;
 		x += time * xv;
 		y += time * yv;
 	}
 	
+	public void saveCurrentState(){
+		save = new Player(bi, x, y, h, w, xv, yv);
+	}
+	
+	public void updateC(){
+		updateC(TIME_UNIT);
+	}
+	
+	public void updateC(double time){
+//		System.out.println(xv + " " + yv);
+		yv += time * GRAVITY;
+		if(yv > TERMINAL_VELOCITY) yv = TERMINAL_VELOCITY;
+		if(!(isRightHeld && isLeftHeld)){
+			if(isRightHeld){
+				xv = 5;
+			}
+			else if(isLeftHeld){
+				xv = -5;
+			}
+		}
+		x += time * xv;
+		y += time * yv;
+	}
+	
+	public void reset(){
+		x = save.getX();
+		y = save.getY();
+		w = save.getW();
+		h = save.getH();
+		xv = save.getXV();
+		yv = save.getYV();
+	}
+	
 	public void draw(Graphics g) {
 		long currentTime = System.currentTimeMillis();
-		if(currentTime - hitTimer < 150){
+		if(currentTime - hitTimer < 100){
 			g.setColor(Color.pink);
 		}
 		else
@@ -127,7 +194,7 @@ public class Player extends Movable{
 	        }
 	        
 	        if (key == KeyEvent.VK_UP) {
-	        	isUpHeld = true;
+//	        	isUpHeld = true;
 	        	if(southC) setYV(-10);
 	        }
 	        

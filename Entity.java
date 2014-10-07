@@ -63,10 +63,12 @@ public class Entity {
 				Rectangle inter = r1.intersection(r2);
 				Side nsOption = Side.NORTH;
 				Side ewOption = Side.WEST;
-				if (e.getMidX() > getMidX())
+				if (e.getMidX() > getMidX()){
 					ewOption = Side.EAST;
-				if (e.getMidY() > getMidY())
+				}
+				if (e.getMidY() > getMidY()){
 					nsOption = Side.SOUTH;
+				}
 				if(inter.getHeight() <= inter.getWidth()){
 					return nsOption;
 				}

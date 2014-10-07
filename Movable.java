@@ -11,7 +11,7 @@ public class Movable extends Entity{
 	protected boolean northC;
 
 	protected final double GRAVITY = 1; //positive acceleration goes SOUTH and EAST
-	protected final double TIME_UNIT = .5;
+	protected final double TIME_UNIT = 1;
 	protected final double TERMINAL_VELOCITY = 5;
 
 	public Movable(BufferedImage b, double x, double y, double w, double h, boolean c, double xv, double yv){
@@ -53,9 +53,25 @@ public class Movable extends Entity{
 			if(this == e) continue;
 			Side s = collision(e);
 			if(s == Side.NORTH) northC = true;
-			if(s == Side.EAST) eastC = true;
-			if(s == Side.SOUTH) southC = true;
-			if(s == Side.WEST) westC = true;
+			else if(s == Side.EAST) eastC = true;
+			else if(s == Side.SOUTH) southC = true;
+			else if(s == Side.WEST) westC = true;
+			else if(s == Side.NORTHEAST){
+				northC = true;
+				eastC = true;
+			}
+			else if(s == Side.NORTHWEST){
+				northC = true;
+				westC = true;
+			}
+			else if(s == Side.SOUTHEAST){
+				southC = true;
+				eastC = true;
+			}
+			else if(s == Side.SOUTHWEST){
+				southC = true;
+				westC = true;
+			}
 		}
 	}
 

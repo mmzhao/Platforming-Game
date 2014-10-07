@@ -25,7 +25,7 @@ public class GamePanel extends JPanel implements Runnable{
 	private Graphics dbg;
 	private Image dbImage = null;
 	
-	private long period = 10;
+	private long period = 20;
 	
 	private Player player;
 	private Baddie baddie;	
@@ -44,6 +44,7 @@ public class GamePanel extends JPanel implements Runnable{
 		es.add(new Platform(null, 50, 200, 200, 20));
 		es.add(new Platform(null, 30, 180, 20, 40));
 		es.add(new Platform(null, 250, 180, 20, 40));
+		es.add(new Platform(null, 80, 140, 140, 20));
 		baddie = new Baddie(null, 150, 100, 20, 20, true, -5, 0);
 		es.add(baddie);
 		
@@ -101,8 +102,8 @@ public class GamePanel extends JPanel implements Runnable{
 		if(!gameOver){
 			//update game state
 			player.sidesCollided(es);
-			player.update();
 			baddie.sidesCollided(es);
+			player.update();
 			baddie.update();
 		}
 	}
