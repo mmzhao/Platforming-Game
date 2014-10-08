@@ -15,7 +15,12 @@ public class Player extends Movable{
 	protected Player save;
 	
 	private final double AIR_RESISTANCE = .5;
-	private final double MIN_FOR_DOUBLE_COLLISION = 3;
+	private final double MIN_FOR_DOUBLE_COLLISION = 6; 
+	// >5 for normal
+	// 5 for slight spiderman
+	// <5 for very spiderman
+	// 2 for optimal spiderman
+	// 1 for retard spiderman
 	
 	public Player(BufferedImage b, double x, double y, double w, double h){
 		super(b, x, y, w, h, true, 0, 0);
