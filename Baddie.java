@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 
 public class Baddie extends Movable{
@@ -37,6 +38,47 @@ public class Baddie extends Movable{
 		x += time * xv;
 		y += time * yv;
 		if(xv == 0) xv = tempXV;
+	}
+	
+	public void sidesCollided(ArrayList<Entity> es){
+		saveCurrentState();
+		northC = false;
+		eastC = false;
+		southC = false;
+		westC= false;
+		updateC();
+		for(Entity e: es){
+			if(this == e) continue;
+			Side s = collision(e);
+			if(e instanceof Projectile){
+				if(s != Side.NONE){
+					//take dmg etc
+				}
+			}
+			else if(e instanceof Platform){
+				if(s == Side.NORTH) northC = true;
+				else if(s == Side.EAST) eastC = true;
+				else if(s == Side.SOUTH) southC = true;
+				else if(s == Side.WEST) westC = true;
+				else if(s == Side.NORTHEAST){
+					northC = true;
+					eastC = true;
+				}
+				else if(s == Side.NORTHWEST){
+					northC = true;
+					westC = true;
+				}
+				else if(s == Side.SOUTHEAST){
+					southC = true;
+					eastC = true;
+				}
+				else if(s == Side.SOUTHWEST){
+					southC = true;
+					westC = true;
+				}
+			}
+		}
+		reset();
 	}
 	
 	

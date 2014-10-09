@@ -14,6 +14,7 @@ public class Entity {
 	protected double h;
 	protected boolean collidable;
 	protected boolean isPlatform;
+	protected boolean remove;
 
 	public Entity(BufferedImage b, double x, double y, double w, double h, boolean c) {
 //		bi = resize(b, w, h);
@@ -24,6 +25,7 @@ public class Entity {
 		this.h = h;
 		collidable = c;
 		isPlatform = false;
+		remove = false;
 	}
 	
 	public static BufferedImage resize(BufferedImage img, int newW, int newH) { 
@@ -167,6 +169,10 @@ public class Entity {
 
 	public void setC(boolean c) {
 		collidable = c;
+	}
+	
+	public boolean needRemoval(){
+		return remove;
 	}
 	
 	public BufferedImage getImage(){

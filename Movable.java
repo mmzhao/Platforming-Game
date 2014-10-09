@@ -9,6 +9,8 @@ public class Movable extends Entity{
 	protected boolean eastC;
 	protected boolean westC;
 	protected boolean northC;
+	
+	protected Movable save; // for better collision detection
 
 	protected final double GRAVITY = 1; //positive acceleration goes SOUTH and EAST
 	protected final double TIME_UNIT = 1;
@@ -45,10 +47,12 @@ public class Movable extends Entity{
 	}
 	
 	public void sidesCollided(ArrayList<Entity> es){
+		saveCurrentState();
 		northC = false;
 		eastC = false;
 		southC = false;
 		westC= false;
+		updateC();
 		for(Entity e: es){
 			if(this == e) continue;
 			Side s = collision(e);
@@ -73,6 +77,32 @@ public class Movable extends Entity{
 				westC = true;
 			}
 		}
+		reset();
+	}
+	
+	public void saveCurrentState() {
+		save = new Movable(bi, x, y, h, w, true, xv, yv);
+	}
+	
+	public void updateC() {
+		updateC(TIME_UNIT);
+	}
+	
+	public void updateC(double time) {
+		yv += time * GRAVITY;
+		if (yv > TERMINAL_VELOCITY)
+			yv = TERMINAL_VELOCITY;
+		x += time * xv;
+		y += time * yv;
+	}
+	
+	public void reset() {
+		x = save.getX();
+		y = save.getY();
+		w = save.getW();
+		h = save.getH();
+		xv = save.getXV();
+		yv = save.getYV();
 	}
 
 	public double getXV(){
