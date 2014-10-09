@@ -20,9 +20,7 @@ public class Player extends Movable {
 	protected boolean facingRight = true; // starts by facing right
 
 	private final double AIR_RESISTANCE = .5;
-	private final double MIN_FOR_DOUBLE_COLLISION = 6;
-
-	// >5 for normal
+	private final double MIN_FOR_DOUBLE_COLLISION = 5; //if want spiderman use sidesCollided2() and collision()
 	// 5 for slight spiderman
 	// <5 for very spiderman
 	// 2 for optimal spiderman
@@ -30,16 +28,15 @@ public class Player extends Movable {
 
 	public Player(BufferedImage b, double x, double y, double w, double h) {
 		super(b, x, y, w, h, true, 0, 0);
-		save = null;
 		ps = new ArrayList<Projectile>();
 	}
 
 	public Player(BufferedImage b, double x, double y, double w, double h,
 			double xv, double yv) {
-		super(b, x, y, w, h, true, xv, yv);
+		super(b, x, y, w, h, xv, yv);
 	}
 
-	public void sidesCollided(ArrayList<Entity> es) {
+/**	public void sidesCollided2(ArrayList<Entity> es) {
 		saveCurrentState();
 		northC = false;
 		eastC = false;
@@ -80,7 +77,99 @@ public class Player extends Movable {
 		}
 		reset();
 	}
+**/	
+	public void sidesCollided(ArrayList<Entity> es) {
+		saveCurrentState();
+		northC = false;
+		eastC = false;
+		southC = false;
+		westC = false;
+		isHit = false;
+		updateC();
+		for (Entity e : es) {
+			if (e instanceof Baddie) {
+				Rectangle r1 = new Rectangle((int) e.getX(), (int) e.getY(),
+						(int) e.getW(), (int) e.getH());
+				Rectangle r2 = new Rectangle((int) x, (int) y, (int) w, (int) h);
+				if (r1.intersects(r2))
+					if (!isHit) {
+						isHit = true;
+						hitTimer = System.currentTimeMillis();
+					}
+			}
+			else if (e instanceof Platform) {
+				Rectangle r1 = new Rectangle((int) e.getX(), (int) e.getY(),
+						(int) e.getW(), (int) e.getH());
+				Rectangle r2 = new Rectangle((int) x, (int) y, (int) w, (int) h);
+				if (r1.intersects(r2)) {
+//					Rectangle inter = r1.intersection(r2);
+					double distx = Math.abs(save.getMidX() - e.getMidX()) - save.getW() / 2 - e.getW() / 2;
+					double disty = Math.abs(save.getMidY() - e.getMidY()) - save.getH() / 2 - e.getH() / 2;
+					System.out.println("x: " + distx + "\n" + "y: " + disty);
+					if(distx < 0 && disty < 0) System.out.println("plz kill yourself");
+					if(distx < 0){
+						if(save.getMidY() > e.getMidY()){
+							northC = true;
+						}
+						else{
+							southC = true;
+						}
+					}
+					else if(disty < 0){
+						if(save.getMidX() > e.getMidX()){
+							westC = true;
+						}
+						else{
+							eastC = true;
+						}
+					}
+					else{
+						if(distx / save.getXV() < 0 || disty / save.getYV() < 0) System.out.println("plz kill yourself");
+						if(distx / save.getXV() < disty / save.getYV()){
+							if(save.getMidX() > e.getMidX()){
+								westC = true;
+							}
+							else{
+								eastC = true;
+							}
+						}
+						else{
+							if(save.getMidY() > e.getMidY()){
+								northC = true;
+							}
+							else{
+								southC = true;
+							}
+						}
+					}
+				}
+			}
+		}
+		reset();
+	}
+	
+/**	public Side collision2(Entity e) {
+		if (e instanceof Baddie) {
+			Rectangle r1 = new Rectangle((int) e.getX(), (int) e.getY(),
+					(int) e.getW(), (int) e.getH());
+			Rectangle r2 = new Rectangle((int) x, (int) y, (int) w, (int) h);
+			if (r1.intersects(r2))
+				return Side.BADDIE;
+			return Side.NONE;
+		} 
+		else if (e instanceof Platform) {
+			Rectangle r1 = new Rectangle((int) e.getX(), (int) e.getY(),
+					(int) e.getW(), (int) e.getH());
+			Rectangle r2 = new Rectangle((int) x, (int) y, (int) w, (int) h);
+			if (r1.intersects(r2)) {
+				Rectangle inter = r1.intersection(r2);
+				
+			}
+		}
+		return Side.NONE;
+	}
 
+	
 	public Side collision(Entity e) {
 		if (e instanceof Baddie) {
 			Rectangle r1 = new Rectangle((int) e.getX(), (int) e.getY(),
@@ -121,7 +210,7 @@ public class Player extends Movable {
 		}
 		return Side.NONE;
 	}
-
+**/
 	public void update(double time) {
 		if (!(isRightHeld && isLeftHeld)) {
 			if (isRightHeld) {
@@ -130,12 +219,13 @@ public class Player extends Movable {
 				xv = -5;
 			}
 		}
-		// if(isUpHeld){
-		// if(southC) yv = -10;
-		// }
 		if (southC) {
 			if (yv > 0)
 				yv = 0;
+			if(isUpHeld){
+				yv = -9; //if this line not commented out, can jump up platform uppersides
+				//currently 1 less magnitude than "space key" jump velocity
+			}
 		} else
 			yv += time * GRAVITY;
 		if (eastC) {
@@ -154,21 +244,18 @@ public class Player extends Movable {
 			yv = TERMINAL_VELOCITY;
 		x += time * xv;
 		y += time * yv;
-
+		
 		if (isShooting)
 			shoot();
 		// update projectile list
 		updateProjectiles();
 	}
 
-/**	public void saveCurrentState() {
+	public void saveCurrentState() {
 		save = new Player(bi, x, y, h, w, xv, yv);
 	}
 
-	public void updateC() {
-		updateC(TIME_UNIT);
-	}
-**/
+	
 	public void updateC(double time) {
 		// System.out.println(xv + " " + yv);
 		yv += time * GRAVITY;
@@ -185,7 +272,7 @@ public class Player extends Movable {
 		y += time * yv;
 	}
 
-/**	public void reset() {
+	public void reset() {
 		x = save.getX();
 		y = save.getY();
 		w = save.getW();
@@ -193,11 +280,11 @@ public class Player extends Movable {
 		xv = save.getXV();
 		yv = save.getYV();
 	}
-**/
+
 	public void shoot() {
 		double x = this.x - 3;
 		double v = -5;
-		double a = -1;
+		double a = -.5;
 		if (facingRight) {
 			x += this.w + 3;
 			v *= -1;
@@ -268,7 +355,7 @@ public class Player extends Movable {
 		}
 
 		else if (key == KeyEvent.VK_UP) {
-			// isUpHeld = true;
+			isUpHeld = true;
 			if (southC)
 				setYV(-10);
 		}

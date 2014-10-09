@@ -10,7 +10,7 @@ public class Movable extends Entity{
 	protected boolean westC;
 	protected boolean northC;
 	
-	protected Movable save; // for better collision detection
+	protected Movable save = null; // for better collision detection
 
 	protected final double GRAVITY = 1; //positive acceleration goes SOUTH and EAST
 	protected final double TIME_UNIT = 1;
@@ -18,6 +18,13 @@ public class Movable extends Entity{
 
 	public Movable(BufferedImage b, double x, double y, double w, double h, boolean c, double xv, double yv){
 		super(b, x, y, w, h, c);
+		this.xv = xv;
+		this.yv = yv;
+		save = new Movable(b, x, y, w, h, xv, yv);
+	}
+	
+	public Movable(BufferedImage b, double x, double y, double w, double h, double xv, double yv){
+		super(b, x, y, w, h, true);
 		this.xv = xv;
 		this.yv = yv;
 	}
@@ -81,7 +88,7 @@ public class Movable extends Entity{
 	}
 	
 	public void saveCurrentState() {
-		save = new Movable(bi, x, y, h, w, true, xv, yv);
+		save = new Movable(bi, x, y, h, w, xv, yv);
 	}
 	
 	public void updateC() {
@@ -151,6 +158,10 @@ public class Movable extends Entity{
 
 	public void setWestC(boolean c){
 		this.westC = c;
+	}
+	
+	public Movable getSave(){
+		return save;
 	}
 	
 }
