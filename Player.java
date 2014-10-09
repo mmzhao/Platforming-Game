@@ -126,19 +126,20 @@ public class Player extends Movable {
 					else{
 						if(distx / save.getXV() < 0 || disty / save.getYV() < 0) System.out.println("plz kill yourself");
 						if(distx / save.getXV() < disty / save.getYV()){
-							if(save.getMidX() > e.getMidX()){
-								westC = true;
-							}
-							else{
-								eastC = true;
-							}
-						}
-						else{
 							if(save.getMidY() > e.getMidY()){
 								northC = true;
 							}
 							else{
 								southC = true;
+							}
+							
+						}
+						else{
+							if(save.getMidX() > e.getMidX()){
+								westC = true;
+							}
+							else{
+								eastC = true;
 							}
 						}
 					}
