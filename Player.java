@@ -6,7 +6,6 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
-
 import javax.imageio.ImageIO;
 
 public class Player extends Movable {
@@ -264,7 +263,7 @@ public class Player extends Movable {
 		y += time * yv;
 		
 		if (isShooting)
-			shoot();
+			currentWeapon.fire();
 		// update projectile list
 		updateProjectiles();
 	}
@@ -299,21 +298,7 @@ public class Player extends Movable {
 //		yv = save.getYV();
 //	}
 
-	public void shoot() {
-		double x = this.x - 3;
-		double v = -5;
-		double a = -.5;
-		if (facingRight) {
-			x += this.w + 3;
-			v *= -1;
-			a *= -1;
-		}
-		Projectile p = new Projectile(null, x, getMidY() - 3, 3, 3, v, a, 5);
-
-		ps.add(p);
-		if (ps.size() > 8)
-			ps.remove(0);
-	}
+	
 
 	public ArrayList<Projectile> getProjectiles() {
 		return ps;
