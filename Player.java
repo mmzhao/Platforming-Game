@@ -355,7 +355,7 @@ public class Player extends Movable {
 		else if (key == KeyEvent.VK_A) {
 			isLeftHeld = true;
 			setXV(-5);
-			facingRight = 1;
+			facingRight = -1;
 		}
 
 		else if (key == KeyEvent.VK_D) {

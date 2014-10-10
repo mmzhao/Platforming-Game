@@ -36,11 +36,12 @@ public class Weapon extends Item{
 	public void update(double time){
 		
 		if(owner != null){
+			facingRight = owner.getFacingRight();
 			w = owner.getW()/2;
 			h = owner.getH()/2;
-			x = owner.getX();
+			x = owner.getX() + 9;
 			y = owner.getY() + 3*(int)h/4;
-			facingRight = owner.getFacingRight();
+			x += facingRight * w;
 		}
 		else{
 			x = 0;
@@ -49,6 +50,7 @@ public class Weapon extends Item{
 		for(int i = 0; i < ps.size(); i++){
 			ps.get(i).update(time);
 		}
+		updateProjectiles();
 	}
 	
 	protected boolean canFire(){
@@ -69,12 +71,12 @@ public class Weapon extends Item{
 	public void fire() { 
 		if(canFire()){
 			lastFired = System.currentTimeMillis();
-			ps.add(new Projectile(null, x, y, bulletsize, bulletsize, facingRight * velocity, facingRight*accel, damage));
+			ps.add(new Projectile(null, x - 2.5 + facingRight * 10, y - 1, bulletsize, bulletsize, facingRight * velocity, facingRight*accel, damage));
 		}
 	}
 	
 	public void updateProjectiles() {
-		for (int i = ps.size(); i >= 0; i--) {
+		for (int i = ps.size() - 1; i >= 0; i--) {
 			if (ps.get(i).needRemoval())
 				ps.remove(i);
 		}
