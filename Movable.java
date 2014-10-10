@@ -11,6 +11,7 @@ public class Movable extends Entity{
 	protected boolean westC;
 	protected boolean northC;
 	protected int health;
+	protected int facingRight;
 	//IMPLEMENT TAKE DMG SOMETIME
 	
 	protected Movable save = null; // for better collision detection
@@ -19,8 +20,9 @@ public class Movable extends Entity{
 	protected final double TIME_UNIT = 1;
 	protected final double TERMINAL_VELOCITY = 5;
 
-	public Movable(BufferedImage b, double x, double y, double w, double h, boolean c, double xv, double yv, int health){
+	public Movable(BufferedImage b, double x, double y, double w, double h, boolean c, double xv, double yv, int health, int facingRight){
 		super(b, x, y, w, h, c);
+		this.facingRight = facingRight;
 		this.xv = xv;
 		this.yv = yv;
 		this.health = health;
@@ -257,5 +259,9 @@ public class Movable extends Entity{
 	
 	public void setHealth(int h){
 		health = h;
+	}
+	
+	public int getFacingRight(){
+		return facingRight;
 	}
 }

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class Baddie extends Movable{
 
 	public Baddie(BufferedImage b, double x, double y, double w, double h, boolean c, double xv, double yv, int health) {
-		super(b, x, y, w, h, true, xv, yv, health);
+		super(b, x, y, w, h, true, xv, yv, health, 0);
 	}
 	
 	public void draw(Graphics g) {

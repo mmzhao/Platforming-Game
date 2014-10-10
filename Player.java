@@ -17,11 +17,9 @@ public class Player extends Movable {
 	protected long hitTimer = 0;
 //	protected Player save;
 
-	protected ArrayList<Projectile> ps;
 	protected Weapon currentWeapon;
 	protected int standardStep;
-
-	protected boolean facingRight = true; // starts by facing right
+	// starts by facing right
 
 	private final double AIR_RESISTANCE = .5;
 	private final double MIN_FOR_DOUBLE_COLLISION = 5; //if want spiderman use sidesCollided2() and collision()
@@ -30,10 +28,9 @@ public class Player extends Movable {
 	// 2 for optimal spiderman
 	// 1 for retard spiderman
 
-	public Player(BufferedImage b, double x, double y, double w, double h, int health) {
-		super(b, x, y, w, h, true, 0, 0, health);
-		ps = new ArrayList<Projectile>();
-		//currentWeapon = new Weapon("Pistol", null, x + facingRight * 1 , y, (double)5, (double)5, false, 1, facingRight, 5 , 1);
+	public Player(BufferedImage b, double x, double y, double w, double h, int health, Weapon currentWeapon) {
+		super(b, x, y, w, h, true, 0, 0, health, 1);
+		this.currentWeapon = currentWeapon;
 		standardStep = 5;
 	}
 
@@ -228,6 +225,10 @@ public class Player extends Movable {
 		return Side.NONE;
 	}
 **/
+	public int getFacingRight(){
+		return facingRight;
+	}
+	
 	public void update(double time) {
 		if (!(isRightHeld && isLeftHeld)) {
 			if (isRightHeld) {
@@ -264,15 +265,17 @@ public class Player extends Movable {
 		
 		if (isShooting)
 			currentWeapon.fire();
+		if(currentWeapon != null){
+			currentWeapon.update(time);
+		}
 		// update projectile list
-		updateProjectiles();
 	}
 
 //	public void saveCurrentState() {
 //		save = new Player(bi, x, y, h, w, xv, yv);
 //	}
+		
 
-	
 	public void updateC(double time) {
 		// System.out.println(xv + " " + yv);
 		yv += time * GRAVITY;
@@ -298,32 +301,14 @@ public class Player extends Movable {
 //		yv = save.getYV();
 //	}
 
+	public Weapon getCurrentWeapon(){
+		return currentWeapon;
+	}
 	
-
-	public ArrayList<Projectile> getProjectiles() {
-		return ps;
+	public void giveCurrentWeapon(Weapon w){
+		currentWeapon = w;
 	}
-
-	public void setProjectile(ArrayList<Projectile> ps) {
-		this.ps = ps;
-	}
-
-	public void removeProjectile(Projectile p) {
-		ps.remove(p);
-	}
-
-	public void updateProjectiles() {
-		// projectile list update
-		boolean[] delete = new boolean[ps.size()];
-		// System.out.println(ps.size());
-		for (int i = 0; i < ps.size(); i++) {
-			if (ps.get(i).needRemoval()) {
-				ps.remove(i);
-				i--;
-			}
-		}
-	}
-
+	
 	public void draw(Graphics g) {
 		long currentTime = System.currentTimeMillis();
 		if (currentTime - hitTimer < 100) {
@@ -331,18 +316,19 @@ public class Player extends Movable {
 		} else
 			g.setColor(Color.black);
 		
-		g.setColor(Color.blue);
-
 		// making dot to designate facing direction
-		if (facingRight) {
-			g.fillOval((int) (x + w), (int) getMidY() - 3, 3, 3);
+		if (facingRight == 1) {
 			g.drawImage(super.bi, (int)x, (int)y, (int)w, (int)h, Color.white, null);
 		} else{
-			g.fillOval((int) x - 3, (int) getMidY() - 3, 3, 3);
 			g.drawImage(super.bi, (int)x + (int)w, (int)y, -(int)w, (int)h, Color.white, null);
 		}
-		
-		
+		if(currentWeapon != null){
+			
+			for(int i = 0; i < currentWeapon.getProjectiles().size(); i++){
+				currentWeapon.getProjectiles().get(i).draw(g);
+			}
+			currentWeapon.draw(g);
+		}
 	}
 
 	public void keyPressed(KeyEvent e) {
@@ -351,13 +337,13 @@ public class Player extends Movable {
 		if (key == KeyEvent.VK_LEFT) {
 			isLeftHeld = true;
 			setXV(-5);
-			facingRight = false;
+			facingRight = -1;
 		}
 
 		else if (key == KeyEvent.VK_RIGHT) {
 			isRightHeld = true;
 			setXV(5);
-			facingRight = true;
+			facingRight = 1;
 		}
 
 		else if (key == KeyEvent.VK_UP) {
@@ -369,13 +355,13 @@ public class Player extends Movable {
 		else if (key == KeyEvent.VK_A) {
 			isLeftHeld = true;
 			setXV(-5);
-			facingRight = false;
+			facingRight = 1;
 		}
 
 		else if (key == KeyEvent.VK_D) {
 			isRightHeld = true;
 			setXV(5);
-			facingRight = true;
+			facingRight = 1;
 		}
 
 		else if (key == KeyEvent.VK_W) {
@@ -385,7 +371,8 @@ public class Player extends Movable {
 		}
 
 		else if (key == KeyEvent.VK_SPACE) {
-			isShooting = true;
+			if(currentWeapon != null)
+				isShooting = true;
 //			shoot();
 		}
 

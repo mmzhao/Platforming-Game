@@ -12,14 +12,13 @@ public class Projectile extends Movable{
 	private final int TERMINAL_VELOCITY = 10;
 
 	public Projectile(BufferedImage b, double x, double y, double w, double h, double xv, double xa, int dmg){
-		super(b, x, y, w, h, true, xv, 0, 0);
+		super(b, x, y, w, h, true, xv, 0, 0, 0);
 		this.xa = xa;
 		this.dmg = dmg;
 	}
 	
 	public void draw(Graphics g) {
 		g.setColor(Color.green);
-		
 		g.fillOval((int) x, (int) y, (int) w, (int) h);
 	}
 	
@@ -73,5 +72,4 @@ public class Projectile extends Movable{
 	public void setDamage(int dmg){
 		this.dmg = dmg;
 	}
-	
 }

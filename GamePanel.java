@@ -39,9 +39,8 @@ public class GamePanel extends JPanel implements Runnable{
 		w = width;
 		h = height;
 		
-		player = new Player(null, 100, 100, 20, 20, 100);
-		
-		player = new Player(loadImage("Mario8BitSprite.png"), 100, 100, 20, 20, 100);
+		player = new Player(loadImage("Mario8BitSprite.png"), 100, 100, 20, 20, 100, null);
+		player.giveCurrentWeapon(new Weapon("Pistol", loadImage("SamplePistol.png"), 500, 1, 5, 1000, 1, 2, 5, 5, player));
 		es = new ArrayList<Entity>();
 		es.add(new Platform(null, 50, 200, 200, 20));
 		es.add(new Platform(null, 30, 180, 20, 40));
@@ -105,9 +104,11 @@ public class GamePanel extends JPanel implements Runnable{
 			//update game state
 			player.sidesCollided(es);
 			baddie.sidesCollided(es); 
-			for(Projectile p: player.getProjectiles()){
-				p.sidesCollided(es);
-				p.update();
+			if(player.getCurrentWeapon() != null){
+				for(Projectile p: player.getCurrentWeapon().getProjectiles()){
+					p.sidesCollided(es);
+					p.update();
+				}
 			}
 			baddie.update();
 			player.update();
@@ -129,8 +130,10 @@ public class GamePanel extends JPanel implements Runnable{
 		dbg.fillRect(0, 0, w, h);
 		
 		player.draw(dbg);
-		for(Projectile p: player.getProjectiles()){
-			p.draw(dbg);
+		if(player.getCurrentWeapon() != null){
+			for(Projectile p: player.getCurrentWeapon().getProjectiles()){
+				p.draw(dbg);
+			}
 		}
 		for(Entity e: es){
 			e.draw(dbg);
@@ -181,11 +184,8 @@ public class GamePanel extends JPanel implements Runnable{
 		BufferedImage img = null;
 		try{
 			img = ImageIO.read(getClass().getResource(path));
-			System.out.println('h');
 		} catch(IOException e){}
-		
 		return img;
 	}
-	
 	
 }
