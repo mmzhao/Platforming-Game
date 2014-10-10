@@ -39,7 +39,7 @@ public class GamePanel extends JPanel implements Runnable{
 	public GamePanel(int width, int height){
 		w = width;
 		h = height;
-
+		
 		player = new Player(null, 100, 100, 20, 20);
 		es = new ArrayList<Entity>();
 		es.add(new Platform(null, 50, 200, 200, 20));

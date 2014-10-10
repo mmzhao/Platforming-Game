@@ -4,7 +4,10 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
 
 public class Player extends Movable {
 	protected boolean isRightHeld = false;
@@ -105,7 +108,7 @@ public class Player extends Movable {
 //					Rectangle inter = r1.intersection(r2);
 					double distx = Math.abs(save.getMidX() - e.getMidX()) - save.getW() / 2 - e.getW() / 2;
 					double disty = Math.abs(save.getMidY() - e.getMidY()) - save.getH() / 2 - e.getH() / 2;
-					System.out.println("x: " + distx + "\n" + "y: " + disty);
+					//System.out.println("x: " + distx + "\n" + "y: " + disty);
 					if(distx < 0 && disty < 0) System.out.println("plz kill yourself");
 					if(distx < 0){
 						if(save.getMidY() > e.getMidY()){
@@ -329,7 +332,8 @@ public class Player extends Movable {
 			g.setColor(Color.black);
 
 		g.fillOval((int) x, (int) y, (int) w, (int) h);
-
+		BufferedImage img = null;
+		
 		g.setColor(Color.blue);
 
 		// making dot to designate facing direction
@@ -337,6 +341,10 @@ public class Player extends Movable {
 			g.fillOval((int) (x + w), (int) getMidY() - 3, 3, 3);
 		} else
 			g.fillOval((int) x - 3, (int) getMidY() - 3, 3, 3);
+		try{
+			img = ImageIO.read(getClass().getResource("Mario8BitSprite.png"));
+		} catch(IOException e){}
+		g.drawImage(img, (int)x, (int)y, (int)w, (int)h, Color.white, null);
 	}
 
 	public void keyPressed(KeyEvent e) {
