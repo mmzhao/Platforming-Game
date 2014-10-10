@@ -123,18 +123,18 @@ public class GamePanel extends JPanel implements Runnable{
 				baddie.setY(-baddie.getH());
 			}
 			if(player.getX() >= w){
-				player.setX(-player.getW());
+				player.setX(player.getW()/2);
 			}
 			if(player.getX() < 0){
-				player.setX(w - player.getW());
+				player.setX(w - player.getW()/2);
 			}
 			for(Projectile p: player.getCurrentWeapon().getProjectiles()){
 				p.sidesCollided(es);
 				if(p.getX() >= w){
-					p.setX(0);
+					p.setX(p.getW()/2);
 				}
 				if(p.getX() < 0){
-					p.setX(w);
+					p.setX(w - p.getW()/2);
 				}
 			}
 			
