@@ -30,7 +30,6 @@ public class GamePanel extends JPanel implements Runnable{
 	private Player player;
 	private Baddie baddie;	
 	private ArrayList<Entity> es;
-	private ArrayList<Projectile> ps;
 	
 	public GamePanel(){
 		this(500, 400);
@@ -40,13 +39,13 @@ public class GamePanel extends JPanel implements Runnable{
 		w = width;
 		h = height;
 		
-		player = new Player(null, 100, 100, 20, 20);
+		player = new Player(null, 100, 100, 20, 20, 100);
 		es = new ArrayList<Entity>();
 		es.add(new Platform(null, 50, 200, 200, 20));
 		es.add(new Platform(null, 30, 180, 20, 40));
 		es.add(new Platform(null, 250, 180, 20, 40));
 		es.add(new Platform(null, 80, 140, 140, 20));
-		baddie = new Baddie(null, 150, 100, 20, 20, true, -5, 0);
+		baddie = new Baddie(null, 150, 100, 20, 20, true, -5, 0, 40);
 		es.add(baddie);
 		
 		setBackground(Color.white);
@@ -102,16 +101,14 @@ public class GamePanel extends JPanel implements Runnable{
 	public void gameUpdate(){
 		if(!gameOver){
 			//update game state
-			ps = player.getProjectiles();
 			player.sidesCollided(es);
-			baddie.sidesCollided(es);
-			for(Projectile p: ps){
+			baddie.sidesCollided(es); 
+			for(Projectile p: player.getProjectiles()){
 				p.sidesCollided(es);
 				p.update();
 			}
 			baddie.update();
 			player.update();
-			
 		}
 	}
 	

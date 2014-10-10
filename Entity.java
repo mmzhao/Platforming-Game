@@ -175,6 +175,10 @@ public class Entity {
 		return remove;
 	}
 	
+	public void kill(){
+		remove = true;
+	}
+	
 	public BufferedImage getImage(){
 		return bi;
 	}

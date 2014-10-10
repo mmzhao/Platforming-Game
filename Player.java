@@ -16,7 +16,7 @@ public class Player extends Movable {
 	protected boolean isHit = false;
 	protected boolean isShooting = false;
 	protected long hitTimer = 0;
-	protected Player save;
+//	protected Player save;
 
 	protected ArrayList<Projectile> ps;
 
@@ -29,8 +29,8 @@ public class Player extends Movable {
 	// 2 for optimal spiderman
 	// 1 for retard spiderman
 
-	public Player(BufferedImage b, double x, double y, double w, double h) {
-		super(b, x, y, w, h, true, 0, 0);
+	public Player(BufferedImage b, double x, double y, double w, double h, int health) {
+		super(b, x, y, w, h, true, 0, 0, health);
 		ps = new ArrayList<Projectile>();
 	}
 
@@ -94,11 +94,12 @@ public class Player extends Movable {
 				Rectangle r1 = new Rectangle((int) e.getX(), (int) e.getY(),
 						(int) e.getW(), (int) e.getH());
 				Rectangle r2 = new Rectangle((int) x, (int) y, (int) w, (int) h);
-				if (r1.intersects(r2))
+				if (r1.intersects(r2)){
 					if (!isHit) {
 						isHit = true;
 						hitTimer = System.currentTimeMillis();
 					}
+				}
 			}
 			else if (e instanceof Platform) {
 				Rectangle r1 = new Rectangle((int) e.getX(), (int) e.getY(),
@@ -109,7 +110,15 @@ public class Player extends Movable {
 					double distx = Math.abs(save.getMidX() - e.getMidX()) - save.getW() / 2 - e.getW() / 2;
 					double disty = Math.abs(save.getMidY() - e.getMidY()) - save.getH() / 2 - e.getH() / 2;
 					//System.out.println("x: " + distx + "\n" + "y: " + disty);
-					if(distx < 0 && disty < 0) System.out.println("plz kill yourself");
+					if(distx < 0 && disty < 0){
+//						System.out.println("plz kill yourself");
+						if(distx > disty){
+							distx = 0;
+						}
+						else
+							disty = 0;
+//						System.out.println("x: " + distx + "    y: " + disty);
+					}
 					if(distx < 0){
 						if(save.getMidY() > e.getMidY()){
 							northC = true;
@@ -254,9 +263,9 @@ public class Player extends Movable {
 		updateProjectiles();
 	}
 
-	public void saveCurrentState() {
-		save = new Player(bi, x, y, h, w, xv, yv);
-	}
+//	public void saveCurrentState() {
+//		save = new Player(bi, x, y, h, w, xv, yv);
+//	}
 
 	
 	public void updateC(double time) {
@@ -275,14 +284,14 @@ public class Player extends Movable {
 		y += time * yv;
 	}
 
-	public void reset() {
-		x = save.getX();
-		y = save.getY();
-		w = save.getW();
-		h = save.getH();
-		xv = save.getXV();
-		yv = save.getYV();
-	}
+//	public void reset() {
+//		x = save.getX();
+//		y = save.getY();
+//		w = save.getW();
+//		h = save.getH();
+//		xv = save.getXV();
+//		yv = save.getYV();
+//	}
 
 	public void shoot() {
 		double x = this.x - 3;
@@ -293,7 +302,7 @@ public class Player extends Movable {
 			v *= -1;
 			a *= -1;
 		}
-		Projectile p = new Projectile(null, x, getMidY() - 3, 3, 3, v, a);
+		Projectile p = new Projectile(null, x, getMidY() - 3, 3, 3, v, a, 5);
 
 		ps.add(p);
 		if (ps.size() > 8)
@@ -341,9 +350,11 @@ public class Player extends Movable {
 			g.fillOval((int) (x + w), (int) getMidY() - 3, 3, 3);
 		} else
 			g.fillOval((int) x - 3, (int) getMidY() - 3, 3, 3);
-		try{
+		try {
 			img = ImageIO.read(getClass().getResource("Mario8BitSprite.png"));
-		} catch(IOException e){}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		g.drawImage(img, (int)x, (int)y, (int)w, (int)h, Color.white, null);
 	}
 

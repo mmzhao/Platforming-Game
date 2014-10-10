@@ -1,3 +1,4 @@
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -9,6 +10,8 @@ public class Movable extends Entity{
 	protected boolean eastC;
 	protected boolean westC;
 	protected boolean northC;
+	protected int health;
+	//IMPLEMENT TAKE DMG SOMETIME
 	
 	protected Movable save = null; // for better collision detection
 
@@ -16,10 +19,11 @@ public class Movable extends Entity{
 	protected final double TIME_UNIT = 1;
 	protected final double TERMINAL_VELOCITY = 5;
 
-	public Movable(BufferedImage b, double x, double y, double w, double h, boolean c, double xv, double yv){
+	public Movable(BufferedImage b, double x, double y, double w, double h, boolean c, double xv, double yv, int health){
 		super(b, x, y, w, h, c);
 		this.xv = xv;
 		this.yv = yv;
+		this.health = health;
 		save = new Movable(b, x, y, w, h, xv, yv);
 	}
 	
@@ -34,6 +38,10 @@ public class Movable extends Entity{
 	}
 
 	public void update(double time){
+		if(!isAlive()){
+			remove = true;
+			return;
+		}
 		if(yv > TERMINAL_VELOCITY) yv = TERMINAL_VELOCITY;
 		if(southC){
 			if(yv > 0) yv = 0;
@@ -53,7 +61,75 @@ public class Movable extends Entity{
 		y += time * yv;
 	}
 	
-	public void sidesCollided(ArrayList<Entity> es){
+	public void sidesCollided(ArrayList<Entity> es) {
+		saveCurrentState();
+		northC = false;
+		eastC = false;
+		southC = false;
+		westC = false;
+		updateC();
+		for (Entity e : es) {
+			if(this == e) continue;
+			if(e.getC() && collidable){
+				Rectangle r1 = new Rectangle((int) e.getX(), (int) e.getY(),
+						(int) e.getW(), (int) e.getH());
+				Rectangle r2 = new Rectangle((int) x, (int) y, (int) w, (int) h);
+				if (r1.intersects(r2)) {
+//					Rectangle inter = r1.intersection(r2);
+					double distx = Math.abs(save.getMidX() - e.getMidX()) - save.getW() / 2 - e.getW() / 2;
+					double disty = Math.abs(save.getMidY() - e.getMidY()) - save.getH() / 2 - e.getH() / 2;
+					//System.out.println("x: " + distx + "\n" + "y: " + disty);
+					if(distx < 0 && disty < 0){
+//						System.out.println("plz kill yourself");
+						if(distx > disty){
+							distx = 0;
+						}
+						else
+							disty = 0;
+//						System.out.println("x: " + distx + "    y: " + disty);
+					}
+					if(distx < 0){
+						if(save.getMidY() > e.getMidY()){
+							northC = true;
+						}
+						else{
+							southC = true;
+						}
+					}
+					else if(disty < 0){
+						if(save.getMidX() > e.getMidX()){
+							westC = true;
+						}
+						else{
+							eastC = true;
+						}
+					}
+					else{
+						if(distx / save.getXV() < 0 || disty / save.getYV() < 0) System.out.println("plz kill yourself");
+						if(distx / save.getXV() < disty / save.getYV()){
+							if(save.getMidY() > e.getMidY()){
+								northC = true;
+							}
+							else{
+								southC = true;
+							}
+						}
+						else{
+							if(save.getMidX() > e.getMidX()){
+								westC = true;
+							}
+							else{
+								eastC = true;
+							}
+						}
+					}
+				}
+			}
+		}
+		reset();
+	}
+	
+	public void sidesCollided2(ArrayList<Entity> es){
 		saveCurrentState();
 		northC = false;
 		eastC = false;
@@ -111,6 +187,17 @@ public class Movable extends Entity{
 		xv = save.getXV();
 		yv = save.getYV();
 	}
+	
+	public boolean isAlive(){
+		if(health > 0){
+			return true;
+		}
+		return false;
+	}
+	
+	public void takeDamage(int dmg){
+		health -= dmg;
+	}
 
 	public double getXV(){
 		return xv;
@@ -164,4 +251,11 @@ public class Movable extends Entity{
 		return save;
 	}
 	
+	public int getHealth(){
+		return health;
+	}
+	
+	public void setHealth(int h){
+		health = h;
+	}
 }
