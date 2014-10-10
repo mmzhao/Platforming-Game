@@ -23,8 +23,8 @@ public class Projectile extends Movable{
 	}
 	
 	public void update(double time){
-		x += time * xv;
 		if(xv > TERMINAL_VELOCITY) xv = TERMINAL_VELOCITY;
+		x += time * xv;
 		xv += time * xa;
 	}
 	

@@ -113,6 +113,32 @@ public class GamePanel extends JPanel implements Runnable{
 			baddie.update();
 			player.update();
 		}
+		
+		boolean troll = true;
+		if(troll){
+			if(player.getY() >= h){
+				player.setY(-player.getH());
+			}
+			if(baddie.getY() >= h){
+				baddie.setY(-baddie.getH());
+			}
+			if(player.getX() >= w){
+				player.setX(-player.getW());
+			}
+			if(player.getX() < 0){
+				player.setX(w - player.getW());
+			}
+			for(Projectile p: player.getCurrentWeapon().getProjectiles()){
+				p.sidesCollided(es);
+				if(p.getX() >= w){
+					p.setX(0);
+				}
+				if(p.getX() < 0){
+					p.setX(w);
+				}
+			}
+			
+		}
 	}
 	
 	public void gameRender(){

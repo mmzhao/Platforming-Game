@@ -54,10 +54,10 @@ public class Weapon extends Item{
 	}
 	
 	protected boolean canFire(){
-		if(System.currentTimeMillis()-lastFired >= firerate){
+//		if(System.currentTimeMillis()-lastFired >= firerate){
 			return true;
-		}
-		return false;
+//		}
+//		return false;
 	}
 	
 	public void draw(Graphics g){
