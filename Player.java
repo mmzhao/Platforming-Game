@@ -132,7 +132,6 @@ public class Player extends Movable {
 							else{
 								southC = true;
 							}
-							
 						}
 						else{
 							if(save.getMidX() > e.getMidX()){
@@ -294,7 +293,7 @@ public class Player extends Movable {
 		Projectile p = new Projectile(null, x, getMidY() - 3, 3, 3, v, a);
 
 		ps.add(p);
-		if (ps.size() > 10)
+		if (ps.size() > 8)
 			ps.remove(0);
 	}
 
