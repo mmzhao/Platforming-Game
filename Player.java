@@ -19,6 +19,8 @@ public class Player extends Movable {
 //	protected Player save;
 
 	protected ArrayList<Projectile> ps;
+	protected Weapon currentWeapon;
+	protected int standardStep;
 
 	protected boolean facingRight = true; // starts by facing right
 
@@ -32,11 +34,15 @@ public class Player extends Movable {
 	public Player(BufferedImage b, double x, double y, double w, double h, int health) {
 		super(b, x, y, w, h, true, 0, 0, health);
 		ps = new ArrayList<Projectile>();
+		//currentWeapon = new Weapon("Pistol", null, x + facingRight * 1 , y, (double)5, (double)5, false, 1, facingRight, 5 , 1);
+		standardStep = 5;
 	}
 
 	public Player(BufferedImage b, double x, double y, double w, double h,
 			double xv, double yv) {
 		super(b, x, y, w, h, xv, yv);
+		currentWeapon = null;
+		standardStep = 5;
 	}
 
 /**	public void sidesCollided2(ArrayList<Entity> es) {
@@ -226,9 +232,9 @@ public class Player extends Movable {
 	public void update(double time) {
 		if (!(isRightHeld && isLeftHeld)) {
 			if (isRightHeld) {
-				xv = 5;
+				xv = standardStep;
 			} else if (isLeftHeld) {
-				xv = -5;
+				xv = -standardStep;
 			}
 		}
 		if (southC) {
@@ -302,7 +308,7 @@ public class Player extends Movable {
 			v *= -1;
 			a *= -1;
 		}
-		Projectile p = new Projectile(null, x, getMidY() - 3, 3, 3, v, a, 5);
+		Projectile p = new Projectile(null, x, getMidY() - 3, 3, 3, v, a);
 
 		ps.add(p);
 		if (ps.size() > 8)
@@ -339,23 +345,19 @@ public class Player extends Movable {
 			g.setColor(Color.pink);
 		} else
 			g.setColor(Color.black);
-
-		g.fillOval((int) x, (int) y, (int) w, (int) h);
-		BufferedImage img = null;
 		
 		g.setColor(Color.blue);
 
 		// making dot to designate facing direction
 		if (facingRight) {
 			g.fillOval((int) (x + w), (int) getMidY() - 3, 3, 3);
-		} else
+			g.drawImage(super.bi, (int)x, (int)y, (int)w, (int)h, Color.white, null);
+		} else{
 			g.fillOval((int) x - 3, (int) getMidY() - 3, 3, 3);
-		try {
-			img = ImageIO.read(getClass().getResource("Mario8BitSprite.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
+			g.drawImage(super.bi, (int)x + (int)w, (int)y, -(int)w, (int)h, Color.white, null);
 		}
-		g.drawImage(img, (int)x, (int)y, (int)w, (int)h, Color.white, null);
+		
+		
 	}
 
 	public void keyPressed(KeyEvent e) {

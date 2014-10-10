@@ -40,6 +40,8 @@ public class GamePanel extends JPanel implements Runnable{
 		h = height;
 		
 		player = new Player(null, 100, 100, 20, 20, 100);
+		
+		player = new Player(loadImage("Mario8BitSprite.png"), 100, 100, 20, 20, 100);
 		es = new ArrayList<Entity>();
 		es.add(new Platform(null, 50, 200, 200, 20));
 		es.add(new Platform(null, 30, 180, 20, 40));
@@ -173,6 +175,16 @@ public class GamePanel extends JPanel implements Runnable{
 				}
 			}
 		});
+	}
+	
+	private BufferedImage loadImage(String path){
+		BufferedImage img = null;
+		try{
+			img = ImageIO.read(getClass().getResource(path));
+			System.out.println('h');
+		} catch(IOException e){}
+		
+		return img;
 	}
 	
 	
