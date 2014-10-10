@@ -308,7 +308,7 @@ public class Player extends Movable {
 			v *= -1;
 			a *= -1;
 		}
-		Projectile p = new Projectile(null, x, getMidY() - 3, 3, 3, v, a);
+		Projectile p = new Projectile(null, x, getMidY() - 3, 3, 3, v, a, 5);
 
 		ps.add(p);
 		if (ps.size() > 8)
