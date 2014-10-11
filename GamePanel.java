@@ -40,7 +40,7 @@ public class GamePanel extends JPanel implements Runnable{
 		h = height;
 		
 		player = new Player(loadImage("Mario8BitSprite.png"), 100, 100, 20, 20, 100, null);
-		player.giveCurrentWeapon(new Weapon("Pistol", loadImage("SamplePistol.png"), 500, 1, 5, 1000, 2, .25, 5, 10000, player));
+		player.giveCurrentWeapon(new Pistol());
 		es = new ArrayList<Entity>();
 		es.add(new Platform(null, 50, 200, 200, 20));
 		es.add(new Platform(null, 30, 180, 20, 40));
@@ -114,7 +114,7 @@ public class GamePanel extends JPanel implements Runnable{
 			player.update();
 		}
 		
-		boolean troll = true;
+		boolean troll = false;
 		if(troll){
 			if(player.getY() >= h){
 				player.setY(-player.getH());

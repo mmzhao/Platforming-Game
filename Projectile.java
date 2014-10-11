@@ -18,7 +18,7 @@ public class Projectile extends Movable{
 	}
 	
 	public void draw(Graphics g) {
-		g.setColor(Color.green);
+		g.setColor(Color.black);
 		g.fillOval((int) x, (int) y, (int) w, (int) h);
 	}
 	

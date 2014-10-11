@@ -307,6 +307,7 @@ public class Player extends Movable {
 	
 	public void giveCurrentWeapon(Weapon w){
 		currentWeapon = w;
+		w.setOwner(this);
 	}
 	
 	public void draw(Graphics g) {
@@ -323,7 +324,6 @@ public class Player extends Movable {
 			g.drawImage(super.bi, (int)x + (int)w, (int)y, -(int)w, (int)h, Color.white, null);
 		}
 		if(currentWeapon != null){
-			
 			for(int i = 0; i < currentWeapon.getProjectiles().size(); i++){
 				currentWeapon.getProjectiles().get(i).draw(g);
 			}
@@ -373,7 +373,6 @@ public class Player extends Movable {
 		else if (key == KeyEvent.VK_SPACE) {
 			if(currentWeapon != null)
 				isShooting = true;
-//			shoot();
 		}
 
 	}
