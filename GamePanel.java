@@ -55,7 +55,7 @@ public class GamePanel extends JPanel implements Runnable{
 		offsetX = 0;
 		offsetY = 0;
 		
-		player = new Player(loadImage("Standing.png"), 100, 50, 70, 70, 100, null);
+		player = new Player(loadImage("Standing.png"), 100, 50, 20, 20, 100, null);
 		player.giveCurrentWeapon(new Pistol());
 		el = new EntityList();
 		ArrayList<Entity> es = new ArrayList<Entity>();
