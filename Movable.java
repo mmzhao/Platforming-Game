@@ -1,3 +1,5 @@
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -34,6 +36,14 @@ public class Movable extends Entity{
 		this.xv = xv;
 		this.yv = yv;
 	}
+	
+	public void draw(Graphics g, int offsetX, int offsetY){
+		
+	}
+	
+	public void draw(Graphics g) {
+		draw(g, 0, 0);
+	}
 
 	public void update(){
 		update(TIME_UNIT);
@@ -61,6 +71,13 @@ public class Movable extends Entity{
 
 		x += time * xv;
 		y += time * yv;
+	}
+	
+	public void resetCollisionState(){
+		northC = false;
+		eastC = false;
+		southC = false;
+		westC = false;
 	}
 	
 	public void sidesCollided(ArrayList<Entity> es) {
@@ -166,7 +183,12 @@ public class Movable extends Entity{
 	}
 	
 	public void saveCurrentState() {
-		save = new Movable(bi, x, y, h, w, xv, yv);
+		save.setX(x);
+		save.setY(y);
+		save.setH(h);
+		save.setW(w);
+		save.setXV(xv);
+		save.setYV(yv);
 	}
 	
 	public void updateC() {

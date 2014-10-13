@@ -39,12 +39,12 @@ public class Entity {
 	    return dimg;
 	} 
 	
-	public void draw(Graphics g, int x, int y) {
-		g.drawImage(bi, x, y, null);
+	public void draw(Graphics g, int offsetX, int offsetY) {
+		
 	}
 	
 	public void draw(Graphics g){
-		draw(g, (int) x, (int) y);
+		
 	}
 
 	public double intersect(double x1, double x2, double x3, double x4) {
@@ -123,6 +123,14 @@ public class Entity {
 	}
 **/
 	
+	public void update(){
+		
+	}
+	
+	public void update(double time){
+		
+	}
+	
 	public double getMidX() {
 		return x + w / 2;
 	}
@@ -185,6 +193,10 @@ public class Entity {
 	
 	public BufferedImage setImage(BufferedImage b){
 		return b;
+	}
+	
+	public Rectangle makeRect(){
+		return new Rectangle((int) x, (int) y, (int) w, (int) h);
 	}
 	
 	public void keyPressed(KeyEvent e) {

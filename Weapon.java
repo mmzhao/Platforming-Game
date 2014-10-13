@@ -18,10 +18,8 @@ public class Weapon extends Item{
 	protected int bulletsize;
 	protected int damage;
 	protected boolean canFire;
-	
 
-	public Weapon(String name, BufferedImage b, int firerate, int facingRight, 
-					int clipsize, int reloadSpeed, double velocity,
+	public Weapon(String name, BufferedImage b, int firerate, int facingRight, int clipsize, int reloadSpeed, double velocity,
 					double accel, int bulletsize, int damage, Movable owner){
 		super(b, 0, 0, 0, 0, false, name);
 		ps = new ArrayList<Projectile>();
@@ -40,9 +38,11 @@ public class Weapon extends Item{
 	}
 	
 	public void update(double time){
-		canFire = true;
+		
 		if(System.currentTimeMillis()-lastFired <= firerate)
 			canFire = false;
+		else
+			canFire = true;
 		if(owner != null){
 			facingRight = owner.getFacingRight();
 			w = owner.getW()/2;
@@ -63,17 +63,20 @@ public class Weapon extends Item{
 		}
 		if(es.size() >= 40){
 			es.remove(0);
-		}
-		System.out.println(es.size());   
+		}  
 		updateProjectiles();
 	}
 	
-
+	
 	public void draw(Graphics g){
+		draw(g, 0, 0);
+	}
+	
+	public void draw(Graphics g, int offsetX, int offsetY){
 		if (facingRight == 1) {
-			g.drawImage(super.bi, (int)x, (int)y, (int)w, (int)h, null, null);
+			g.drawImage(super.bi, (int)x - offsetX, (int)y - offsetY, (int)w, (int)h, null, null);
 		} else{
-			g.drawImage(super.bi, (int)x + (int)w/6, (int)y, -(int)w,(int)h, null, null);
+			g.drawImage(super.bi, (int)x + (int)w/6 - offsetX, (int)y - offsetY, -(int)w,(int)h, null, null);
 		}
 		for(int i = 0; i < es.size(); i++){
 			es.get(i).draw(g);
@@ -107,7 +110,7 @@ public class Weapon extends Item{
 		ps.remove(p);
 	}
 	
-	public void setOwner(Movable j){
-		owner = j;
+	public void setOwner(Movable m){
+		owner = m;
 	}
 }

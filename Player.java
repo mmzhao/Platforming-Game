@@ -17,6 +17,10 @@ public class Player extends Movable {
 	protected long hitTimer = 0;
 //	protected Player save;
 
+	protected Animation runningAni;
+	protected BufferedImage standingImg;
+	protected BufferedImage currentImg;
+
 	protected Weapon currentWeapon;
 	protected int standardStep;
 	// starts by facing right
@@ -30,8 +34,11 @@ public class Player extends Movable {
 
 	public Player(BufferedImage b, double x, double y, double w, double h, int health, Weapon currentWeapon) {
 		super(b, x, y, w, h, true, 0, 0, health, 1);
+		standingImg = b;
+		currentImg = b;
 		this.currentWeapon = currentWeapon;
 		standardStep = 5;
+		runningAni = new Animation("Running.png", 6, 2, 3);
 	}
 
 	public Player(BufferedImage b, double x, double y, double w, double h,
@@ -83,6 +90,14 @@ public class Player extends Movable {
 		reset();
 	}
 **/	
+	public void resetCollisionState(){
+		northC = false;
+		eastC = false;
+		southC = false;
+		westC = false;
+		isHit = false;
+	}
+	
 	public void sidesCollided(ArrayList<Entity> es) {
 		saveCurrentState();
 		northC = false;
@@ -230,11 +245,22 @@ public class Player extends Movable {
 	}
 	
 	public void update(double time) {
+		
+		if(runningAni.getStarted()){
+			currentImg = runningAni.loop(time);
+		}
+		else{
+			currentImg = standingImg;
+		}
 		if (!(isRightHeld && isLeftHeld)) {
 			if (isRightHeld) {
 				xv = standardStep;
+				if(southC)
+					runningAni.start();
 			} else if (isLeftHeld) {
 				xv = -standardStep;
+				if(southC)
+					runningAni.start();
 			}
 		}
 		if (southC) {
@@ -263,8 +289,9 @@ public class Player extends Movable {
 		x += time * xv;
 		y += time * yv;
 		
-		if (isShooting)
+		if (isShooting){
 			currentWeapon.fire();
+		}
 		if(currentWeapon != null){
 			currentWeapon.update(time);
 		}
@@ -310,24 +337,32 @@ public class Player extends Movable {
 		w.setOwner(this);
 	}
 	
-	public void draw(Graphics g) {
-		long currentTime = System.currentTimeMillis();
-		if (currentTime - hitTimer < 100) {
-			g.setColor(Color.pink);
-		} else
-			g.setColor(Color.black);
-		
+	public void setHitTimer(long t){
+		hitTimer = t;
+	}
+	
+	public boolean isHit(){
+		return isHit;
+	}
+	
+	public void setIsHit(boolean hit){
+		isHit = hit;
+	}
+	
+	public void draw(Graphics g, int offsetX, int offsetY){
+		// MAKE HIT COLOR CHANGE FRAMES SOMETIME
 		// making dot to designate facing direction
 		if (facingRight == 1) {
-			g.drawImage(super.bi, (int)x, (int)y, (int)w, (int)h, Color.white, null);
+			g.drawImage(currentImg, (int)x - offsetX, (int)y - offsetY, (int)w, (int)h, Color.white, null);
 		} else{
-			g.drawImage(super.bi, (int)x + (int)w, (int)y, -(int)w, (int)h, Color.white, null);
+			g.drawImage(currentImg, (int)x + (int)w - offsetX, (int)y - offsetY, -(int)w, (int)h, Color.white, null);
 		}
+				
 		if(currentWeapon != null){
 			for(int i = 0; i < currentWeapon.getProjectiles().size(); i++){
-				currentWeapon.getProjectiles().get(i).draw(g);
+				currentWeapon.getProjectiles().get(i).draw(g, offsetX, offsetY);
 			}
-			currentWeapon.draw(g);
+			currentWeapon.draw(g, offsetX, offsetY);
 		}
 	}
 
@@ -373,6 +408,7 @@ public class Player extends Movable {
 		else if (key == KeyEvent.VK_SPACE) {
 			if(currentWeapon != null)
 				isShooting = true;
+//			shoot();
 		}
 
 	}
@@ -381,11 +417,13 @@ public class Player extends Movable {
 		int key = e.getKeyCode();
 
 		if (key == KeyEvent.VK_LEFT) {
+			runningAni.stop();
 			isLeftHeld = false;
 			setXV(0);
 		}
 
 		else if (key == KeyEvent.VK_RIGHT) {
+			runningAni.stop();
 			isRightHeld = false;
 			setXV(0);
 		}
@@ -395,11 +433,13 @@ public class Player extends Movable {
 		}
 
 		else if (key == KeyEvent.VK_A) {
+			runningAni.stop();
 			isLeftHeld = false;
 			setXV(0);
 		}
 
 		else if (key == KeyEvent.VK_D) {
+			runningAni.stop();
 			isRightHeld = false;
 			setXV(0);
 		}
