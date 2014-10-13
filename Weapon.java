@@ -34,7 +34,7 @@ public class Weapon extends Item{
 	}
 	
 	public void update(double time){
-		
+//		System.out.println(ps.size());
 		if(owner != null){
 			facingRight = owner.getFacingRight();
 			w = owner.getW()/2;
@@ -61,10 +61,14 @@ public class Weapon extends Item{
 	}
 	
 	public void draw(Graphics g){
+		draw(g, 0, 0);
+	}
+	
+	public void draw(Graphics g, int offsetX, int offsetY){
 		if (facingRight == 1) {
-			g.drawImage(super.bi, (int)x, (int)y, (int)w, (int)h, null, null);
+			g.drawImage(super.bi, (int)x - offsetX, (int)y - offsetY, (int)w, (int)h, null, null);
 		} else{
-			g.drawImage(super.bi, (int)x + (int)w/6, (int)y, -(int)w,(int)h, null, null);
+			g.drawImage(super.bi, (int)x + (int)w/6 - offsetX, (int)y - offsetY, -(int)w,(int)h, null, null);
 		}
 	}
 	
@@ -92,5 +96,9 @@ public class Weapon extends Item{
 
 	public void removeProjectile(Projectile p) {
 		ps.remove(p);
+	}
+	
+	public void setOwner(Movable m){
+		owner = m;
 	}
 }

@@ -5,13 +5,14 @@ import javax.swing.JFrame;
 public class Game extends JFrame {
 	
 	public Game() {	
-		
+		int entireW = 1000;
+		int entireH = 1000;
 		int w = 420;
 		int h = 330;       
 		setSize(w, h);
 		setResizable(false);
 		setTitle("Game Frame"); 
-		GamePanel panel = new GamePanel(w, h);
+		GamePanel panel = new GamePanel(entireW, entireH, w, h);
 		add(panel);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);	

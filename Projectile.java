@@ -18,8 +18,12 @@ public class Projectile extends Movable{
 	}
 	
 	public void draw(Graphics g) {
+		draw(g, 0, 0);
+	}
+	
+	public void draw(Graphics g, int offsetX, int offsetY) {
 		g.setColor(Color.green);
-		g.fillOval((int) x, (int) y, (int) w, (int) h);
+		g.fillOval((int) x - offsetX, (int) y - offsetY, (int) w, (int) h);
 	}
 	
 	public void update(double time){
