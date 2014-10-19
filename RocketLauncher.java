@@ -39,26 +39,8 @@ public class RocketLauncher extends Weapon{
 //		if(canFire){
 			lastFired = System.currentTimeMillis();
 			es.add(new EmptyShell(null, x, y, Math.random() * 5 - 2 , -5));
-			ps.add(new HomingRocket(null, x - 2.5 + facingRight * 10, y - 1, bulletsize, bulletsize, facingRight * velocity, facingRight*accel, damage, homingLvl, getClosestBaddie(), range));
+			ps.add(new HomingRocket(null, x - 2.5 + facingRight * 10, y - 1, bulletsize, bulletsize, facingRight * velocity, facingRight*accel, damage, homingLvl, range));
 //		}
-	}
-	
-	public Baddie getClosestBaddie(){ //improve so that it checks for directness
-		Baddie minBad = null;
-		int minDist = range + 1;
-		for(Baddie bad: GamePanel.getEL().getBaddies(new Rectangle((int)(x - range), (int)(y - range), 2 * range, 2 * range))){
-			int dist = distance(this, bad);
-//			System.out.println(dist + " " + (facingRight * (bad.getMidX() - this.getMidX())) + " " + Math.abs(bad.getMidY() - this.getMidY()));
-			if(dist < minDist && (facingRight * (bad.getMidX() - this.getMidX()) > 0) && Math.abs(bad.getMidY() - this.getMidY()) < .7 * dist){
-				minDist = dist;
-				minBad = bad;
-			}
-		}
-		return minBad;
-	}
-	
-	public int distance(RocketLauncher rl, Baddie b){
-		return (int) Math.pow(Math.pow(rl.getMidX() - b.getMidX(), 2) + Math.pow(rl.getMidY() - b.getMidY(), 2), .5);
 	}
 
 }

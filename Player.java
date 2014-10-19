@@ -28,11 +28,6 @@ public class Player extends Movable {
 	// starts by facing right
 
 	private final double AIR_RESISTANCE = .5;
-	private final double MIN_FOR_DOUBLE_COLLISION = 5; //if want spiderman use sidesCollided2() and collision()
-	// 5 for slight spiderman
-	// <5 for very spiderman
-	// 2 for optimal spiderman
-	// 1 for retard spiderman
 
 	public Player(BufferedImage b, double x, double y, double w, double h, int health, Weapon currentWeapon) {
 		super(b, x, y, w, h, true, 0, 0, health, 1);
@@ -50,48 +45,6 @@ public class Player extends Movable {
 		standardStep = 5;
 	}
 
-/**	public void sidesCollided2(ArrayList<Entity> es) {
-		saveCurrentState();
-		northC = false;
-		eastC = false;
-		southC = false;
-		westC = false;
-		isHit = false;
-		updateC();
-		for (Entity e : es) {
-			Side s = collision(e);
-			if (s == Side.NORTH)
-				northC = true;
-			else if (s == Side.EAST)
-				eastC = true;
-			else if (s == Side.SOUTH)
-				southC = true;
-			else if (s == Side.WEST)
-				westC = true;
-			else if (s == Side.NORTHEAST) {
-				northC = true;
-				eastC = true;
-			} else if (s == Side.NORTHWEST) {
-				northC = true;
-				westC = true;
-			} else if (s == Side.SOUTHEAST) {
-				southC = true;
-				eastC = true;
-			} else if (s == Side.SOUTHWEST) {
-				southC = true;
-				westC = true;
-			} else if (s == Side.BADDIE) {
-				// take dmg, flinch, etc
-				// FIX SOMETIME WON'T HIT UNTIL JUMP
-				if (!isHit) {
-					isHit = true;
-					hitTimer = System.currentTimeMillis();
-				}
-			}
-		}
-		reset();
-	}
-**/	
 	public void resetCollisionState(){
 		northC = false;
 		eastC = false;
@@ -99,149 +52,7 @@ public class Player extends Movable {
 		westC = false;
 		isHit = false;
 	}
-/**	
-	public void sidesCollided(ArrayList<Entity> es) {
-		saveCurrentState();
-		northC = false;
-		eastC = false;
-		southC = false;
-		westC = false;
-		isHit = false;
-		updateC();
-		for (Entity e : es) {
-			if (e instanceof Baddie) {
-				Rectangle r1 = new Rectangle((int) e.getX(), (int) e.getY(),
-						(int) e.getW(), (int) e.getH());
-				Rectangle r2 = new Rectangle((int) x, (int) y, (int) w, (int) h);
-				if (r1.intersects(r2)){
-					if (!isHit) {
-						isHit = true;
-						hitTimer = System.currentTimeMillis();
-					}
-				}
-			}
-			else if (e instanceof Platform) {
-				Rectangle r1 = new Rectangle((int) e.getX(), (int) e.getY(),
-						(int) e.getW(), (int) e.getH());
-				Rectangle r2 = new Rectangle((int) x, (int) y, (int) w, (int) h);
-				if (r1.intersects(r2)) {
-//					Rectangle inter = r1.intersection(r2);
-					double distx = Math.abs(save.getMidX() - e.getMidX()) - save.getW() / 2 - e.getW() / 2;
-					double disty = Math.abs(save.getMidY() - e.getMidY()) - save.getH() / 2 - e.getH() / 2;
-					//System.out.println("x: " + distx + "\n" + "y: " + disty);
-					if(distx < 0 && disty < 0){
-//						System.out.println("plz kill yourself");
-						if(distx > disty){
-							distx = 0;
-						}
-						else
-							disty = 0;
-//						System.out.println("x: " + distx + "    y: " + disty);
-					}
-					if(distx < 0){
-						if(save.getMidY() > e.getMidY()){
-							northC = true;
-						}
-						else{
-							southC = true;
-						}
-					}
-					else if(disty < 0){
-						if(save.getMidX() > e.getMidX()){
-							westC = true;
-						}
-						else{
-							eastC = true;
-						}
-					}
-					else{
-						if(distx / save.getXV() < 0 || disty / save.getYV() < 0) System.out.println("plz kill yourself");
-						if(distx / save.getXV() < disty / save.getYV()){
-							if(save.getMidY() > e.getMidY()){
-								northC = true;
-							}
-							else{
-								southC = true;
-							}
-						}
-						else{
-							if(save.getMidX() > e.getMidX()){
-								westC = true;
-							}
-							else{
-								eastC = true;
-							}
-						}
-					}
-				}
-			}
-		}
-		reset();
-	}
-**/	
-/**	public Side collision2(Entity e) {
-		if (e instanceof Baddie) {
-			Rectangle r1 = new Rectangle((int) e.getX(), (int) e.getY(),
-					(int) e.getW(), (int) e.getH());
-			Rectangle r2 = new Rectangle((int) x, (int) y, (int) w, (int) h);
-			if (r1.intersects(r2))
-				return Side.BADDIE;
-			return Side.NONE;
-		} 
-		else if (e instanceof Platform) {
-			Rectangle r1 = new Rectangle((int) e.getX(), (int) e.getY(),
-					(int) e.getW(), (int) e.getH());
-			Rectangle r2 = new Rectangle((int) x, (int) y, (int) w, (int) h);
-			if (r1.intersects(r2)) {
-				Rectangle inter = r1.intersection(r2);
-				
-			}
-		}
-		return Side.NONE;
-	}
 
-	
-	public Side collision(Entity e) {
-		if (e instanceof Baddie) {
-			Rectangle r1 = new Rectangle((int) e.getX(), (int) e.getY(),
-					(int) e.getW(), (int) e.getH());
-			Rectangle r2 = new Rectangle((int) x, (int) y, (int) w, (int) h);
-			if (r1.intersects(r2))
-				return Side.BADDIE;
-			return Side.NONE;
-		} else if (e instanceof Platform) {
-			Rectangle r1 = new Rectangle((int) e.getX(), (int) e.getY(),
-					(int) e.getW(), (int) e.getH());
-			Rectangle r2 = new Rectangle((int) x, (int) y, (int) w, (int) h);
-			if (r1.intersects(r2)) {
-				Rectangle inter = r1.intersection(r2);
-				Side nsOption = Side.NORTH;
-				Side ewOption = Side.WEST;
-				Side bothOption = Side.NORTHWEST;
-				if (e.getMidX() > getMidX()) {
-					ewOption = Side.EAST;
-					bothOption = Side.NORTHEAST;
-				}
-				if (e.getMidY() > getMidY()) {
-					nsOption = Side.SOUTH;
-					if (bothOption == Side.NORTHEAST)
-						bothOption = Side.SOUTHEAST;
-					else
-						bothOption = Side.SOUTHWEST;
-				}
-				if (inter.getHeight() >= MIN_FOR_DOUBLE_COLLISION
-						&& inter.getWidth() >= MIN_FOR_DOUBLE_COLLISION) {
-					return bothOption;
-				}
-				if (inter.getHeight() <= inter.getWidth()) {
-					return nsOption;
-				} else
-					return ewOption;
-			}
-		}
-		return Side.NONE;
-	}
-**/
 	public int getFacingRight(){
 		return facingRight;
 	}
@@ -298,7 +109,12 @@ public class Player extends Movable {
 		}
 		if (yv > TERMINAL_VELOCITY)
 			yv = TERMINAL_VELOCITY;
-		x += time * xv;
+		if(!southC){
+			x += time * xv * .8;
+		}
+		else{
+			x += time * xv;
+		}
 		y += time * yv;
 		
 		if (isShooting){

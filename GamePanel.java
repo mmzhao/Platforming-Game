@@ -39,7 +39,7 @@ public class GamePanel extends JPanel implements Runnable{
 	private Graphics dbg;
 	private Image dbImage = null;
 	
-	private long period = 20;
+	private long period = 15;
 	
 	private CollisionHandler ch;
 	

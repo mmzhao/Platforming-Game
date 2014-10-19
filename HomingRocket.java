@@ -15,20 +15,20 @@ public class HomingRocket extends Projectile{
 	private final int TERMINAL_VELOCITY = 18;
 	
 	public HomingRocket(BufferedImage b, double x, double y, double w,
-			double h, double xv, double xa, int dmg, int homingLvl, Baddie bad) {
+			double h, double xv, double xa, int dmg, int homingLvl) {
 		super(b, x, y, w, h, xv, xa, dmg);
 		this.homingLvl = homingLvl;
-		this.b = bad;
+		this.b = null;
 		on = false;
 		explodeTimer = -2000;
 		explode = false;
 	}
 	
 	public HomingRocket(BufferedImage b, double x, double y, double w,
-			double h, double xv, double xa, int dmg, int homingLvl, Baddie bad, int range) {
+			double h, double xv, double xa, int dmg, int homingLvl, int range) {
 		super(b, x, y, w, h, xv, xa, dmg);
 		this.homingLvl = homingLvl;
-		this.b = bad;
+		this.b = null;
 		this.range = range;
 		on = false;
 		explodeTimer = -2000;

@@ -35,36 +35,7 @@ public class Projectile extends Movable{
 		x += time * xv;
 		xv += time * xa;
 	}
-	
-	public void sidesCollided(ArrayList<Entity> es) {
-		saveCurrentState();
-		northC = false;
-		eastC = false;
-		southC = false;
-		westC = false;
-		updateC();
-		for (Entity e : es) {
-			Rectangle r1 = new Rectangle((int) e.getX(), (int) e.getY(),
-					(int) e.getW(), (int) e.getH());
-			Rectangle r2 = new Rectangle((int) x, (int) y, (int) w, (int) h);
-			if (r1.intersects(r2)){
-				if(e instanceof Baddie) ((Baddie) e).takeDamage(dmg);
-				remove = true;
-			}
-		}
-		reset();
-	}
-	
-	public void sidesCollided2(ArrayList<Entity> es){
-		for(Entity e: es){
-//			if(!(e instanceof Platform)) continue;
-			Side s = collision(e);
-			if(s != Side.NONE){
-				remove = true;
-			}
-		}
-	}
-	
+
 	public double getXA(){
 		return xa;
 	}

@@ -9,8 +9,8 @@ public class Game extends JFrame {
 		int entireH = 1000;
 		int w = 420;
 		int h = 330;
-		int screenW = 420 * 1;
-		int screenH = 330 * 1;
+		int screenW = 420 * 2;
+		int screenH = 330 * 2;
 		setSize(screenW, screenH);
 		setResizable(false);
 		setTitle("Game Frame"); 
