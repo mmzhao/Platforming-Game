@@ -12,6 +12,9 @@ public class HomingRocket extends Projectile{
 	private long explodeTimer;
 	private boolean explode;
 	
+	private Animation explosion;
+	private BufferedImage current = null;
+	
 	private final int TERMINAL_VELOCITY = 18;
 	
 	public HomingRocket(BufferedImage b, double x, double y, double w,
@@ -33,6 +36,7 @@ public class HomingRocket extends Projectile{
 		on = false;
 		explodeTimer = -2000;
 		explode = false;
+		explosion = new Animation("Explosion1.png", 5, 4, 3);
 	}
 	
 	public void draw(Graphics g, int offsetX, int offsetY){
@@ -41,8 +45,7 @@ public class HomingRocket extends Projectile{
 	
 	public void draw(Graphics g, int offsetX, int offsetY, double scaleX, double scaleY) {
 		if(explode){
-			g.setColor(Color.orange);
-			g.fillOval((int)((x - offsetX) * scaleX), (int) ((y - offsetY) * scaleY), (int) (w * scaleX), (int) (h * scaleY));
+			g.drawImage(current, (int)((x - offsetX) * scaleX), (int) ((y - offsetY) * scaleY), (int) (w * scaleX), (int) (h * scaleY), null);
 			return;
 		}
 		
@@ -87,6 +90,7 @@ public class HomingRocket extends Projectile{
 		h *= 10;
 		dmg = 1;
 		explode = true;
+		explosion.start();
 	}
 	
 	public void update(double time){
@@ -94,6 +98,7 @@ public class HomingRocket extends Projectile{
 			if(!explode){
 				explode();
 			}
+			current = explosion.loop(time);
 			return;
 		}
 		else if(explodeTimer != -2000){
