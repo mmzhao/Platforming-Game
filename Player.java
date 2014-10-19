@@ -23,6 +23,8 @@ public class Player extends Movable {
 
 	protected Weapon currentWeapon;
 	protected int standardStep;
+	protected boolean isRightPressed = false;
+	protected boolean isLeftPressed = false;
 	// starts by facing right
 
 	private final double AIR_RESISTANCE = .5;
@@ -97,7 +99,7 @@ public class Player extends Movable {
 		westC = false;
 		isHit = false;
 	}
-	
+/**	
 	public void sidesCollided(ArrayList<Entity> es) {
 		saveCurrentState();
 		northC = false;
@@ -176,7 +178,7 @@ public class Player extends Movable {
 		}
 		reset();
 	}
-	
+**/	
 /**	public Side collision2(Entity e) {
 		if (e instanceof Baddie) {
 			Rectangle r1 = new Rectangle((int) e.getX(), (int) e.getY(),
@@ -252,13 +254,23 @@ public class Player extends Movable {
 		else{
 			currentImg = standingImg;
 		}
+		if(!(isRightPressed && isLeftPressed)){
+			if(isRightPressed && !isLeftPressed){
+				facingRight = 1;
+			}
+			else if(isLeftPressed && !isRightPressed){
+				facingRight = -1;
+			}
+		}
 		if (!(isRightHeld && isLeftHeld)) {
-			if (isRightHeld) {
+			if (isRightHeld && !isLeftHeld) {
 				xv = standardStep;
+				facingRight = 1;
 				if(southC)
 					runningAni.start();
-			} else if (isLeftHeld) {
+			} else if (isLeftHeld && !isRightHeld) {
 				xv = -standardStep;
+				facingRight = -1;
 				if(southC)
 					runningAni.start();
 			}
@@ -349,36 +361,45 @@ public class Player extends Movable {
 		isHit = hit;
 	}
 	
+	public void draw(Graphics g){
+		draw(g, 0, 0);
+	}
+	
 	public void draw(Graphics g, int offsetX, int offsetY){
+		draw(g, offsetX, offsetY, 1, 1);
+	}
+	
+	public void draw(Graphics g, int offsetX, int offsetY, double scaleX, double scaleY){
 		// MAKE HIT COLOR CHANGE FRAMES SOMETIME
 		// making dot to designate facing direction
 		if (facingRight == 1) {
-			g.drawImage(currentImg, (int)x - offsetX, (int)y - offsetY, (int)w, (int)h, Color.white, null);
+			g.drawImage(currentImg, (int) ((x - offsetX) * scaleX), (int) ((y - offsetY) * scaleY), (int) (w * scaleX), (int) (h * scaleY), Color.white, null);
 		} else{
-			g.drawImage(currentImg, (int)x + (int)w - offsetX, (int)y - offsetY, -(int)w, (int)h, Color.white, null);
+			g.drawImage(currentImg, (int)((x + (int)w - offsetX) * scaleX), (int)((y - offsetY) * scaleY), -(int) (w * scaleX), (int) (h * scaleY), Color.white, null);
 		}
 				
 		if(currentWeapon != null){
 			for(int i = 0; i < currentWeapon.getProjectiles().size(); i++){
-				currentWeapon.getProjectiles().get(i).draw(g, offsetX, offsetY);
+				currentWeapon.getProjectiles().get(i).draw(g, offsetX, offsetY, scaleX, scaleY);
 			}
-			currentWeapon.draw(g, offsetX, offsetY);
+			currentWeapon.draw(g, offsetX, offsetY, scaleX, scaleY);
 		}
 	}
 
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
-
+		
 		if (key == KeyEvent.VK_LEFT) {
 			isLeftHeld = true;
+			isLeftPressed = true;
 			setXV(-5);
-			facingRight = -1;
+
 		}
 
 		else if (key == KeyEvent.VK_RIGHT) {
 			isRightHeld = true;
+			isRightPressed = true;
 			setXV(5);
-			facingRight = 1;
 		}
 
 		else if (key == KeyEvent.VK_UP) {
@@ -389,14 +410,14 @@ public class Player extends Movable {
 
 		else if (key == KeyEvent.VK_A) {
 			isLeftHeld = true;
+			isLeftPressed = true;
 			setXV(-5);
-			facingRight = -1;
 		}
 
 		else if (key == KeyEvent.VK_D) {
 			isRightHeld = true;
+			isRightPressed = true;
 			setXV(5);
-			facingRight = 1;
 		}
 
 		else if (key == KeyEvent.VK_W) {
@@ -408,6 +429,12 @@ public class Player extends Movable {
 		else if (key == KeyEvent.VK_SPACE) {
 			if(currentWeapon != null)
 				isShooting = true;
+//			shoot();
+		}
+		
+		else if (key == KeyEvent.VK_T) {
+			if(currentWeapon != null)
+				currentWeapon.reload();
 //			shoot();
 		}
 

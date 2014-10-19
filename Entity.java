@@ -15,6 +15,8 @@ public class Entity {
 	protected boolean collidable;
 	protected boolean isPlatform;
 	protected boolean remove;
+	
+	private final int PLATFORM_EXTRA = 0;
 
 	public Entity(BufferedImage b, double x, double y, double w, double h, boolean c) {
 //		bi = resize(b, w, h);
@@ -37,7 +39,11 @@ public class Entity {
 	    g2d.dispose();
 
 	    return dimg;
-	} 
+	}
+	
+	public void draw(Graphics g, int offsetX, int offsetY, double scaleX, double scaleY){
+		
+	}
 	
 	public void draw(Graphics g, int offsetX, int offsetY) {
 		
@@ -197,6 +203,10 @@ public class Entity {
 	
 	public Rectangle makeRect(){
 		return new Rectangle((int) x, (int) y, (int) w, (int) h);
+	}
+	
+	public Rectangle makeRectExtra(){
+		return new Rectangle((int)(x - PLATFORM_EXTRA), (int)(y - PLATFORM_EXTRA), (int)(w + 2 * PLATFORM_EXTRA), (int)(h + 2 * PLATFORM_EXTRA));
 	}
 	
 	public void keyPressed(KeyEvent e) {

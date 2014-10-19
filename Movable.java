@@ -37,6 +37,10 @@ public class Movable extends Entity{
 		this.yv = yv;
 	}
 	
+	public void draw(Graphics g, int offsetX, int offsetY, double scaleX, double scaleY){
+		
+	}
+	
 	public void draw(Graphics g, int offsetX, int offsetY){
 		
 	}

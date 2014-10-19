@@ -18,6 +18,10 @@ public class Weapon extends Item{
 	protected int bulletsize;
 	protected int damage;
 	protected boolean canFire;
+	
+	protected int numBullets;
+	protected long startReload;
+	protected boolean reloading = false;
 
 	public Weapon(String name, BufferedImage b, int firerate, int facingRight, int clipsize, int reloadSpeed, double velocity,
 					double accel, int bulletsize, int damage, Movable owner){
@@ -35,14 +39,23 @@ public class Weapon extends Item{
 		this.owner = owner;
 		canFire = true;
 		es = new ArrayList<EmptyShell>();
+		
+		numBullets = clipsize;
+		startReload = 0;
 	}
 	
 	public void update(double time){
-		
-		if(System.currentTimeMillis()-lastFired <= firerate)
+		if(GamePanel.getUpdateCycle()-lastFired <= firerate)
+			canFire = false;
+		else if(numBullets == 0)
+			canFire = false;
+		else if(reloading)
 			canFire = false;
 		else
 			canFire = true;
+		if(reloading){
+			updateReload();
+		}
 		if(owner != null){
 			facingRight = owner.getFacingRight();
 			w = owner.getW()/2;
@@ -65,6 +78,7 @@ public class Weapon extends Item{
 			es.remove(0);
 		}  
 		updateProjectiles();
+		updateEmptyShells();
 	}
 	
 	
@@ -73,13 +87,32 @@ public class Weapon extends Item{
 	}
 	
 	public void draw(Graphics g, int offsetX, int offsetY){
+		draw(g, offsetX, offsetY, 1, 1);
+	}
+	
+	public void draw(Graphics g, int offsetX, int offsetY, double scaleX, double scaleY){
 		if (facingRight == 1) {
-			g.drawImage(super.bi, (int)x - offsetX, (int)y - offsetY, (int)w, (int)h, null, null);
+			g.drawImage(super.bi, (int)((x - offsetX) * scaleX), (int)((y - offsetY) * scaleY), (int)(w * scaleX), (int)(h * scaleY), null, null);
 		} else{
-			g.drawImage(super.bi, (int)x + (int)w/6 - offsetX, (int)y - offsetY, -(int)w,(int)h, null, null);
+			g.drawImage(super.bi, (int)((x + (int)w/6 - offsetX) * scaleX), (int)((y - offsetY) * scaleY), -(int)(w * scaleX),(int)(h * scaleY), null, null);
 		}
 		for(int i = 0; i < es.size(); i++){
-			es.get(i).draw(g);
+			es.get(i).draw(g, offsetX, offsetY, scaleX, scaleY);
+		}
+	}
+	
+	public void reload(){
+		if(!reloading){
+			reloading = true;
+			startReload = GamePanel.getUpdateCycle();
+		}
+	}
+	
+	public void updateReload(){
+		if(GamePanel.getUpdateCycle() < startReload + reloadSpeed){}
+		else{
+			numBullets = clipsize;
+			reloading = false;
 		}
 	}
 	
@@ -98,12 +131,27 @@ public class Weapon extends Item{
 		}
 	}
 	
+	public void updateEmptyShells() {
+		for (int i = es.size() - 1; i >= 0; i--) {
+			if (es.get(i).needRemoval())
+				es.remove(i);
+		}
+	}
+	
 	public ArrayList<Projectile> getProjectiles() {
 		return ps;
 	}
 
 	public void setProjectile(ArrayList<Projectile> ps) {
 		this.ps = ps;
+	}
+	
+	public ArrayList<EmptyShell> getEmptyShells() {
+		return es;
+	}
+
+	public void setEmptyShells(ArrayList<EmptyShell> es) {
+		this.es = es;
 	}
 
 	public void removeProjectile(Projectile p) {

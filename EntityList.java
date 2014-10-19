@@ -3,7 +3,6 @@ import java.util.ArrayList;
 
 
 public class EntityList {
-	private final int PLATFORM_EXTRA = 20;
 	
 	private ArrayList<Entity> e;
 	private ArrayList<Platform> p;
@@ -13,6 +12,24 @@ public class EntityList {
 		e = new ArrayList<Entity>();
 		p = new ArrayList<Platform>();
 		b = new ArrayList<Baddie>();
+	}
+	
+	public void update(){
+		for (int i = e.size() - 1; i >= 0; i--) {
+			if (e.get(i).needRemoval()){
+				e.remove(i);
+			}
+		}
+		for (int i = p.size() - 1; i >= 0; i--) {
+			if (p.get(i).needRemoval()){
+				p.remove(i);
+			}
+		}
+		for (int i = b.size() - 1; i >= 0; i--) {
+			if (b.get(i).needRemoval()){
+				b.remove(i);
+			}
+		}
 	}
 	
 	public void addEntity(Entity e){
@@ -74,7 +91,7 @@ public class EntityList {
 	public ArrayList<Entity> getEntities(Rectangle screen){
 		ArrayList<Entity> l = new ArrayList<Entity>();
 		for(int i = 0; i < e.size(); i++){
-			if(screen.intersects(e.get(i).makeRect())){
+			if(screen.intersects(e.get(i).makeRectExtra())){
 				l.add(e.get(i));
 			}
 		}
@@ -84,7 +101,7 @@ public class EntityList {
 	public ArrayList<Platform> getPlatforms(Rectangle screen){
 		ArrayList<Platform> l = new ArrayList<Platform>();
 		for(int i = 0; i < p.size(); i++){
-			if(screen.intersects(p.get(i).makeRect(PLATFORM_EXTRA))){
+			if(screen.intersects(p.get(i).makeRectExtra())){
 				l.add(p.get(i));
 			}
 		}

@@ -8,11 +8,13 @@ public class Game extends JFrame {
 		int entireW = 1000;
 		int entireH = 1000;
 		int w = 420;
-		int h = 330;       
-		setSize(w, h);
+		int h = 330;
+		int screenW = 420 * 1;
+		int screenH = 330 * 1;
+		setSize(screenW, screenH);
 		setResizable(false);
 		setTitle("Game Frame"); 
-		GamePanel panel = new GamePanel(entireW, entireH, w, h);
+		GamePanel panel = new GamePanel(entireW, entireH, w, h, screenW, screenH);
 		add(panel);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);	

@@ -9,7 +9,7 @@ public class Projectile extends Movable{
 	
 	protected double xa;
 	protected int dmg;
-	private final int TERMINAL_VELOCITY = 10;
+	protected final int TERMINAL_VELOCITY = 10;
 
 	public Projectile(BufferedImage b, double x, double y, double w, double h, double xv, double xa, int dmg){
 		super(b, x, y, w, h, true, xv, 0, 0, 0);
@@ -21,9 +21,13 @@ public class Projectile extends Movable{
 		draw(g, 0, 0);
 	}
 	
-	public void draw(Graphics g, int offsetX, int offsetY) {
+	public void draw(Graphics g, int offsetX, int offsetY){
+		draw(g, offsetX, offsetY, 1, 1);
+	}
+	
+	public void draw(Graphics g, int offsetX, int offsetY, double scaleX, double scaleY) {
 		g.setColor(Color.green);
-		g.fillOval((int) x - offsetX, (int) y - offsetY, (int) w, (int) h);
+		g.fillOval((int)((x - offsetX) * scaleX), (int) ((y - offsetY) * scaleY), (int) (w * scaleX), (int) (h * scaleY));
 	}
 	
 	public void update(double time){
@@ -75,5 +79,9 @@ public class Projectile extends Movable{
 	
 	public void setDamage(int dmg){
 		this.dmg = dmg;
+	}
+
+	public void onHit() {
+		kill();
 	}
 }
