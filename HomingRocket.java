@@ -15,6 +15,7 @@ public class HomingRocket extends Projectile{
 	private Animation explosion;
 	private BufferedImage current = null;
 	
+	private final String[] EXPLOSIONS = {"DarknessExplosion", "Explosion1", "Explosion2", "Explosion3", "IceExplosion"};
 	private final int TERMINAL_VELOCITY = 18;
 	
 	public HomingRocket(BufferedImage b, double x, double y, double w,
@@ -36,7 +37,7 @@ public class HomingRocket extends Projectile{
 		on = false;
 		explodeTimer = -2000;
 		explode = false;
-		explosion = new Animation("Explosion1.png", 5, 4, 3);
+		explosion = Explosions.getRandom();
 	}
 	
 	public void draw(Graphics g, int offsetX, int offsetY){
