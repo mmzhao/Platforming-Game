@@ -117,11 +117,11 @@ public class Weapon extends Item{
 	}
 	
 	public void fire() { 
-		if(canFire){
+//		if(canFire){
 			lastFired = System.currentTimeMillis();
 			es.add(new EmptyShell(null, x, y, Math.random() * 5 - 2 , -5));
 			ps.add(new Projectile(null, x - 2.5 + facingRight * 10, y - 1, bulletsize, bulletsize, facingRight * velocity, facingRight*accel, damage));
-		}
+//		}
 	}
 	
 	public void updateProjectiles() {

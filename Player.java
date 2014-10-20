@@ -189,9 +189,9 @@ public class Player extends Movable {
 		// MAKE HIT COLOR CHANGE FRAMES SOMETIME
 		// making dot to designate facing direction
 		if (facingRight == 1) {
-			g.drawImage(currentImg, (int) ((x - offsetX) * scaleX), (int) ((y - offsetY) * scaleY), (int) (w * scaleX), (int) (h * scaleY), Color.white, null);
+			g.drawImage(currentImg, (int) ((x - offsetX) * scaleX), (int) ((y - offsetY) * scaleY), (int) (w * scaleX), (int) (h * scaleY), null, null);
 		} else{
-			g.drawImage(currentImg, (int)((x + (int)w - offsetX) * scaleX), (int)((y - offsetY) * scaleY), -(int) (w * scaleX), (int) (h * scaleY), Color.white, null);
+			g.drawImage(currentImg, (int)((x + (int)w - offsetX) * scaleX), (int)((y - offsetY) * scaleY), -(int) (w * scaleX), (int) (h * scaleY), null, null);
 		}
 				
 		if(currentWeapon != null){

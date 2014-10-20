@@ -73,7 +73,12 @@ public class GamePanel extends JPanel implements Runnable{
 		offsetY = 0;
 		setScale();
 		
-		initialState();
+		try {
+			initialState();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		setBackground(Color.white);
 		setPreferredSize(new Dimension(screenW, screenH));
@@ -298,13 +303,18 @@ public class GamePanel extends JPanel implements Runnable{
 					resumeGame();
 				}
 				if((keyCode == KeyEvent.VK_M)){
-					initialState();
+					try {
+						initialState();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}
 			}
 		});
 	}
 	
-	private BufferedImage loadImage(String path){
+	public BufferedImage loadImage(String path){
 		BufferedImage img = null;
 		try{
 			img = ImageIO.read(getClass().getResource(path));
@@ -341,22 +351,35 @@ public class GamePanel extends JPanel implements Runnable{
 		GamePanel.el = el;
 	}
 	
-	public void initialState(){
-		player = new Player(loadImage("Standing.png"), 100, 50, 20, 20, 100, null);
-		//player.giveCurrentWeapon(new Pistol());
+	public void setPlayer(Player p){
+		player = p;
+	}
+	
+	public Player getPlayer(){
+		return player;
+	}
+	
+	public void initialState() throws IOException{
 		el = new EntityList();
-		ArrayList<Entity> es = new ArrayList<Entity>();
-		es.add(new Platform(null, 50, 200, 200, 20));
-		es.add(new Platform(null, 30, 180, 20, 40));
-		es.add(new Platform(null, 250, 180, 20, 40));
-		es.add(new Platform(null, 80, 140, 140 + 700, 20));
-		Baddie baddie1 = new Baddie(null, 150, 100, 20, 20, true, -3, 0, 1000000);
+		Map testm = new Map("Map1.txt");
+		testm.initializeMap(this);
+		
+//		player = new Player(loadImage("Standing.png"), 100, 50, 20, 20, 100, null);
+//		//player.giveCurrentWeapon(new Pistol());
+//		el = new EntityList();
+//		ArrayList<Entity> es = new ArrayList<Entity>();
+//		es.add(new Platform(null, 50, 200, 200, 20));
+//		es.add(new Platform(null, 30, 180, 20, 40));
+//		es.add(new Platform(null, 250, 180, 20, 40));
+//		es.add(new Platform(null, 80, 140, 140 + 350, 20));
+//		es.add(new Platform(null, 80 + 140 + 350, 140, 350, 20));
+//		Baddie baddie1 = new Baddie(null, 150, 100, 20, 20, true, -3, 0, 1000000);
 //		Baddie baddie2 = new Baddie(null, 200, 100, 20, 20, true, 0, 0, 1000000);
-		Baddie baddie3 = new Baddie(null, 600, 100, 20, 20, true, 0, 0, 1000000);
-		es.add(baddie1);
+//		Baddie baddie3 = new Baddie(null, 600, 100, 20, 20, true, 0, 0, 1000000);
+//		es.add(baddie1);
 //		es.add(baddie2);
-		es.add(baddie3);
-		el.addEntity(es);
+//		es.add(baddie3);
+//		el.addEntity(es);
 
 		final RocketLauncher rl = new RocketLauncher((int) Math.pow(w/2 * w/2 + h/2 * h/2, .5));
 		final Pistol p = new Pistol();
