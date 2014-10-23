@@ -150,7 +150,7 @@ public class Player extends Movable {
 			if (xv < 0)
 				xv = 0;
 		}
-		if (northC) {
+		if (northC) { //FIX THIS
 			if (yv < 0)
 				yv = 0;
 		}

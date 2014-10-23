@@ -90,9 +90,9 @@ public class CollisionHandler {
 					if(e instanceof Baddie) ((Baddie) e).takeDamage(p.getDamage());
 				}
 			}
-			if(!p.makeRect().intersects(screen)){
-				p.kill();
-			}
+//			if(!p.makeRect().intersects(screen)){
+//				p.kill();
+//			}
 //			p.reset();
 		}
 	}

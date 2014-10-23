@@ -35,6 +35,9 @@ public class Platform extends Movable{
 //		g.fillRect((int)((x - offsetX) * scaleX), (int) ((y - offsetY) * scaleY), (int) (w * scaleX), (int) (h * scaleY));
 //		g.drawRect((int)((x - offsetX) * scaleX), (int) ((y - offsetY) * scaleY), (int) (w * scaleX), (int) (h * scaleY));
 		g.fillRect((int)(inter.getX()), (int)(inter.getY()), (int)(inter.getWidth()), (int)(inter.getHeight()));
+		
+		g.setColor(Color.black);
+		g.drawRect((int)(inter.getX()), (int)(inter.getY()), (int)(inter.getWidth()), (int)(inter.getHeight()));
 	}
 	
 // --------------------------------UPDATE-------------------------------- //

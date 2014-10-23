@@ -227,17 +227,19 @@ public class GamePanel extends JPanel implements Runnable{
 		if(!gameOver && !isPaused){
 			updateCycle++;
 //			update game state
-			el.update();
 			ArrayList<Entity> es = el.getEntities(getCurrScreen());
 			
 			ch.playerCollision(player, getCurrScreen());
 			ch.entityCollision(getCurrScreen());
 			
-			for(int i = 0; i < el.getEntities().size(); i++){
+			for(int i = el.getEntities().size() - 1; i >= 0; i--){
 				el.getEntities().get(i).update();
 			}
 			player.update();
+			el.update();
+			
 			setOffset();
+			setScale();
 		}
 		
 //		boolean troll = true;

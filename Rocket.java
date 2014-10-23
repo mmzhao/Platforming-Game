@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 
 public class Rocket extends Projectile{
+	
 //	explodeTimer: set to initial time when collision happens to control how long explosion lasts
 //	explode: whether or not this rocket has exploded
 //	explodeRadius: radius of explosion for baddies, 1.5x as much for player
@@ -25,8 +26,10 @@ public class Rocket extends Projectile{
 	
 //	EXPLOSIONS: string list of possible explosion types that are randomly chosen from
 //	TERMINAL_VELOCITY: max magnitude of velocity (x and y combined)
+//	LIFE_DURATION: number of milliseconds that this projectile stays before exploding
 	private final String[] EXPLOSIONS = {"DarknessExplosion", "Explosion1", "Explosion2", "Explosion3", "IceExplosion"};
 	private final int TERMINAL_VELOCITY = 20;
+	private final static long LIFE_DURATION = 2000;
 	
 // --------------------------------CONTRUCTOR-------------------------------- //	
 	
@@ -74,6 +77,11 @@ public class Rocket extends Projectile{
 			if(explode){
 				kill();
 			}
+		}
+		else if(!explode && System.currentTimeMillis() > timer + Rocket.LIFE_DURATION){
+			explode();
+			setExplosionTimer();
+			return;
 		}
 		
 		if(speed() > TERMINAL_VELOCITY){

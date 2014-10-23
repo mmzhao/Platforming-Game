@@ -65,20 +65,49 @@ public class Map {
 					GamePanel.getEL().addEntity(new Baddie(null, j * 5, i * 5, 20, 20, true, 0, 0, 1000000));
 					}
 				else if(map[i][j] == 'P'){
-					int length = 1;
-					while(j + length < map[0].length){
-						if(map[i][j + length] == 'P'){
-							length++;
+//					System.out.println(i + " " + j);
+					int lengthX = 1;
+					int lengthY = 1;
+					while(j + lengthX < map[0].length){
+						if(map[i][j + lengthX] == 'P'){
+							lengthX++;
 						}
 						else{
 							break;
 						}
 					}
-					GamePanel.getEL().addEntity(new Platform(null, j * 5, i * 5, length * 5, 5));
-					j += (length - 1);
+//					System.out.println(lengthX);
+					while(i + lengthY < map.length){
+						boolean addLine = true;
+						for(int k = j; k < j + lengthX; k++){
+							if(map[i + lengthY][k] != 'P'){
+								addLine = false;
+								break;
+							}
+						}
+						if(!addLine){
+							break;
+						}
+						lengthY++;
+					}
+					GamePanel.getEL().addEntity(new Platform(null, j * 5, i * 5, lengthX * 5, lengthY * 5));
+//					System.out.println(j * 5 + " " + i * 5 + " " + lengthX * 5 + " " + lengthY * 5);
+					for(int k = i; k < i + lengthY; k++){
+						for(int l = j; l < j + lengthX; l++){
+							map[k][l] = '0';
+						}
+					}
+					map[i][j] = 'P';
 				}
 			}
 		}
+		
+//		for(int i = 0; i < map.length; i++){
+//			for(int j = 0; j < map[0].length; j++){
+//				System.out.print(map[i][j]);
+//			}System.out.println();
+//		}
+		
 	}
 	
 	

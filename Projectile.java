@@ -6,15 +6,19 @@ import java.util.ArrayList;
 
 
 public class Projectile extends Movable{
-	
+
 //	xa: x directional acceleration
 //	ya: y directional acceleration
 //	dmg: damage that this projectile deals upon collision
+//	timer: set to initial time that the rocket was created
 //	TERMINAL_VELOCITY: max total (pythag) velocity for a projectile
+//	LIFE_DURATION: number of milliseconds that this projectile stays before dying
 	protected double xa;
 	protected double ya;
 	protected int dmg;
+	protected long timer;
 	protected final int TERMINAL_VELOCITY = 24;
+	private final long LIFE_DURATION = 3000;
 
 // --------------------------------CONSTRUCTOR-------------------------------- //
 	
@@ -23,6 +27,7 @@ public class Projectile extends Movable{
 		this.xa = xa;
 		this.ya = ya;
 		this.dmg = dmg;
+		timer = System.currentTimeMillis();
 	}
 	
 // --------------------------------DRAW METHODS-------------------------------- //
@@ -43,6 +48,10 @@ public class Projectile extends Movable{
 // --------------------------------UPDATE-------------------------------- //
 	
 	public void update(double time){
+		if(System.currentTimeMillis() > timer + LIFE_DURATION){
+			kill();
+		}
+		
 		xv += time * xa;
 		yv += time * ya;
 		if(speed() > TERMINAL_VELOCITY){
