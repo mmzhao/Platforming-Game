@@ -35,7 +35,7 @@ public class Rocket extends Projectile{
 		explodeTimer = -2000;
 		explode = false;
 		explosion = Explosions.getRandom();
-		explodeRadius = 40;
+		explodeRadius = 20;
 		knockBack = 5;
 	}
 	
@@ -55,7 +55,7 @@ public class Rocket extends Projectile{
 			return;
 		}
 		
-		g.setColor(Color.black);
+		g.setColor(Color.blue);
 		g.drawLine((int) ((x - offsetX + w/2) * scaleX), (int) ((y - offsetY + h/2) * scaleY), (int) ((x - offsetX + w/2 - xv * 3) * scaleX), (int) ((y - offsetY + h/2 - yv * 3) * scaleY));
 		g.fillOval((int) ((x - offsetX) * scaleX), (int) ((y - offsetY) * scaleY), (int) (w * scaleX), (int) (h * scaleY));
 	}

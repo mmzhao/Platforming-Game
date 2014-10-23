@@ -244,26 +244,26 @@ public class Player extends Movable {
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
 		
-		if (key == KeyEvent.VK_LEFT) {
-			isLeftHeld = true;
-			isLeftPressed = true;
-			setXV(-5);
+//		if (key == KeyEvent.VK_LEFT) {
+//			isLeftHeld = true;
+//			isLeftPressed = true;
+//			setXV(-5);
+//
+//		}
+//
+//		else if (key == KeyEvent.VK_RIGHT) {
+//			isRightHeld = true;
+//			isRightPressed = true;
+//			setXV(5);
+//		}
+//
+//		else if (key == KeyEvent.VK_UP) {
+//			isUpHeld = true;
+//			if (southC)
+//				setYV(-10);
+//		}
 
-		}
-
-		else if (key == KeyEvent.VK_RIGHT) {
-			isRightHeld = true;
-			isRightPressed = true;
-			setXV(5);
-		}
-
-		else if (key == KeyEvent.VK_UP) {
-			isUpHeld = true;
-			if (southC)
-				setYV(-10);
-		}
-
-		else if (key == KeyEvent.VK_A) {
+		if (key == KeyEvent.VK_A) {
 			isLeftHeld = true;
 			isLeftPressed = true;
 			setXV(-5);
@@ -280,12 +280,12 @@ public class Player extends Movable {
 			if (southC)
 				setYV(-10);
 		}
-
-		else if (key == KeyEvent.VK_SPACE) {
-			if(currentWeapon != null)
-				isShooting = true;
-//			shoot();
-		}
+//
+//		else if (key == KeyEvent.VK_SPACE) {
+//			if(currentWeapon != null)
+//				isShooting = true;
+////			shoot();
+//		}
 		
 		else if (key == KeyEvent.VK_T) {
 			if(currentWeapon != null)
@@ -298,23 +298,23 @@ public class Player extends Movable {
 	public void keyReleased(KeyEvent e) {
 		int key = e.getKeyCode();
 
-		if (key == KeyEvent.VK_LEFT) {
-			runningAni.stop();
-			isLeftHeld = false;
-			setXV(0);
-		}
+//		if (key == KeyEvent.VK_LEFT) {
+//			runningAni.stop();
+//			isLeftHeld = false;
+//			setXV(0);
+//		}
+//
+//		else if (key == KeyEvent.VK_RIGHT) {
+//			runningAni.stop();
+//			isRightHeld = false;
+//			setXV(0);
+//		}
+//
+//		else if (key == KeyEvent.VK_UP) {
+//			isUpHeld = false;
+//		}
 
-		else if (key == KeyEvent.VK_RIGHT) {
-			runningAni.stop();
-			isRightHeld = false;
-			setXV(0);
-		}
-
-		else if (key == KeyEvent.VK_UP) {
-			isUpHeld = false;
-		}
-
-		else if (key == KeyEvent.VK_A) {
+		if (key == KeyEvent.VK_A) {
 			runningAni.stop();
 			isLeftHeld = false;
 			setXV(0);
@@ -330,9 +330,9 @@ public class Player extends Movable {
 			isUpHeld = false;
 		}
 
-		else if (key == KeyEvent.VK_SPACE) {
-			isShooting = false;
-		}
+//		else if (key == KeyEvent.VK_SPACE) {
+//			isShooting = false;
+//		}
 
 	}
 	

@@ -100,7 +100,6 @@ public class GamePanel extends JPanel implements Runnable{
 		try {
 			initialState();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -332,7 +331,6 @@ public class GamePanel extends JPanel implements Runnable{
 					try {
 						initialState();
 					} catch (IOException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 				}

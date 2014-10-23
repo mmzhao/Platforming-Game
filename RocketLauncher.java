@@ -43,7 +43,7 @@ public class RocketLauncher extends Weapon{
 		if(canFire){
 			lastFired = GamePanel.getUpdateCycle();
 			es.add(new EmptyShell(null, x, y, Math.random() * 5 - 2 , -5));
-			ps.add(new HomingRocket(null, owner.getMidX(), owner.getMidY(), bulletsize, bulletsize, fireX * velocity, fireY * velocity, damage, homingLvl, range));
+			ps.add(new Rocket(null, owner.getMidX(), owner.getMidY(), bulletsize, bulletsize, fireX * velocity, fireY * velocity, damage));
 //			ps.add(new HomingRocket(null, x - 2.5 - facingRight * 10, y - 1, bulletsize, bulletsize, fireX * velocity, fireY * velocity, damage, homingLvl, range));
 		}
 	}
