@@ -55,6 +55,10 @@ public class GamePanel extends JPanel implements Runnable{
 //	dbImage: image that is drawn to the screen for the painting part of the game loop
 	private Graphics dbg;
 	private Image dbImage = null;
+
+//	Background: Not moving, Background2: Moving
+	private BufferedImage background;
+	private BufferedImage background2;
 	
 //	period: forced minimum time in milliseconds between frames, fps ~ 1000/period
 	private long period = 15;
@@ -97,6 +101,8 @@ public class GamePanel extends JPanel implements Runnable{
 		offsetY = 0;
 		setScale();
 		
+		
+		
 		try {
 			initialState();
 		} catch (IOException e) {
@@ -135,6 +141,11 @@ public class GamePanel extends JPanel implements Runnable{
 //		es.add(baddie3);
 //		el.addEntity(es);
 
+		
+//		Testing backgrounds
+		background = loadImage("Background3.png");
+		background2 = loadImage("Background2.png");
+		
 		final RocketLauncher rl = new RocketLauncher((int) Math.pow(w/2 * w/2 + h/2 * h/2, .5));
 		final Pistol p = new Pistol();
 		player.giveCurrentWeapon(rl);
@@ -261,8 +272,8 @@ public class GamePanel extends JPanel implements Runnable{
 		else{
 			dbg = dbImage.getGraphics();
 		}
-		dbg.setColor(Color.white);
-		dbg.fillRect(0, 0, screenW, screenH);
+		dbg.drawImage(background,0, 0, screenW, screenH, null, null);
+		dbg.drawImage(background2, 0, 0, screenW, screenH, 0 + getOffsetX(), 0, screenW + getOffsetX(), 506, null);
 //		dbg.fillRect(0, 0, w, h);
 		
 		dbg.setColor(Color.black);
