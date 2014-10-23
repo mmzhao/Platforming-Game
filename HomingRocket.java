@@ -89,6 +89,7 @@ public class HomingRocket extends Projectile{
 //			g.drawLine((int) ((x - offsetX) * scaleX), (int) ((y - offsetY + 3) * scaleY), (int) ((x - offsetX + xv * 3) * scaleX), (int) ((y - offsetY + yv * 3 + 3) * scaleY));
 //		}
 //		else
+		g.setColor(Color.green);
 			g.drawLine((int) ((x - offsetX + w/2) * scaleX), (int) ((y - offsetY + h/2) * scaleY), (int) ((x - offsetX + w/2 - xv * 3) * scaleX), (int) ((y - offsetY + h/2 - yv * 3) * scaleY));
 			g.fillOval((int) ((x - offsetX) * scaleX), (int) ((y - offsetY) * scaleY), (int) (w * scaleX), (int) (h * scaleY));
 		
