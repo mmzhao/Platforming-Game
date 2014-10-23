@@ -13,31 +13,49 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
 public class Player extends Movable {
+	
+//	isRightHeld: whether or not right move button is held
+//	isLeftHeld: whether or not left move button is held
+//	isUpHeld: whether or not up move button is held
+//	isHit: whether or not player is currently collided with a baddie
+//	isShooting: whether or not the player is currently firing his weapon
+//	mouseX: x position (420 by 330) of the mouse relative to the game panel
+//	mouseY: y position (420 by 330) of the mouse relative to the game panel
+//	realMouseX: actual on screen x position of the mouse relative to the game panel
+//	realMouseY: actual on screen y position of the mouse relative to the game panel
+//	hitTimer: timer that keeps track of most recent time the player has been hit by a baddie
 	protected boolean isRightHeld = false;
 	protected boolean isLeftHeld = false;
 	protected boolean isUpHeld = false;
 	protected boolean isHit = false;
 	protected boolean isShooting = false;
-//	protected PointerInfo mouse;
 	protected double mouseX = 0;
 	protected double mouseY = 0;
 	protected double realMouseX = 0;
 	protected double realMouseY = 0;
 	protected long hitTimer = 0;
-//	protected Player save;
 
+//	runningAni: animation for when the player is running
+//	standingImg: image used when the player is standing still
+//	currentImg: image that should be currently drawn to the screen
 	protected Animation runningAni;
 	protected BufferedImage standingImg;
 	protected BufferedImage currentImg;
 
+//	currentWeapon: weapon that the player is currently using
+//	standardStep: magnitude of velocity player gets when presses left or right move keys
+//	isRightPressed: whether or not the right move key is pressed this frame
+//	isLeftPressed: whether or not the left move key is pressed this frame
 	protected Weapon currentWeapon;
 	protected int standardStep;
 	protected boolean isRightPressed = false;
 	protected boolean isLeftPressed = false;
-	// starts by facing right
 
+//	AIR_RESISTANCE: factor by which movement is reduced in air
 	private final double AIR_RESISTANCE = .5;
 
+// --------------------------------CONSTRUCTOR-------------------------------- //
+	
 	public Player(BufferedImage b, double x, double y, double w, double h, int health, Weapon currentWeapon) {
 		super(b, x, y, w, h, true, 0, 0, health, 1);
 		standingImg = b;
@@ -53,18 +71,36 @@ public class Player extends Movable {
 		currentWeapon = null;
 		standardStep = 5;
 	}
-
-	public void resetCollisionState(){
-		northC = false;
-		eastC = false;
-		southC = false;
-		westC = false;
-		isHit = false;
+	
+// --------------------------------DRAW METHODS-------------------------------- //
+	
+	public void draw(Graphics g){
+		draw(g, 0, 0);
+	}
+	
+	public void draw(Graphics g, int offsetX, int offsetY){
+		draw(g, offsetX, offsetY, 1, 1);
+	}
+	
+	public void draw(Graphics g, int offsetX, int offsetY, double scaleX, double scaleY){
+		// MAKE HIT COLOR CHANGE FRAMES SOMETIME
+		// making dot to designate facing direction
+		g.drawOval((int)((mouseX - offsetX) * scaleX - 1), (int)((mouseY - offsetY) * scaleY - 1), 2, 2);
+		if (facingRight == 1) {
+			g.drawImage(currentImg, (int) ((x - offsetX) * scaleX), (int) ((y - offsetY) * scaleY), (int) (w * scaleX), (int) (h * scaleY), null, null);
+		} else{
+			g.drawImage(currentImg, (int)((x + (int)w - offsetX) * scaleX), (int)((y - offsetY) * scaleY), -(int) (w * scaleX), (int) (h * scaleY), null, null);
+		}
+				
+		if(currentWeapon != null){
+			for(int i = 0; i < currentWeapon.getProjectiles().size(); i++){
+				currentWeapon.getProjectiles().get(i).draw(g, offsetX, offsetY, scaleX, scaleY);
+			}
+			currentWeapon.draw(g, offsetX, offsetY, scaleX, scaleY);
+		}
 	}
 
-	public int getFacingRight(){
-		return facingRight;
-	}
+// --------------------------------UPDATE-------------------------------- //
 	
 	public void update(double time) {
 //		System.out.println(mouseX + " " + mouseY);
@@ -139,11 +175,16 @@ public class Player extends Movable {
 		isRightPressed = false;
 		isLeftPressed = false;
 	}
-
-//	public void saveCurrentState() {
-//		save = new Player(bi, x, y, h, w, xv, yv);
-//	}
-		
+	
+// --------------------------------COLLISION METHODS-------------------------------- //
+	
+	public void resetCollisionState(){
+		northC = false;
+		eastC = false;
+		southC = false;
+		westC = false;
+		isHit = false;
+	}
 
 	public void updateC(double time) {
 		// System.out.println(xv + " " + yv);
@@ -161,15 +202,8 @@ public class Player extends Movable {
 		y += time * yv;
 	}
 
-//	public void reset() {
-//		x = save.getX();
-//		y = save.getY();
-//		w = save.getW();
-//		h = save.getH();
-//		xv = save.getXV();
-//		yv = save.getYV();
-//	}
-
+// --------------------------------GET/SET METHODS-------------------------------- //
+	
 	public Weapon getCurrentWeapon(){
 		return currentWeapon;
 	}
@@ -190,43 +224,8 @@ public class Player extends Movable {
 	public void setIsHit(boolean hit){
 		isHit = hit;
 	}
-	
-	public void draw(Graphics g){
-		draw(g, 0, 0);
-	}
-	
-	public void draw(Graphics g, int offsetX, int offsetY){
-		draw(g, offsetX, offsetY, 1, 1);
-	}
-	
-	public void draw(Graphics g, int offsetX, int offsetY, double scaleX, double scaleY){
-		// MAKE HIT COLOR CHANGE FRAMES SOMETIME
-		// making dot to designate facing direction
-		g.drawOval((int)((mouseX - offsetX) * scaleX - 1), (int)((mouseY - offsetY) * scaleY - 1), 2, 2);
-		if (facingRight == 1) {
-			g.drawImage(currentImg, (int) ((x - offsetX) * scaleX), (int) ((y - offsetY) * scaleY), (int) (w * scaleX), (int) (h * scaleY), null, null);
-		} else{
-			g.drawImage(currentImg, (int)((x + (int)w - offsetX) * scaleX), (int)((y - offsetY) * scaleY), -(int) (w * scaleX), (int) (h * scaleY), null, null);
-		}
-				
-		if(currentWeapon != null){
-			for(int i = 0; i < currentWeapon.getProjectiles().size(); i++){
-				currentWeapon.getProjectiles().get(i).draw(g, offsetX, offsetY, scaleX, scaleY);
-			}
-			currentWeapon.draw(g, offsetX, offsetY, scaleX, scaleY);
-		}
-	}
-//	
-//	public PointerInfo getMouse(){
-//		return mouse;
-//	}
-//	
-//	public void setMouseLocation(){
-//		mouse = MouseInfo.getPointerInfo();
-//		mouseX = mouse.getLocation().getX();
-//		mouseY = mouse.getLocation().getY();
-//	}
-	
+
+
 	public double getMouseX(){
 		return mouseX;
 	}
@@ -240,6 +239,8 @@ public class Player extends Movable {
 		mouseY = ((double) realMouseY) / GamePanel.getScaleY() + GamePanel.getOffsetY();
 	}
 
+// --------------------------------KEY/MOUSE LISTENER METHODS-------------------------------- //
+	
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
 		

@@ -1,12 +1,17 @@
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
-
+//class that holds list of all entities besides the player and projectiles
 public class EntityList {
 	
+//	e: arraylist of all entities on the map
+//	p: arraylist of all platforms on the map
+//	b: arraylist of all baddies on the map
 	private ArrayList<Entity> e;
 	private ArrayList<Platform> p;
 	private ArrayList<Baddie> b;
+
+// --------------------------------CONSTRUCTOR-------------------------------- //
 	
 	public EntityList(){
 		e = new ArrayList<Entity>();
@@ -14,6 +19,9 @@ public class EntityList {
 		b = new ArrayList<Baddie>();
 	}
 	
+// --------------------------------UPDATE METHODS-------------------------------- //
+	
+	//removes entities that need to be removed
 	public void update(){
 		for (int i = e.size() - 1; i >= 0; i--) {
 			if (e.get(i).needRemoval()){
@@ -31,6 +39,8 @@ public class EntityList {
 			}
 		}
 	}
+	
+// --------------------------------LIST CREATING METHODS-------------------------------- //
 	
 	public void addEntity(Entity e){
 		this.e.add(e);
@@ -75,6 +85,7 @@ public class EntityList {
 		this.b.addAll(l);
 	}
 	
+// --------------------------------GET LIST METHODS-------------------------------- //
 	
 	public ArrayList<Entity> getEntities(){
 		ArrayList<Entity> l = new ArrayList<Entity>();
@@ -105,6 +116,8 @@ public class EntityList {
 		}
 		return l;
 	}
+	
+	//GET LIST METHODS THAT ONLY GIVE ENTITES ON THE CURRENT SCREEN AND ACTIVATE ALL THAT ARE ON SCREEN
 	
 	public ArrayList<Entity> getEntities(Rectangle screen){
 		ArrayList<Entity> l = new ArrayList<Entity>();

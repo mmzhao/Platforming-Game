@@ -20,6 +20,17 @@ import javax.swing.JPanel;
 
 
 public class GamePanel extends JPanel implements Runnable{
+	
+//	entireW: unscaled entire width of map
+//	entireH: unscaled entire height of map
+//	w: unscaled width of screen
+//	h: unscaled height of screen
+//	screenW: scaled width of screen
+//	screenH: scaled width of screen
+//	offsetX: horizontal offset to set viewed screen to center around player
+//	offsetY: vertical offset to set viewed screen to center around player
+//	scaleX: horizontal ratio between scaled and unscaled screens
+//	scaleY: vertical ratio betweem scaled and unscaled screens
 	private static int entireW;
 	private static int entireH;
 	private static int w;
@@ -31,28 +42,41 @@ public class GamePanel extends JPanel implements Runnable{
 	private static double scaleX;
 	private static double scaleY;
 	
+//	animator: thread that runs the game loop
+//	running: whether or not the game is running
+//	gameOver: whether or not the game has finished
+//	isPaused: whether or not the game has been paused
 	private Thread animator;
 	private volatile boolean running = false;
 	private volatile boolean gameOver = false;
 	private volatile boolean isPaused = false;
 	
+//	dbg: graphics of the game
+//	dbImage: image that is drawn to the screen for the painting part of the game loop
 	private Graphics dbg;
 	private Image dbImage = null;
 	
+//	period: forced minimum time in milliseconds between frames, fps ~ 1000/period
 	private long period = 15;
 	
+//	CollisionHandler: class that handles all collisions
 	private CollisionHandler ch;
 	
+//	player: key and mouse controlled player which a user uses
+//	el: entity list that contains all non player and non projectile entities
 	private static Player player;
 	private static EntityList el;
 	
-	private final int EXTRA_SCREEN = 20;
-	
+//	updateCycle: number of update frames the game has gone through
+//	startTime: system millisecond time that the game starts
+//	pauseStart: system millisecond time that the game was most recently paused at
+//	pauseTime: total amount of system millisecond time the game has been paused
 	private static long updateCycle = 0;
 	private long startTime = 0;
 	private long pauseStart = 0;
 	private long pauseTime = 0;
 	
+// --------------------------------CONSTRUCTOR-------------------------------- //
 	
 	public GamePanel(int w, int h){
 		this(w, h, w, h);
@@ -87,6 +111,54 @@ public class GamePanel extends JPanel implements Runnable{
 		requestFocus();
 		readyToQuit();
 	}
+	
+// --------------------------------MAP SETUP METHODS-------------------------------- //
+	
+	public void initialState() throws IOException{
+		el = new EntityList();
+		Map testm = new Map("src/Map1.txt");
+		testm.initializeMap(this);
+		
+//		player = new Player(loadImage("Standing.png"), 100, 50, 20, 20, 100, null);
+//		//player.giveCurrentWeapon(new Pistol());
+//		el = new EntityList();
+//		ArrayList<Entity> es = new ArrayList<Entity>();
+//		es.add(new Platform(null, 50, 200, 200, 20));
+//		es.add(new Platform(null, 30, 180, 20, 40));
+//		es.add(new Platform(null, 250, 180, 20, 40));
+//		es.add(new Platform(null, 80, 140, 140 + 350, 20));
+//		es.add(new Platform(null, 80 + 140 + 350, 140, 350, 20));
+//		Baddie baddie1 = new Baddie(null, 150, 100, 20, 20, true, -3, 0, 1000000);
+//		Baddie baddie2 = new Baddie(null, 200, 100, 20, 20, true, 0, 0, 1000000);
+//		Baddie baddie3 = new Baddie(null, 600, 100, 20, 20, true, 0, 0, 1000000);
+//		es.add(baddie1);
+//		es.add(baddie2);
+//		es.add(baddie3);
+//		el.addEntity(es);
+
+		final RocketLauncher rl = new RocketLauncher((int) Math.pow(w/2 * w/2 + h/2 * h/2, .5));
+		final Pistol p = new Pistol();
+		player.giveCurrentWeapon(rl);
+		
+		addKeyListener(new KeyAdapter(){
+			public void keyPressed(KeyEvent e){
+				int keyCode = e.getKeyCode();
+				if((keyCode == KeyEvent.VK_1)){
+					player.giveCurrentWeapon(p);
+				}
+				if((keyCode == KeyEvent.VK_2)){
+					player.giveCurrentWeapon(rl);
+				}
+			}
+		});
+		
+		ch = new CollisionHandler();
+		this.addKeyListener(new EntityListener(player));
+		this.addMouseListener(new EntityListener(player));
+		this.addMouseMotionListener(new EntityListener(player));
+	}
+	
+// --------------------------------GAME LOOP METHODS-------------------------------- //
 	
 	public void addNotify(){
 		super.addNotify();
@@ -144,26 +216,12 @@ public class GamePanel extends JPanel implements Runnable{
 	public void gameUpdate(){
 		if(!gameOver && !isPaused){
 			updateCycle++;
-//			//update game state
+//			update game state
 			el.update();
 			ArrayList<Entity> es = el.getEntities(getCurrScreen());
-//			player.sidesCollided(es);
-//			ArrayList<Baddie> bs = el.getBaddies(getCurrScreen());
-//			for(int i = 0; i < bs.size(); i++){
-//				bs.get(i).sidesCollided(es); 
-//			}
-
 			
 			ch.playerCollision(player, getCurrScreen());
 			ch.entityCollision(getCurrScreen());
-			
-//			if(player.getCurrentWeapon() != null){
-//				for(Projectile p: player.getCurrentWeapon().getProjectiles()){
-//					p.sidesCollided(es);
-//					p.update(getCurrScreen());
-//				}
-//			}
-
 			
 			for(int i = 0; i < el.getEntities().size(); i++){
 				el.getEntities().get(i).update();
@@ -172,54 +230,21 @@ public class GamePanel extends JPanel implements Runnable{
 			setOffset();
 		}
 		
-		boolean troll = true;
-		if(troll){
-			if(player.getY() >= entireH){
-				player.setY(-player.getH());
-			}
-//			if(baddie.getY() >= h){
-//				baddie.setY(-baddie.getH());
+//		boolean troll = true;
+//		if(troll){
+//			if(player.getY() >= entireH){
+//				player.setY(-player.getH());
 //			}
-			if(player.getX() >= entireW){
-				player.setX(player.getW()/2);
-			}
-			if(player.getX() < 0){
-				player.setX(entireW - player.getW()/2);
-			}
-//			for(Projectile p: player.getCurrentWeapon().getProjectiles()){
-//				p.sidesCollided(es);
-//				if(p.getX() >= w){
-//					p.setX(p.getW()/2);
-//				}
-//				if(p.getX() < 0){
-//					p.setX(w - p.getW()/2);
-//				}
+//			if(player.getX() >= entireW){
+//				player.setX(player.getW()/2);
 //			}
-		}
+//			if(player.getX() < 0){
+//				player.setX(entireW - player.getW()/2);
+//			}
+//		}
 	
 	}
 	
-	public void setOffset(){
-		offsetX = (int) player.getX() - w / 2;
-		offsetY = (int) player.getY() - h / 2;
-		if(offsetX < 0){
-			offsetX = 0;
-		}
-		else if(offsetX > entireW - w){
-			offsetX = entireW - w;
-		}
-		if(offsetY < 0){
-			offsetY = 0;
-		}
-		else if(offsetY > entireH - h){
-			offsetY = entireH - h;
-		}
-	}
-	
-	public void setScale(){
-		scaleX = (double) (screenW/w);
-		scaleY= (double) (screenH/h);
-	}
 	
 	public void gameRender(){
 		if(dbImage == null){
@@ -315,6 +340,40 @@ public class GamePanel extends JPanel implements Runnable{
 		});
 	}
 	
+	public void resumeGame(){ 
+		isPaused = false; 
+	}
+	
+	public void pauseGame(){
+		isPaused = true; 
+	}
+	
+// --------------------------------SCREEN TRANSFORMATION METHODS-------------------------------- //
+	
+	public void setOffset(){
+		offsetX = (int) player.getX() - w / 2;
+		offsetY = (int) player.getY() - h / 2;
+		if(offsetX < 0){
+			offsetX = 0;
+		}
+		else if(offsetX > entireW - w){
+			offsetX = entireW - w;
+		}
+		if(offsetY < 0){
+			offsetY = 0;
+		}
+		else if(offsetY > entireH - h){
+			offsetY = entireH - h;
+		}
+	}
+	
+	public void setScale(){
+		scaleX = (double) (screenW/w);
+		scaleY= (double) (screenH/h);
+	}
+
+// --------------------------------IMAGE LOADING METHODS-------------------------------- //
+	
 	public BufferedImage loadImage(String path){
 		BufferedImage img = null;
 		try{
@@ -323,13 +382,7 @@ public class GamePanel extends JPanel implements Runnable{
 		return img;
 	}
 	
-	public void resumeGame(){ 
-		isPaused = false; 
-	}
-	
-	public void pauseGame(){
-		isPaused = true; 
-	}
+// --------------------------------GET/SET METHODS-------------------------------- //
 	
 	public static Rectangle getCurrScreen(){
 	//	return new Rectangle(offsetX - EXTRA_SCREEN, offsetY - EXTRA_SCREEN, w + EXTRA_SCREEN, h + EXTRA_SCREEN);
@@ -358,50 +411,6 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	public static Player getPlayer(){
 		return player;
-	}
-	
-	public void initialState() throws IOException{
-		el = new EntityList();
-		Map testm = new Map("src/Map1.txt");
-		testm.initializeMap(this);
-		
-//		player = new Player(loadImage("Standing.png"), 100, 50, 20, 20, 100, null);
-//		//player.giveCurrentWeapon(new Pistol());
-//		el = new EntityList();
-//		ArrayList<Entity> es = new ArrayList<Entity>();
-//		es.add(new Platform(null, 50, 200, 200, 20));
-//		es.add(new Platform(null, 30, 180, 20, 40));
-//		es.add(new Platform(null, 250, 180, 20, 40));
-//		es.add(new Platform(null, 80, 140, 140 + 350, 20));
-//		es.add(new Platform(null, 80 + 140 + 350, 140, 350, 20));
-//		Baddie baddie1 = new Baddie(null, 150, 100, 20, 20, true, -3, 0, 1000000);
-//		Baddie baddie2 = new Baddie(null, 200, 100, 20, 20, true, 0, 0, 1000000);
-//		Baddie baddie3 = new Baddie(null, 600, 100, 20, 20, true, 0, 0, 1000000);
-//		es.add(baddie1);
-//		es.add(baddie2);
-//		es.add(baddie3);
-//		el.addEntity(es);
-
-		final RocketLauncher rl = new RocketLauncher((int) Math.pow(w/2 * w/2 + h/2 * h/2, .5));
-		final Pistol p = new Pistol();
-		player.giveCurrentWeapon(rl);
-		
-		addKeyListener(new KeyAdapter(){
-			public void keyPressed(KeyEvent e){
-				int keyCode = e.getKeyCode();
-				if((keyCode == KeyEvent.VK_1)){
-					player.giveCurrentWeapon(p);
-				}
-				if((keyCode == KeyEvent.VK_2)){
-					player.giveCurrentWeapon(rl);
-				}
-			}
-		});
-		
-		ch = new CollisionHandler();
-		this.addKeyListener(new EntityListener(player));
-		this.addMouseListener(new EntityListener(player));
-		this.addMouseMotionListener(new EntityListener(player));
 	}
 	
 	public static long getUpdateCycle(){

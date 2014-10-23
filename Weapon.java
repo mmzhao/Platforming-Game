@@ -7,6 +7,23 @@ import javax.swing.text.Position;
 
 public class Weapon extends Item{
 	
+//	ps: list of all projectiles fired from this weapon
+//	es: list of all empty shells emitted from this weapon
+//	owner: owner of this weapon
+//	lastFired: system time for when this weapon was last fired
+//	firerate: minimum system millisecond time between shots
+//	facingRight: whether or not this weapon is facing right
+//	clipsize: max number of projectiles in this weapons clip
+//	reloadSpeed: system millisecond time it takes to reload this weapon
+//	velocity: magnitude of velocity given to a projectile fired from this weapon
+//	accel: magnitude of acceleration given to a projectile fired from this weapon
+//	bulletsize: size of the bullet fired from this weapon
+//	damage: damage dealt from a bullet fired from this weapon
+//	canFire: whether or not this weapon can fire at this point in time
+//	fireX, fireY: unit vector direction for a fired projectile
+//	numBullets: number of bullets left in the clip
+//	startReload: system millisecond start time for the reload
+//	reloading: whether or not this weapon is reloading
 	protected ArrayList<Projectile> ps;
 	protected ArrayList<EmptyShell> es;
 	protected Movable owner;
@@ -21,10 +38,11 @@ public class Weapon extends Item{
 	protected int damage;
 	protected boolean canFire;
 	protected double fireX, fireY;
-	
 	protected int numBullets;
 	protected long startReload;
 	protected boolean reloading = false;
+	
+// --------------------------------CONSTRUCTOR-------------------------------- //
 
 	public Weapon(String name, BufferedImage b, int firerate, int facingRight, int clipsize, int reloadSpeed, double velocity,
 					double accel, int bulletsize, int damage, Movable owner){
@@ -47,10 +65,28 @@ public class Weapon extends Item{
 		startReload = 0;
 	}
 	
-//	public void setAim(double x, double y){
-//		aimX = x;
-//		aimY = y;
-//	}
+// --------------------------------DRAW METHODS-------------------------------- //
+	
+	public void draw(Graphics g){
+		draw(g, 0, 0);
+	}
+	
+	public void draw(Graphics g, int offsetX, int offsetY){
+		draw(g, offsetX, offsetY, 1, 1);
+	}
+	
+	public void draw(Graphics g, int offsetX, int offsetY, double scaleX, double scaleY){
+		if (facingRight == 1) {
+			g.drawImage(super.bi, (int)((x - offsetX) * scaleX), (int)((y - offsetY) * scaleY), (int)(w * scaleX), (int)(h * scaleY), null, null);
+		} else{
+			g.drawImage(super.bi, (int)((x + (int)w/6 - offsetX) * scaleX), (int)((y - offsetY) * scaleY), -(int)(w * scaleX),(int)(h * scaleY), null, null);
+		}
+		for(int i = 0; i < es.size(); i++){
+			es.get(i).draw(g, offsetX, offsetY, scaleX, scaleY);
+		}
+	}
+
+// --------------------------------UPDATE-------------------------------- //
 	
 	public void update(double time){
 		updateFireVector();
@@ -90,50 +126,12 @@ public class Weapon extends Item{
 		updateEmptyShells();
 	}
 	
-	
-	public void draw(Graphics g){
-		draw(g, 0, 0);
-	}
-	
-	public void draw(Graphics g, int offsetX, int offsetY){
-		draw(g, offsetX, offsetY, 1, 1);
-	}
-	
-	public void draw(Graphics g, int offsetX, int offsetY, double scaleX, double scaleY){
-		if (facingRight == 1) {
-			g.drawImage(super.bi, (int)((x - offsetX) * scaleX), (int)((y - offsetY) * scaleY), (int)(w * scaleX), (int)(h * scaleY), null, null);
-		} else{
-			g.drawImage(super.bi, (int)((x + (int)w/6 - offsetX) * scaleX), (int)((y - offsetY) * scaleY), -(int)(w * scaleX),(int)(h * scaleY), null, null);
-		}
-		for(int i = 0; i < es.size(); i++){
-			es.get(i).draw(g, offsetX, offsetY, scaleX, scaleY);
-		}
-	}
-	
-	public void reload(){
-		if(!reloading){
-			reloading = true;
-			startReload = GamePanel.getUpdateCycle();
-		}
-	}
-	
 	public void updateReload(){
 		if(GamePanel.getUpdateCycle() < startReload + reloadSpeed){}
 		else{
 			numBullets = clipsize;
 			reloading = false;
 		}
-	}
-	
-	public void fire() {
-//		if(canFire){
-			lastFired = GamePanel.getUpdateCycle();
-			es.add(new EmptyShell(null, x, y, Math.random() * 5 - 2 , -5));
-			ps.add(new Projectile(null, owner.getMidX(), owner.getMidY(), bulletsize, bulletsize, fireX * velocity, fireY * velocity, fireX * accel, fireY * accel, damage));
-//			ps.add(new Projectile(null, x - 2.5 - facingRight * 10, y - 1, bulletsize, bulletsize, fireX * velocity, fireY * velocity, fireX * accel, fireY * accel, damage));
-//			ps.add(new Projectile(null, x - 2.5 + facingRight * 10, y - 1, bulletsize, bulletsize, facingRight * velocity, facingRight*accel, damage));
-			
-//		}
 	}
 	
 	public void updateFireVector(){
@@ -163,6 +161,28 @@ public class Weapon extends Item{
 				es.remove(i);
 		}
 	}
+	
+// --------------------------------RELOAD AND FIRE METHODS-------------------------------- //
+
+	public void reload(){
+		if(!reloading){
+			reloading = true;
+			startReload = GamePanel.getUpdateCycle();
+		}
+	}
+	
+	public void fire() {
+//		if(canFire){
+			lastFired = GamePanel.getUpdateCycle();
+			es.add(new EmptyShell(null, x, y, Math.random() * 5 - 2 , -5));
+			ps.add(new Projectile(null, owner.getMidX(), owner.getMidY(), bulletsize, bulletsize, fireX * velocity, fireY * velocity, fireX * accel, fireY * accel, damage));
+//			ps.add(new Projectile(null, x - 2.5 - facingRight * 10, y - 1, bulletsize, bulletsize, fireX * velocity, fireY * velocity, fireX * accel, fireY * accel, damage));
+//			ps.add(new Projectile(null, x - 2.5 + facingRight * 10, y - 1, bulletsize, bulletsize, facingRight * velocity, facingRight*accel, damage));
+			
+//		}
+	}
+	
+// --------------------------------GET/SET METHODS-------------------------------- //
 	
 	public ArrayList<Projectile> getProjectiles() {
 		return ps;

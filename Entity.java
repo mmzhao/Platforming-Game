@@ -8,6 +8,15 @@ import java.awt.image.BufferedImage;
 
 public class Entity {
 
+//	bi: buffered image that is displayed on screen for the entity
+//	x: x position on base screen (420 by 330)
+//	y: y position on base screen (420 by 330)
+//	w: width on base screen (420 by 330)
+//	h: height on base screen (420 by 330)
+//	collidable: can be collided with others
+//	isPlatform: whether or not this entity is a platform
+//	remove: whether or not this entity should be removed from entity list in next frame update
+//	activated: whether or not this entity (baddie) has been on screen
 	protected BufferedImage bi;
 	protected double x; // x increases from left/west to right/east
 	protected double y; // y increases from top/north to bottom/south
@@ -18,10 +27,12 @@ public class Entity {
 	protected boolean remove;
 	protected boolean activated;
 	
-	private final int PLATFORM_EXTRA = 0;
+//	EXTRA: extra that is added to very side of an entity when the entity list looks for it
+	private final int EXTRA = 0;
+	
+// --------------------------------CONSTRUCTOR-------------------------------- //
 
 	public Entity(BufferedImage b, double x, double y, double w, double h, boolean c) {
-//		bi = resize(b, w, h);
 		bi = b;
 		this.x = x;
 		this.y = y;
@@ -33,16 +44,7 @@ public class Entity {
 		activated = false;
 	}
 	
-	public static BufferedImage resize(BufferedImage img, int newW, int newH) { 
-	    Image tmp = img.getScaledInstance(200, 200, Image.SCALE_SMOOTH);
-	    BufferedImage dimg = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
-
-	    Graphics2D g2d = dimg.createGraphics();
-	    g2d.drawImage(tmp, 0, 0, null);
-	    g2d.dispose();
-
-	    return dimg;
-	}
+// --------------------------------DRAW METHODS-------------------------------- //
 	
 	public void draw(Graphics g, int offsetX, int offsetY, double scaleX, double scaleY){
 		
@@ -56,6 +58,7 @@ public class Entity {
 		
 	}
 
+// --------------------------------UPDATE-------------------------------- //
 	
 	public void update(){
 		
@@ -64,6 +67,36 @@ public class Entity {
 	public void update(double time){
 		
 	}
+	
+// --------------------------RECTANGLE-MAKING METHODS FOR COLLISION AND ENTITYLIST METHODS--------------------------- //
+	
+	public Rectangle makeRect(){
+		return new Rectangle((int) x, (int) y, (int) w, (int) h);
+	}
+	
+	public Rectangle makeRectExtra(){
+		return new Rectangle((int)(x - EXTRA), (int)(y - EXTRA), (int)(w + 2 * EXTRA), (int)(h + 2 * EXTRA));
+	}
+	
+// --------------------------------START/END LIFE METHODS-------------------------------- //
+	
+	public boolean needRemoval(){
+		return remove;
+	}
+	
+	public void kill(){
+		remove = true;
+	}
+	
+	public boolean isActivated(){
+		return activated;
+	}
+	
+	public void activate(){
+		activated = true;
+	}
+	
+// --------------------------------GET/SET METHODS-------------------------------- //
 	
 	public double getMidX() {
 		return x + w / 2;
@@ -113,21 +146,6 @@ public class Entity {
 		collidable = c;
 	}
 	
-	public boolean needRemoval(){
-		return remove;
-	}
-	
-	public void kill(){
-		remove = true;
-	}
-	
-	public boolean isActivated(){
-		return activated;
-	}
-	
-	public void activate(){
-		activated = true;
-	}
 	
 	public BufferedImage getImage(){
 		return bi;
@@ -137,13 +155,7 @@ public class Entity {
 		return b;
 	}
 	
-	public Rectangle makeRect(){
-		return new Rectangle((int) x, (int) y, (int) w, (int) h);
-	}
-	
-	public Rectangle makeRectExtra(){
-		return new Rectangle((int)(x - PLATFORM_EXTRA), (int)(y - PLATFORM_EXTRA), (int)(w + 2 * PLATFORM_EXTRA), (int)(h + 2 * PLATFORM_EXTRA));
-	}
+// --------------------------------KEY/MOUSE LISTENER METHODS-------------------------------- //
 	
 	public void keyPressed(KeyEvent e) {
 

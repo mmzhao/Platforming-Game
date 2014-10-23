@@ -5,17 +5,19 @@ import java.awt.image.BufferedImage;
 
 
 public class Platform extends Movable{
-	public final int PLATFORM_EXTRA = 20;
+	
+//	EXTRA: extra that is added to very side of an entity when the entity list looks for it
+	public final int EXTRA = 20;
+	
+// --------------------------------CONSTRUCTOR-------------------------------- //
 
 	public Platform(BufferedImage b, double x, double y, double w, double h) {
-		super(b, x, y, w, h, true, 0, 0, 0, 0);
+		super(b, x, y, w, h, true, 0, 0, 1, 0);
 		isPlatform = true;
 		activated = true;
 	}
 	
-	public Rectangle makeRectExtra(){
-		return new Rectangle((int)(x - PLATFORM_EXTRA), (int)(y - PLATFORM_EXTRA), (int)(w + 2 * PLATFORM_EXTRA), (int)(h + 2 * PLATFORM_EXTRA));
-	}
+// --------------------------------DRAW METHODS-------------------------------- //
 	
 	public void draw(Graphics g) {
 		draw(g, 0, 0);
@@ -35,12 +37,17 @@ public class Platform extends Movable{
 		g.fillRect((int)(inter.getX()), (int)(inter.getY()), (int)(inter.getWidth()), (int)(inter.getHeight()));
 	}
 	
+// --------------------------------UPDATE-------------------------------- //
+	
 	public void update(double time){
 		
 	}
+
+// --------------------------RECTANGLE-MAKING METHODS FOR COLLISION AND ENTITYLIST METHODS--------------------------- //
 	
-	public boolean isAlive(){
-		return true;
+	public Rectangle makeRectExtra(){
+		return new Rectangle((int)(x - EXTRA), (int)(y - EXTRA), (int)(w + 2 * EXTRA), (int)(h + 2 * EXTRA));
 	}
+
 
 }

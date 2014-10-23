@@ -6,9 +6,13 @@ import javax.imageio.ImageIO;
 
 
 public class RocketLauncher extends Weapon{
-//	EntityList el;
+	
+//	homingLvl: measure of how much homing will affect projectile movement
+//	range: how far the homing rocket can look for a target
 	int homingLvl;
 	int range;
+	
+// --------------------------------CONSTRUCTOR-------------------------------- //
 	
 	public RocketLauncher(int range){
 		super("RocketLauncher", null, 15, 1, 20, 100, 10, 0, 4, 100, null);
@@ -16,8 +20,7 @@ public class RocketLauncher extends Weapon{
 		try{
 			img = ImageIO.read(getClass().getResource("SamplePistol.png"));
 		} catch(IOException e){}
-		bi = img;	
-//		this.el = el;
+		bi = img;
 		homingLvl = 1;
 		this.range = range;
 	}
@@ -28,13 +31,14 @@ public class RocketLauncher extends Weapon{
 		try{
 			img = ImageIO.read(getClass().getResource("SamplePistol.png"));
 		} catch(IOException e){}
-		bi = img;	
-//		this.el = el;
+		bi = img;
 		this.homingLvl = homingLvl;
 		this.range = range;
 	}
 	
-	public void fire() {
+// --------------------------------FIRE METHOD-------------------------------- //
+	
+	public void fire() { //currently fires from center of owner, needs to change
 		//reimplement canFire later but now no cuz funsies
 		if(canFire){
 			lastFired = GamePanel.getUpdateCycle();

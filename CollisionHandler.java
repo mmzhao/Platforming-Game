@@ -1,12 +1,19 @@
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
+//should not use rectangles to check intersection for greater efficiency
+
 public class CollisionHandler {
-	//should not use rectangles to check intersection for greater efficiency
+
+// --------------------------------CONSTRUCTOR-------------------------------- //
+	
 	public CollisionHandler() {
 
 	}
 
+// --------------------------------PLAYER/ATTACK COLLISION-------------------------------- //
+
+	//manages all player collision and weapon collision with all entities
 	public void playerCollision(Player p, Rectangle screen) {
 		p.saveCurrentState();
 		p.resetCollisionState();
@@ -80,9 +87,7 @@ public class CollisionHandler {
 			for (Entity e : GamePanel.getEL().getEntities()) {
 				if (e.makeRect().intersects(p.makeRect())){
 					p.onHit();
-//					System.out.println("eee");
 					if(e instanceof Baddie) ((Baddie) e).takeDamage(p.getDamage());
-//					p.kill();
 				}
 			}
 			if(!p.makeRect().intersects(screen)){
@@ -160,6 +165,7 @@ public class CollisionHandler {
 		}
 	}
 	
+// ----------------------------COLLISION MANAGEMENT FOR ALL OTHER ENTITIES---------------------------- //
 	
 	public void entityCollision(Rectangle screen){
 		for(Baddie b: GamePanel.getEL().getBaddies()){

@@ -7,17 +7,25 @@ import java.util.ArrayList;
 
 public class Projectile extends Movable{
 	
+//	xa: x directional acceleration
+//	ya: y directional acceleration
+//	dmg: damage that this projectile deals upon collision
+//	TERMINAL_VELOCITY: max total (pythag) velocity for a projectile
 	protected double xa;
 	protected double ya;
 	protected int dmg;
 	protected final int TERMINAL_VELOCITY = 24;
 
+// --------------------------------CONSTRUCTOR-------------------------------- //
+	
 	public Projectile(BufferedImage b, double x, double y, double w, double h, double xv, double yv, double xa, double ya, int dmg){
 		super(b, x, y, w, h, true, xv, yv, 0, 0);
 		this.xa = xa;
 		this.ya = ya;
 		this.dmg = dmg;
 	}
+	
+// --------------------------------DRAW METHODS-------------------------------- //
 	
 	public void draw(Graphics g) {
 		draw(g, 0, 0);
@@ -32,6 +40,8 @@ public class Projectile extends Movable{
 		g.fillOval((int)((x - offsetX) * scaleX), (int) ((y - offsetY) * scaleY), (int) (w * scaleX), (int) (h * scaleY));
 	}
 	
+// --------------------------------UPDATE-------------------------------- //
+	
 	public void update(double time){
 		xv += time * xa;
 		yv += time * ya;
@@ -43,6 +53,14 @@ public class Projectile extends Movable{
 		x += time * xv;
 		y += time * yv;
 	}
+	
+// --------------------------------COLLISION METHODS-------------------------------- //
+	
+	public void onHit() {
+		kill();
+	}
+	
+// --------------------------------GET/SET METHODS-------------------------------- //
 
 	public double getXA(){
 		return xa;
@@ -60,7 +78,5 @@ public class Projectile extends Movable{
 		this.dmg = dmg;
 	}
 
-	public void onHit() {
-		kill();
-	}
+
 }

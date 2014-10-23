@@ -7,7 +7,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-
+//NOT FIXED YET NO HOMING
 public class HomingRocket extends Projectile{
 	private int homingLvl;
 	private Baddie b;
@@ -58,7 +58,7 @@ public class HomingRocket extends Projectile{
 			g.fillOval((int) ((getMidX() - 2 - offsetX) * scaleX), (int) ((getMidY() - 2 - offsetY) * scaleY), (int) (4 * scaleY), (int) (4 * scaleY));
 			g.drawOval((int)((getMidX() - offsetX) * scaleX) - (int) (explodeRadius * scaleX), (int) ((getMidY() - offsetY) * scaleY) - (int) (explodeRadius * scaleY), (int) (2 * explodeRadius * scaleX), (int) (2 * explodeRadius * scaleY));
 			g.drawOval((int)((getMidX() - offsetX) * scaleX) - (int) (1.5 * explodeRadius * scaleX), (int) ((getMidY() - offsetY) * scaleY) - (int) (1.5 * explodeRadius * scaleY), (int) (3 * explodeRadius * scaleX), (int) (3 * explodeRadius * scaleY));
-//			g.drawImage(current, (int)((getMidX() - offsetX) * scaleX) - (int) (explodeRadius * scaleX), (int) ((getMidY() - offsetY) * scaleY) - (int) (explodeRadius * scaleY), (int) (2 * explodeRadius * scaleX), (int) (2 * explodeRadius * scaleY), null);
+			g.drawImage(current, (int)((getMidX() - offsetX) * scaleX) - (int) (explodeRadius * scaleX), (int) ((getMidY() - offsetY) * scaleY) - (int) (explodeRadius * scaleY), (int) (2 * explodeRadius * scaleX), (int) (2 * explodeRadius * scaleY), null);
 			return;
 		}
 		

@@ -7,14 +7,26 @@ import javax.imageio.ImageIO;
 
 
 public class Animation {
+//	bi: list of buffered images that are looped through to create animation
+//	spriteMap: sprite map that will be split to make bi
+//	spriteWidth: width of the sprite
+//	spriteHeight: height of the sprite
+//	current: buffered image from bi the animation is currently on
+//	loopTime: amount of time for one loop
+//	elapsedTime: amount of time that has elapsed
+//	started: whether or not the animation has started
+
 	protected BufferedImage[] bi;
 	protected BufferedImage spriteMap;
 	protected int spriteWidth;
 	protected int spriteHeight;
 	protected int current;
-	protected double loopTime; //amount of time for one loop
+	protected double loopTime;
 	protected double elapsedTime;
 	protected boolean started = false;
+	
+	
+// --------------------------------CONSTRUCTOR-------------------------------- //
 	
 	public Animation(String path, int spriteWidth, int spriteHeight, double loopTime){
 		spriteMap = loadImage(path);
@@ -26,6 +38,18 @@ public class Animation {
 		elapsedTime = 0;
 	}
 	
+// --------------------------------SET UP ANIMATION-------------------------------- //	
+	
+	//loads initial sprite map image
+	private BufferedImage loadImage(String path){
+		BufferedImage img = null;
+		try{
+			img = ImageIO.read(getClass().getResource(path));
+		} catch(IOException e){}
+		return img;
+	}
+	
+	//splits spriteMap into buffered images for bi
 	private BufferedImage[] splitImage(BufferedImage spriteMap, int w, int h){
 		int pWidth = spriteMap.getWidth() / w; // width of each sprite
 		int pHeight = spriteMap.getHeight() / h; // height of each sprite
@@ -45,6 +69,9 @@ public class Animation {
 		return sprites;
 	}
 	
+// -----------------------------ANIMATION LOOP CONTROL AND IMAGE FINDING--------------------------- //	
+	
+	//start-stop for animation loop
 	public void start(){
 		if(!started){
 			elapsedTime = 0;
@@ -56,11 +83,8 @@ public class Animation {
 	public void stop(){
 		started = false;
 	}
-	
-	public boolean getStarted(){
-		return started;
-	}
-	
+
+	//finds which buffered image should be shown
 	public BufferedImage loop(double time){
 		elapsedTime += time;
 		if(elapsedTime >= loopTime){
@@ -74,12 +98,11 @@ public class Animation {
 		return bi[current];
 	}
 	
-	private BufferedImage loadImage(String path){
-		BufferedImage img = null;
-		try{
-			img = ImageIO.read(getClass().getResource(path));
-		} catch(IOException e){}
-		return img;
+	
+// ------------------------------GET/SET METHODS------------------------------- //
+	
+	public boolean getStarted(){
+		return started;
 	}
 	
 }

@@ -5,7 +5,15 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public class Movable extends Entity{
-
+	
+//	xv: x directional velocity
+//	yv: y directional velocity
+//	southC: whether or not this movable is collided from below
+//	eastC: whether or not this movable is collided from right
+//	westC: whether or not this movable is collided from left
+//	northC: whether or not this movable is collided from above
+//	health: how much health remains until this movable needs to be removed
+//	facingRight: whether or not this movable is facing right
 	protected double xv;
 	protected double yv;
 	protected boolean southC;
@@ -14,14 +22,19 @@ public class Movable extends Entity{
 	protected boolean northC;
 	protected int health;
 	protected int facingRight;
-	//IMPLEMENT TAKE DMG SOMETIME
 	
-	protected Movable save = null; // for better collision detection
+//	save: save state of this movable used for collision detection
+	protected Movable save = null;
 
+//	GRAVITY: acceleration due to gravity
+//	TIME_UNIT: how much time passes per frame update
+//	TERMINAL_VELOCITY: max velocity for one direction for this movable
 	protected final double GRAVITY = 1; //positive acceleration goes SOUTH and EAST
 	protected final double TIME_UNIT = .7;
-	protected final double TERMINAL_VELOCITY = 5;
+	protected final double TERMINAL_VELOCITY = 10;
 
+// --------------------------------CONTRUCTOR-------------------------------- //
+	
 	public Movable(BufferedImage b, double x, double y, double w, double h, boolean c, double xv, double yv, int health, int facingRight){
 		super(b, x, y, w, h, c);
 		this.facingRight = facingRight;
@@ -36,6 +49,8 @@ public class Movable extends Entity{
 		this.xv = xv;
 		this.yv = yv;
 	}
+
+// --------------------------------DRAW METHODS-------------------------------- //
 	
 	public void draw(Graphics g, int offsetX, int offsetY, double scaleX, double scaleY){
 		
@@ -48,6 +63,8 @@ public class Movable extends Entity{
 	public void draw(Graphics g) {
 		draw(g, 0, 0);
 	}
+	
+// --------------------------------UPDATE-------------------------------- //
 
 	public void update(){
 		update(TIME_UNIT);
@@ -76,6 +93,8 @@ public class Movable extends Entity{
 		x += time * xv;
 		y += time * yv;
 	}
+	
+// --------------------------------COLLISION SAVE STATE METHODS-------------------------------- //
 	
 	public void resetCollisionState(){
 		northC = false;
@@ -114,6 +133,8 @@ public class Movable extends Entity{
 		yv = save.getYV();
 	}
 	
+// --------------------------------LIFE METHODS-------------------------------- //
+	
 	public boolean isAlive(){
 		if(health > 0){
 			return true;
@@ -124,7 +145,13 @@ public class Movable extends Entity{
 	public void takeDamage(int dmg){
 		health -= dmg;
 	}
+	
+// --------------------------------GET/SET METHODS-------------------------------- //
 
+	public double speed(){
+		return Math.pow(xv * xv + yv * yv, .5);
+	}
+	
 	public double getXV(){
 		return xv;
 	}
@@ -187,10 +214,6 @@ public class Movable extends Entity{
 	
 	public int getFacingRight(){
 		return facingRight;
-	}
-	
-	public double speed(){
-		return Math.pow(xv * xv + yv * yv, .5);
 	}
 
 	public double getMouseX() {

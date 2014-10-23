@@ -7,8 +7,13 @@ import java.util.ArrayList;
 
 public class Baddie extends Movable{
 	
+//	current: buffered animation the animcation is currently on
+//	move: the animation for the baddie
+	
 	private BufferedImage current;
 	private Animation move;
+	
+// --------------------------------CONSTRUCTOR-------------------------------- //
 	
 	public Baddie(BufferedImage b, double x, double y, double w, double h, boolean c, double xv, double yv, int health) {
 		super(b, x, y, w, h, true, xv, yv, health, 0);
@@ -17,6 +22,7 @@ public class Baddie extends Movable{
 		current = null;
 	}
 
+// --------------------------------DRAW METHODS-------------------------------- //
 	
 	public void draw(Graphics g) {
 		draw(g, 0, 0);
@@ -29,6 +35,8 @@ public class Baddie extends Movable{
 	public void draw(Graphics g, int offsetX, int offsetY, double scaleX, double scaleY){
 		g.drawImage(current, (int)((x - offsetX) * scaleX), (int) ((y - offsetY) * scaleY), (int) (w * scaleX), (int) (h * scaleY), null);
 	}
+	
+// --------------------------------UPDATE-------------------------------- //
 	
 	public void update(double time){
 //		System.out.println(health);

@@ -4,12 +4,36 @@ import java.awt.image.BufferedImage;
 
 
 public class EmptyShell extends Projectile {
+	
+//	bounce: whether or not the bullet has hit the ground once already
 	protected boolean bounce;
+
+// --------------------------------CONSTRUCTOR-------------------------------- //
 	
 	public EmptyShell(BufferedImage b, double x, double y, double xv, double yv){
 		super(b, x, y, 5, 3, xv, 0, 0, 0, 0);
 		bounce = false;
 	}
+	
+	
+// --------------------------------DRAW METHODS-------------------------------- //
+		
+	public void draw(Graphics g) {
+			draw(g, 0, 0);
+	}
+		
+	public void draw(Graphics g, int offsetX, int offsetY) {
+		draw(g, offsetX, offsetY, 1, 1);
+	}
+	
+	public void draw(Graphics g, int offsetX, int offsetY, double scaleX, double scaleY) {
+		g.setColor(Color.yellow);
+		g.fillRect((int)((x - offsetX) * scaleX), (int) ((y - offsetY) * scaleY), (int) (w * scaleX), (int) (h * scaleY));
+		g.setColor(Color.black);
+		g.drawRect((int)((x - offsetX) * scaleX), (int) ((y - offsetY) * scaleY), (int) (w * scaleX), (int) (h * scaleY));
+	}
+	
+// --------------------------------UPDATE-------------------------------- //
 	
 	public void update(double time){
 		if(xv > TERMINAL_VELOCITY) xv = TERMINAL_VELOCITY;
@@ -39,22 +63,8 @@ public class EmptyShell extends Projectile {
 		yv += time*GRAVITY;
 		y += yv;
 	}
-	
-	public void draw(Graphics g) {
-		draw(g, 0, 0);
-	}
-	
-	public void draw(Graphics g, int offsetX, int offsetY) {
-		draw(g, offsetX, offsetY, 1, 1);
-	}
-	
-	public void draw(Graphics g, int offsetX, int offsetY, double scaleX, double scaleY) {
-		g.setColor(Color.yellow);
-		g.fillRect((int)((x - offsetX) * scaleX), (int) ((y - offsetY) * scaleY), (int) (w * scaleX), (int) (h * scaleY));
-		g.setColor(Color.black);
-		g.drawRect((int)((x - offsetX) * scaleX), (int) ((y - offsetY) * scaleY), (int) (w * scaleX), (int) (h * scaleY));
-	}
-	
+
+// --------------------------------GET/SET METHODS-------------------------------- //
 	
 	public boolean getBounce(){
 		return bounce;

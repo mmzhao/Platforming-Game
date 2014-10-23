@@ -5,12 +5,17 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 public class EntityListener implements KeyListener, MouseListener, MouseMotionListener{
-	
+
+//	entity: entity that is listened to, should be the player
 	private Entity entity;
+	
+// --------------------------------CONTRUCTOR-------------------------------- //
 	
 	public EntityListener(Entity entity) {
 		this.entity = entity;
 	}
+	
+// --------------------------------KEY LISTENING METHODS-------------------------------- //
 	
 	// do while key is released
     public void keyReleased(KeyEvent e) {
@@ -26,6 +31,8 @@ public class EntityListener implements KeyListener, MouseListener, MouseMotionLi
         entity.keyTyped(e);
     }
 
+// --------------------------------MOUSE LISTENER METHODS-------------------------------- //
+    
 	public void mouseClicked(MouseEvent e) {
 //		entity.mouseClicked(e);
 	}

@@ -1,8 +1,9 @@
 import javax.swing.JFrame;
 
 // This is the main entry point..
-
 public class Game extends JFrame {
+	
+// --------------------------------CONTRUCTOR-------------------------------- //
 	
 	public Game() {	
 		int entireW = 1000;
@@ -19,6 +20,8 @@ public class Game extends JFrame {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);	
 	}
+	
+// --------------------------------MAIN METHOD-------------------------------- //
 	
 	public static void main(String[] args) {
 		new Game();
