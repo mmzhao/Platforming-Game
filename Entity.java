@@ -3,6 +3,7 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
 public class Entity {
@@ -15,6 +16,7 @@ public class Entity {
 	protected boolean collidable;
 	protected boolean isPlatform;
 	protected boolean remove;
+	protected boolean activated;
 	
 	private final int PLATFORM_EXTRA = 0;
 
@@ -28,6 +30,7 @@ public class Entity {
 		collidable = c;
 		isPlatform = false;
 		remove = false;
+		activated = false;
 	}
 	
 	public static BufferedImage resize(BufferedImage img, int newW, int newH) { 
@@ -118,6 +121,14 @@ public class Entity {
 		remove = true;
 	}
 	
+	public boolean isActivated(){
+		return activated;
+	}
+	
+	public void activate(){
+		activated = true;
+	}
+	
 	public BufferedImage getImage(){
 		return bi;
 	}
@@ -145,6 +156,24 @@ public class Entity {
     public void keyTyped(KeyEvent e) {
     
     }
+    
+    public void mousePressed(MouseEvent e) {
+		
+	}
+
+	public void mouseReleased(MouseEvent e) {
+		
+	}
+
+	public void mouseMoved(MouseEvent e) {
+		
+	}
+
+	public void mouseDragged(MouseEvent e) {
+		
+	}
+
+	
 
 
 }

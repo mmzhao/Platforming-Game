@@ -19,7 +19,7 @@ public class Movable extends Entity{
 	protected Movable save = null; // for better collision detection
 
 	protected final double GRAVITY = 1; //positive acceleration goes SOUTH and EAST
-	protected final double TIME_UNIT = 1;
+	protected final double TIME_UNIT = .7;
 	protected final double TERMINAL_VELOCITY = 5;
 
 	public Movable(BufferedImage b, double x, double y, double w, double h, boolean c, double xv, double yv, int health, int facingRight){
@@ -187,5 +187,17 @@ public class Movable extends Entity{
 	
 	public int getFacingRight(){
 		return facingRight;
+	}
+	
+	public double speed(){
+		return Math.pow(xv * xv + yv * yv, .5);
+	}
+
+	public double getMouseX() {
+		return 0;
+	}
+	
+	public double getMouseY() {
+		return 0;
 	}
 }

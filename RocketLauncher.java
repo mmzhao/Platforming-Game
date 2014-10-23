@@ -11,7 +11,7 @@ public class RocketLauncher extends Weapon{
 	int range;
 	
 	public RocketLauncher(int range){
-		super("RocketLauncher", null, 200, 1, 20, 100, 3, 0, 5, 100, null);
+		super("RocketLauncher", null, 15, 1, 20, 100, 10, 0, 4, 100, null);
 		BufferedImage img = null;
 		try{
 			img = ImageIO.read(getClass().getResource("SamplePistol.png"));
@@ -23,7 +23,7 @@ public class RocketLauncher extends Weapon{
 	}
 	
 	public RocketLauncher(int homingLvl, int range){
-		super("Pistol", null, 200, 1, 20, 100, 1, 0, 5, 100, null);
+		super("Pistol", null, 15, 1, 20, 100, 20, 0, 20, 100, null);
 		BufferedImage img = null;
 		try{
 			img = ImageIO.read(getClass().getResource("SamplePistol.png"));
@@ -35,12 +35,13 @@ public class RocketLauncher extends Weapon{
 	}
 	
 	public void fire() {
-		//reimplement canFirelater but now no cuz funsies
-//		if(canFire){
-			lastFired = System.currentTimeMillis();
+		//reimplement canFire later but now no cuz funsies
+		if(canFire){
+			lastFired = GamePanel.getUpdateCycle();
 			es.add(new EmptyShell(null, x, y, Math.random() * 5 - 2 , -5));
-			ps.add(new HomingRocket(null, x - 2.5 + facingRight * 10, y - 1, bulletsize, bulletsize, facingRight * velocity, facingRight*accel, damage, homingLvl, range));
-//		}
+			ps.add(new HomingRocket(null, owner.getMidX(), owner.getMidY(), bulletsize, bulletsize, fireX * velocity, fireY * velocity, damage, homingLvl, range));
+//			ps.add(new HomingRocket(null, x - 2.5 - facingRight * 10, y - 1, bulletsize, bulletsize, fireX * velocity, fireY * velocity, damage, homingLvl, range));
+		}
 	}
 
 }

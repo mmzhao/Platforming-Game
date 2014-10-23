@@ -8,12 +8,14 @@ import java.util.ArrayList;
 public class Projectile extends Movable{
 	
 	protected double xa;
+	protected double ya;
 	protected int dmg;
-	protected final int TERMINAL_VELOCITY = 10;
+	protected final int TERMINAL_VELOCITY = 24;
 
-	public Projectile(BufferedImage b, double x, double y, double w, double h, double xv, double xa, int dmg){
-		super(b, x, y, w, h, true, xv, 0, 0, 0);
+	public Projectile(BufferedImage b, double x, double y, double w, double h, double xv, double yv, double xa, double ya, int dmg){
+		super(b, x, y, w, h, true, xv, yv, 0, 0);
 		this.xa = xa;
+		this.ya = ya;
 		this.dmg = dmg;
 	}
 	
@@ -31,9 +33,15 @@ public class Projectile extends Movable{
 	}
 	
 	public void update(double time){
-		if(xv > TERMINAL_VELOCITY) xv = TERMINAL_VELOCITY;
-		x += time * xv;
 		xv += time * xa;
+		yv += time * ya;
+		if(speed() > TERMINAL_VELOCITY){
+			double scale = TERMINAL_VELOCITY / speed();
+			xv *= scale;
+			yv *= scale;
+		}
+		x += time * xv;
+		y += time * yv;
 	}
 
 	public double getXA(){

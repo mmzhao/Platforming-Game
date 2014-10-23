@@ -11,7 +11,7 @@ public class CollisionHandler {
 		p.saveCurrentState();
 		p.resetCollisionState();
 		p.updateC();
-		for (Entity e : GamePanel.getEL().getEntities(screen)) {
+		for (Entity e : GamePanel.getEL().getEntities()) {
 			if (e instanceof Baddie) {
 				if (e.makeRect().intersects(p.makeRect())) {
 					if (!p.isHit()) {
@@ -77,7 +77,7 @@ public class CollisionHandler {
 //			p.saveCurrentState();
 //			p.resetCollisionState();
 //			p.updateC();
-			for (Entity e : GamePanel.getEL().getEntities(screen)) {
+			for (Entity e : GamePanel.getEL().getEntities()) {
 				if (e.makeRect().intersects(p.makeRect())){
 					p.onHit();
 //					System.out.println("eee");
@@ -97,7 +97,7 @@ public class CollisionHandler {
 			es.saveCurrentState();
 			es.resetCollisionState();
 			es.updateC();
-			for (Platform e : GamePanel.getEL().getPlatforms(screen)) {
+			for (Platform e : GamePanel.getEL().getPlatforms()) {
 //				if(e.makeRect().contains(es.getSave().makeRect())){
 //					es.kill();
 //					return;
@@ -162,7 +162,7 @@ public class CollisionHandler {
 	
 	
 	public void entityCollision(Rectangle screen){
-		for(Baddie b: GamePanel.getEL().getBaddies(screen)){
+		for(Baddie b: GamePanel.getEL().getBaddies()){
 			entityCollision(b, screen);
 		}
 	}
@@ -171,7 +171,7 @@ public class CollisionHandler {
 		b.saveCurrentState();
 		b.resetCollisionState();
 		b.updateC();
-		for (Entity e : GamePanel.getEL().getEntities(screen)) {
+		for (Entity e : GamePanel.getEL().getEntities()) {
 			if (e instanceof Platform) {
 				if (e.makeRect().intersects(b.makeRect())) {
 					double distx = Math.abs(b.getSave().getMidX() - e.getMidX())

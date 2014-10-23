@@ -77,21 +77,40 @@ public class EntityList {
 	
 	
 	public ArrayList<Entity> getEntities(){
-		return e;
+		ArrayList<Entity> l = new ArrayList<Entity>();
+		for(int i = 0; i < e.size(); i++){
+			if(e.get(i).isActivated()){
+				l.add(e.get(i));
+			}
+		}
+		return l;
 	}
 	
 	public ArrayList<Platform> getPlatforms(){
-		return p;
+		ArrayList<Platform> l = new ArrayList<Platform>();
+		for(int i = 0; i < p.size(); i++){
+			if(p.get(i).isActivated()){
+				l.add(p.get(i));
+			}
+		}
+		return l;
 	}
 	
 	public ArrayList<Baddie> getBaddies(){
-		return b;
+		ArrayList<Baddie> l = new ArrayList<Baddie>();
+		for(int i = 0; i < b.size(); i++){
+			if(b.get(i).isActivated()){
+				l.add(b.get(i));
+			}
+		}
+		return l;
 	}
 	
 	public ArrayList<Entity> getEntities(Rectangle screen){
 		ArrayList<Entity> l = new ArrayList<Entity>();
 		for(int i = 0; i < e.size(); i++){
 			if(screen.intersects(e.get(i).makeRectExtra())){
+				e.get(i).activate();
 				l.add(e.get(i));
 			}
 		}
@@ -102,6 +121,7 @@ public class EntityList {
 		ArrayList<Platform> l = new ArrayList<Platform>();
 		for(int i = 0; i < p.size(); i++){
 			if(screen.intersects(p.get(i).makeRectExtra())){
+				e.get(i).activate();
 				l.add(p.get(i));
 			}
 		}
@@ -112,6 +132,7 @@ public class EntityList {
 		ArrayList<Baddie> l = new ArrayList<Baddie>();
 		for(int i = 0; i < b.size(); i++){
 			if(screen.intersects(b.get(i).makeRect())){
+				e.get(i).activate();
 				l.add(b.get(i));
 			}
 		}

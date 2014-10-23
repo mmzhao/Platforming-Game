@@ -1,11 +1,15 @@
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.MouseInfo;
+import java.awt.PointerInfo;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+
 import javax.imageio.ImageIO;
 
 public class Player extends Movable {
@@ -14,6 +18,11 @@ public class Player extends Movable {
 	protected boolean isUpHeld = false;
 	protected boolean isHit = false;
 	protected boolean isShooting = false;
+//	protected PointerInfo mouse;
+	protected double mouseX = 0;
+	protected double mouseY = 0;
+	protected double realMouseX = 0;
+	protected double realMouseY = 0;
 	protected long hitTimer = 0;
 //	protected Player save;
 
@@ -58,6 +67,8 @@ public class Player extends Movable {
 	}
 	
 	public void update(double time) {
+//		System.out.println(mouseX + " " + mouseY);
+		setMousePos();
 		
 		if(runningAni.getStarted()){
 			currentImg = runningAni.loop(time);
@@ -124,6 +135,9 @@ public class Player extends Movable {
 			currentWeapon.update(time);
 		}
 		// update projectile list
+		
+		isRightPressed = false;
+		isLeftPressed = false;
 	}
 
 //	public void saveCurrentState() {
@@ -188,6 +202,7 @@ public class Player extends Movable {
 	public void draw(Graphics g, int offsetX, int offsetY, double scaleX, double scaleY){
 		// MAKE HIT COLOR CHANGE FRAMES SOMETIME
 		// making dot to designate facing direction
+		g.drawOval((int)((mouseX - offsetX) * scaleX - 1), (int)((mouseY - offsetY) * scaleY - 1), 2, 2);
 		if (facingRight == 1) {
 			g.drawImage(currentImg, (int) ((x - offsetX) * scaleX), (int) ((y - offsetY) * scaleY), (int) (w * scaleX), (int) (h * scaleY), null, null);
 		} else{
@@ -200,6 +215,29 @@ public class Player extends Movable {
 			}
 			currentWeapon.draw(g, offsetX, offsetY, scaleX, scaleY);
 		}
+	}
+//	
+//	public PointerInfo getMouse(){
+//		return mouse;
+//	}
+//	
+//	public void setMouseLocation(){
+//		mouse = MouseInfo.getPointerInfo();
+//		mouseX = mouse.getLocation().getX();
+//		mouseY = mouse.getLocation().getY();
+//	}
+	
+	public double getMouseX(){
+		return mouseX;
+	}
+	
+	public double getMouseY(){
+		return mouseY;
+	}
+	
+	public void setMousePos(){
+		mouseX = ((double) realMouseX) / GamePanel.getScaleX() + GamePanel.getOffsetX();
+		mouseY = ((double) realMouseY) / GamePanel.getScaleY() + GamePanel.getOffsetY();
 	}
 
 	public void keyPressed(KeyEvent e) {
@@ -295,6 +333,31 @@ public class Player extends Movable {
 			isShooting = false;
 		}
 
+	}
+	
+	public void mousePressed(MouseEvent e) {
+		if(e.getButton() == MouseEvent.BUTTON1){
+			if(currentWeapon != null)
+				isShooting = true;
+		}
+	}
+
+	public void mouseReleased(MouseEvent e) {
+		if(e.getButton() == MouseEvent.BUTTON1){
+			isShooting = false;
+		}
+	}
+	
+	public void mouseDragged(MouseEvent e){
+		realMouseX = e.getX();
+		realMouseY = e.getY();
+		setMousePos();
+	}
+	
+	public void mouseMoved(MouseEvent e){
+		realMouseX = e.getX();
+		realMouseY = e.getY();
+		setMousePos();
 	}
 
 }

@@ -4,12 +4,10 @@ import java.awt.image.BufferedImage;
 
 
 public class EmptyShell extends Projectile {
-	protected double yv;
 	protected boolean bounce;
 	
 	public EmptyShell(BufferedImage b, double x, double y, double xv, double yv){
-		super(b, x, y, 5, 3, xv, 0, 0);
-		this.yv = yv;
+		super(b, x, y, 5, 3, xv, 0, 0, 0, 0);
 		bounce = false;
 	}
 	

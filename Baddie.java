@@ -46,10 +46,11 @@ public class Baddie extends Movable{
 //			h += .1 * h;
 		}
 		double tempXV = xv;
-		if(!southC){
-			xv = 0;
-		}
+//		if(!southC){
+//			xv = 0;
+//		}
 		if(yv > TERMINAL_VELOCITY) yv = TERMINAL_VELOCITY;
+		if(xv > TERMINAL_VELOCITY) xv = TERMINAL_VELOCITY;
 		if(southC){
 			if(yv > 0) yv = 0;
 		}

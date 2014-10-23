@@ -43,7 +43,7 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	private CollisionHandler ch;
 	
-	private Player player;
+	private static Player player;
 	private static EntityList el;
 	
 	private final int EXTRA_SCREEN = 20;
@@ -63,12 +63,12 @@ public class GamePanel extends JPanel implements Runnable{
 	}
 	
 	public GamePanel(int entireW, int entireH, int w, int h, int screenW, int screenH){
-		this.entireW = entireW;
-		this.entireH = entireH;
-		this.w = w;
-		this.h = h;
-		this.screenW = screenW;
-		this.screenH = screenH;
+		GamePanel.entireW = entireW;
+		GamePanel.entireH = entireH;
+		GamePanel.w = w;
+		GamePanel.h = h;
+		GamePanel.screenW = screenW;
+		GamePanel.screenH = screenH;
 		offsetX = 0;
 		offsetY = 0;
 		setScale();
@@ -165,8 +165,8 @@ public class GamePanel extends JPanel implements Runnable{
 //			}
 
 			
-			for(int i = 0; i < es.size(); i++){
-				es.get(i).update();
+			for(int i = 0; i < el.getEntities().size(); i++){
+				el.getEntities().get(i).update();
 			}
 			player.update();
 			setOffset();
@@ -245,9 +245,7 @@ public class GamePanel extends JPanel implements Runnable{
 		dbg.drawString(updateCycle + "", 50, 50);
 		dbg.drawString(updateCycle/((System.currentTimeMillis() - startTime)/1000 + 1) + "", 50, 75);
 		dbg.drawString("updateTime: " + (int) ((double)updateTime/(((double)System.currentTimeMillis() - (double)startTime) + 1) * 100) + ",  renderTime: " + (int) ((double)renderTime/((double)(System.currentTimeMillis() - (double)startTime) + 1) * 100) + ", paintTime:  " + (int) ((double)paintTime/(((double)System.currentTimeMillis() - (double)startTime) + 1) * 100), 50, 100);
-		
-//		player.draw(dbg, offsetX, offsetY);
-		player.draw(dbg, offsetX, offsetY, scaleX, scaleY);
+
 		if(player.getCurrentWeapon() != null){
 			for(Projectile p: player.getCurrentWeapon().getProjectiles()){
 //				p.draw(dbg, offsetX, offsetY);
@@ -258,6 +256,9 @@ public class GamePanel extends JPanel implements Runnable{
 //			e.draw(dbg, offsetX, offsetY);
 			e.draw(dbg, offsetX, offsetY, scaleX, scaleY);
 		}
+		
+//		player.draw(dbg, offsetX, offsetY);
+		player.draw(dbg, offsetX, offsetY, scaleX, scaleY);
 		
 		
 		// draw game elements
@@ -293,7 +294,7 @@ public class GamePanel extends JPanel implements Runnable{
 		addKeyListener(new KeyAdapter(){
 			public void keyPressed(KeyEvent e){
 				int keyCode = e.getKeyCode();
-				if((keyCode == KeyEvent.VK_ESCAPE) || (keyCode == KeyEvent.VK_Q)){
+				if(keyCode == KeyEvent.VK_ESCAPE){
 					running = false;
 				}
 				if((keyCode == KeyEvent.VK_R)){
@@ -351,11 +352,11 @@ public class GamePanel extends JPanel implements Runnable{
 		GamePanel.el = el;
 	}
 	
-	public void setPlayer(Player p){
+	public static void setPlayer(Player p){
 		player = p;
 	}
 	
-	public Player getPlayer(){
+	public static Player getPlayer(){
 		return player;
 	}
 	
@@ -399,10 +400,28 @@ public class GamePanel extends JPanel implements Runnable{
 		
 		ch = new CollisionHandler();
 		this.addKeyListener(new EntityListener(player));
+		this.addMouseListener(new EntityListener(player));
+		this.addMouseMotionListener(new EntityListener(player));
 	}
 	
 	public static long getUpdateCycle(){
 		return updateCycle;
+	}
+	
+	public static double getScaleX(){
+		return scaleX;
+	}
+	
+	public static double getScaleY(){
+		return scaleY;
+	}
+	
+	public static int getOffsetX(){
+		return offsetX;
+	}
+	
+	public static int getOffsetY(){
+		return offsetY;
 	}
 	
 }

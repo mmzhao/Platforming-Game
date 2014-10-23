@@ -61,8 +61,9 @@ public class Map {
 					g.setPlayer(new Player(g.loadImage("Standing.png"), j * 5, i * 5, 20, 20, 100, null));
 				}
 				else if(map[i][j] == 'B'){
-					GamePanel.getEL().addEntity(new Baddie(null, j * 5, i * 5, 20, 20, true, -3 * Math.pow(-1, (int) (Math.random() * 2)), 0, 1000000));
-				}
+//					GamePanel.getEL().addEntity(new Baddie(null, j * 5, i * 5, 20, 20, true, -3 * Math.pow(-1, (int) (Math.random() * 2)), 0, 1000000));
+					GamePanel.getEL().addEntity(new Baddie(null, j * 5, i * 5, 20, 20, true, 0, 0, 1000000));
+					}
 				else if(map[i][j] == 'P'){
 //					GamePanel.getEL().addEntity((new Platform(null, j * 5, i * 5, 5, 5)));
 					int length = 1;

@@ -3,6 +3,8 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+import javax.swing.text.Position;
+
 public class Weapon extends Item{
 	
 	protected ArrayList<Projectile> ps;
@@ -18,6 +20,7 @@ public class Weapon extends Item{
 	protected int bulletsize;
 	protected int damage;
 	protected boolean canFire;
+	protected double fireX, fireY;
 	
 	protected int numBullets;
 	protected long startReload;
@@ -44,7 +47,13 @@ public class Weapon extends Item{
 		startReload = 0;
 	}
 	
+//	public void setAim(double x, double y){
+//		aimX = x;
+//		aimY = y;
+//	}
+	
 	public void update(double time){
+		updateFireVector();
 		if(GamePanel.getUpdateCycle()-lastFired <= firerate)
 			canFire = false;
 		else if(numBullets == 0)
@@ -116,12 +125,29 @@ public class Weapon extends Item{
 		}
 	}
 	
-	public void fire() { 
+	public void fire() {
 //		if(canFire){
 			lastFired = GamePanel.getUpdateCycle();
 			es.add(new EmptyShell(null, x, y, Math.random() * 5 - 2 , -5));
-			ps.add(new Projectile(null, x - 2.5 + facingRight * 10, y - 1, bulletsize, bulletsize, facingRight * velocity, facingRight*accel, damage));
+			ps.add(new Projectile(null, owner.getMidX(), owner.getMidY(), bulletsize, bulletsize, fireX * velocity, fireY * velocity, fireX * accel, fireY * accel, damage));
+//			ps.add(new Projectile(null, x - 2.5 - facingRight * 10, y - 1, bulletsize, bulletsize, fireX * velocity, fireY * velocity, fireX * accel, fireY * accel, damage));
+//			ps.add(new Projectile(null, x - 2.5 + facingRight * 10, y - 1, bulletsize, bulletsize, facingRight * velocity, facingRight*accel, damage));
+			
 //		}
+	}
+	
+	public void updateFireVector(){
+//		System.out.println(owner.getMouseY() + " " + getMidY());
+//		double difX = owner.getMouseX() - (x - 2.5 + facingRight * 10);
+//		double difY = owner.getMouseY() - (y - 1);
+		double difX = owner.getMouseX() - owner.getMidX();
+		double difY = owner.getMouseY() - owner.getMidY();
+		double magnitude = Math.pow(difX * difX +  difY * difY, .5);
+		fireX = difX / magnitude;
+		fireY = difY / magnitude;
+//		System.out.println(fireX);
+//		System.out.println(fireY);
+//		System.out.println();
 	}
 	
 	public void updateProjectiles() {
