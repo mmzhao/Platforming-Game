@@ -18,7 +18,8 @@ public class Game extends JFrame {
 		GamePanel panel = new GamePanel(entireW, entireH, w, h, screenW, screenH);
 		add(panel);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		setVisible(true);	
+		setVisible(true);
+		pack();
 	}
 	
 // --------------------------------MAIN METHOD-------------------------------- //

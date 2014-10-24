@@ -147,14 +147,16 @@ public class Rocket extends Projectile{
 		}
 		
 		else if(m instanceof Player){
-			double changeX = xdif/dif * knockBack + (xdif)/Math.abs(xdif) * 2;
-			if(changeX * m.getXV() > 0){
-				m.setXV(m.getXV() + changeX);
-			}
-			else{
-				m.setXV(changeX);
-			}
-			m.setYV(Math.min(m.getYV() + ydif/dif * knockBack * 3 - 5, ydif/dif * knockBack * 3 - 10));
+			double changeX = xdif/dif * knockBack + (xdif)/Math.abs(xdif) * 5;
+//			if(changeX * m.getXV() > 0){
+//				m.setXV(m.getXV() + changeX);
+//			}
+//			else{
+//				m.setXV(changeX);
+//			}
+			m.setXV(changeX);
+			m.setYV(ydif/dif * knockBack * 3 - 5);
+//			m.setYV(Math.min(m.getYV() + ydif/dif * knockBack * 3 - 5, ydif/dif * knockBack * 3 - 5));
 		}
 	}
 	

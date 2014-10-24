@@ -22,7 +22,7 @@ public class CollisionHandler {
 			if (e instanceof Baddie) {
 				if (e.makeRect().intersects(p.makeRect())) {
 					if (!p.isHit()) {
-						p.setIsHit(true);;
+						p.setIsHit(true);
 						p.setHitTimer(System.currentTimeMillis());
 					}
 				}
@@ -32,6 +32,10 @@ public class CollisionHandler {
 							- p.getSave().getW() / 2 - e.getW() / 2;
 					double disty = Math.abs(p.getSave().getMidY() - e.getMidY())
 							- p.getSave().getH() / 2 - e.getH() / 2;
+					if(disty < 0 && -disty < Map.UNIT){
+						p.getSave().setY(p.getSave().getY() + disty);
+						p.setY(p.getY() + disty);
+					}
 					if (distx < 0 && disty < 0) {
 						if (distx > disty) {
 							distx = 0;
@@ -184,6 +188,10 @@ public class CollisionHandler {
 							- b.getSave().getW() / 2 - e.getW() / 2;
 					double disty = Math.abs(b.getSave().getMidY() - e.getMidY())
 							- b.getSave().getH() / 2 - e.getH() / 2;
+					if(disty < 0 && -disty < Map.UNIT){
+						b.getSave().setY(b.getSave().getY() + disty);
+						b.setY(b.getY() + disty);
+					}
 					if (distx < 0 && disty < 0) {
 						if (distx > disty) {
 							distx = 0;

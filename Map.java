@@ -30,6 +30,8 @@ public class Map {
 	String bg1;
 	String bg2;
 	
+	public static final int UNIT = 5;
+	
 // --------------------------------CONSTRUCTOR-------------------------------- //
 	
 	public Map(String f) throws IOException{

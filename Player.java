@@ -13,17 +13,22 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
 public class Player extends Movable {
-	
-//	isRightHeld: whether or not right move button is held
-//	isLeftHeld: whether or not left move button is held
-//	isUpHeld: whether or not up move button is held
-//	isHit: whether or not player is currently collided with a baddie
-//	isShooting: whether or not the player is currently firing his weapon
-//	mouseX: x position (420 by 330) of the mouse relative to the game panel
-//	mouseY: y position (420 by 330) of the mouse relative to the game panel
-//	realMouseX: actual on screen x position of the mouse relative to the game panel
-//	realMouseY: actual on screen y position of the mouse relative to the game panel
-//	hitTimer: timer that keeps track of most recent time the player has been hit by a baddie
+
+	protected double xa, ya;
+
+	// isRightHeld: whether or not right move button is held
+	// isLeftHeld: whether or not left move button is held
+	// isUpHeld: whether or not up move button is held
+	// isHit: whether or not player is currently collided with a baddie
+	// isShooting: whether or not the player is currently firing his weapon
+	// mouseX: x position (420 by 330) of the mouse relative to the game panel
+	// mouseY: y position (420 by 330) of the mouse relative to the game panel
+	// realMouseX: actual on screen x position of the mouse relative to the game
+	// panel
+	// realMouseY: actual on screen y position of the mouse relative to the game
+	// panel
+	// hitTimer: timer that keeps track of most recent time the player has been
+	// hit by a baddie
 	protected boolean isRightHeld = false;
 	protected boolean isLeftHeld = false;
 	protected boolean isUpHeld = false;
@@ -35,112 +40,125 @@ public class Player extends Movable {
 	protected double realMouseY = 0;
 	protected long hitTimer = 0;
 
-//	runningAni: animation for when the player is running
-//	standingImg: image used when the player is standing still
-//	currentImg: image that should be currently drawn to the screen
+	// runningAni: animation for when the player is running
+	// standingImg: image used when the player is standing still
+	// currentImg: image that should be currently drawn to the screen
 	protected Animation runningAni;
 	protected BufferedImage standingImg;
 	protected BufferedImage currentImg;
 
-//	currentWeapon: weapon that the player is currently using
-//	standardStep: magnitude of velocity player gets when presses left or right move keys
-//	isRightPressed: whether or not the right move key is pressed this frame
-//	isLeftPressed: whether or not the left move key is pressed this frame
+	// currentWeapon: weapon that the player is currently using
+	// standardStep: magnitude of velocity player gets when presses left or
+	// right move keys
+	// accelSpeed: a measure of how past the player will accelerate to standard
+	// step speed
+	// isRightPressed: whether or not the right move key is pressed this frame
+	// isLeftPressed: whether or not the left move key is pressed this frame
 	protected Weapon currentWeapon;
-	protected int standardStep;
+	protected double standardStep;
+	protected double accelSpeed;
 	protected boolean isRightPressed = false;
 	protected boolean isLeftPressed = false;
 
-//	AIR_RESISTANCE: factor by which movement is reduced in air
+	// AIR_RESISTANCE: factor by which movement is reduced in air
 	private final double AIR_RESISTANCE = .5;
+	private final double TERMINAL_VELOCITY_X = 15;
+	private final double TERMINAL_VELOCITY_Y = 15;
 
-// --------------------------------CONSTRUCTOR-------------------------------- //
-	
-	public Player(BufferedImage b, double x, double y, double w, double h, int health, Weapon currentWeapon) {
+	// --------------------------------CONSTRUCTOR-------------------------------- //
+
+	public Player(BufferedImage b, double x, double y, double w, double h,
+			int health, Weapon currentWeapon) {
 		super(b, x, y, w, h, true, 0, 0, health, 1);
 		standingImg = b;
 		currentImg = b;
 		this.currentWeapon = currentWeapon;
-		standardStep = 5;
+		standardStep = 6; //only reaches ~4 when standard step is 5
+		accelSpeed = .04;
 		runningAni = new Animation("Running.png", 6, 2, 3);
 	}
 
-	public Player(BufferedImage b, double x, double y, double w, double h,
-			double xv, double yv) {
-		super(b, x, y, w, h, xv, yv);
-		currentWeapon = null;
-		standardStep = 5;
-	}
-	
-// --------------------------------DRAW METHODS-------------------------------- //
-	
-	public void draw(Graphics g){
+	// --------------------------------DRAW METHODS-------------------------------- //
+
+	public void draw(Graphics g) {
 		draw(g, 0, 0);
 	}
-	
-	public void draw(Graphics g, int offsetX, int offsetY){
+
+	public void draw(Graphics g, int offsetX, int offsetY) {
 		draw(g, offsetX, offsetY, 1, 1);
 	}
-	
-	public void draw(Graphics g, int offsetX, int offsetY, double scaleX, double scaleY){
+
+	public void draw(Graphics g, int offsetX, int offsetY, double scaleX,
+			double scaleY) {
 		// MAKE HIT COLOR CHANGE FRAMES SOMETIME
 		// making dot to designate facing direction
-		g.drawOval((int)((mouseX - offsetX) * scaleX - 1), (int)((mouseY - offsetY) * scaleY - 1), 2, 2);
+		g.drawOval((int) ((mouseX - offsetX) * scaleX - 1),
+				(int) ((mouseY - offsetY) * scaleY - 1), 2, 2);
 		if (facingRight == 1) {
-			g.drawImage(currentImg, (int) ((x - offsetX) * scaleX), (int) ((y - offsetY) * scaleY), (int) (w * scaleX), (int) (h * scaleY), null, null);
-		} else{
-			g.drawImage(currentImg, (int)((x + (int)w - offsetX) * scaleX), (int)((y - offsetY) * scaleY), -(int) (w * scaleX), (int) (h * scaleY), null, null);
+			g.drawImage(currentImg, (int) ((x - offsetX) * scaleX),
+					(int) ((y - offsetY) * scaleY), (int) (w * scaleX),
+					(int) (h * scaleY), null, null);
+		} else {
+			g.drawImage(currentImg, (int) ((x + (int) w - offsetX) * scaleX),
+					(int) ((y - offsetY) * scaleY), -(int) (w * scaleX),
+					(int) (h * scaleY), null, null);
 		}
-				
-		if(currentWeapon != null){
-			for(int i = 0; i < currentWeapon.getProjectiles().size(); i++){
-				currentWeapon.getProjectiles().get(i).draw(g, offsetX, offsetY, scaleX, scaleY);
+
+		if (currentWeapon != null) {
+			for (int i = 0; i < currentWeapon.getProjectiles().size(); i++) {
+				currentWeapon.getProjectiles().get(i)
+						.draw(g, offsetX, offsetY, scaleX, scaleY);
 			}
 			currentWeapon.draw(g, offsetX, offsetY, scaleX, scaleY);
 		}
 	}
 
-// --------------------------------UPDATE-------------------------------- //
-	
+	// --------------------------------UPDATE-------------------------------- //
+
 	public void update(double time) {
-//		System.out.println(mouseX + " " + mouseY);
+//		System.out.println(System.currentTimeMillis() % 10000 + ": " + xv);
+		xa = 0;
+		// System.out.println(xv);
+		// System.out.println(mouseX + " " + mouseY);
 		setMousePos();
-		
-		if(runningAni.getStarted()){
+
+		if (runningAni.getStarted()) {
 			currentImg = runningAni.loop(time);
-		}
-		else{
+		} else {
 			currentImg = standingImg;
 		}
-		if(!(isRightPressed && isLeftPressed)){
-			if(isRightPressed && !isLeftPressed){
-				facingRight = 1;
-			}
-			else if(isLeftPressed && !isRightPressed){
-				facingRight = -1;
+		
+		if (isRightHeld && !isLeftHeld) {
+			xa = completeAccel();
+			facingRight = 1;
+			if (southC)
+				runningAni.start();
+		} else if (isLeftHeld && !isRightHeld) {
+			xa = -completeAccel();
+			facingRight = -1;
+			if (southC)
+				runningAni.start();
+		}
+		
+		if (xa == 0) {
+			if (southC) {
+				xa = -(double) (xv + .001) / Math.abs(xv + .001) * stoppingFriction();
+			} else {
+				xa = -(double) .1 * (xv + .001) / Math.abs(xv + .001) * stoppingFriction();
 			}
 		}
-		if (!(isRightHeld && isLeftHeld)) {
-			if (isRightHeld && !isLeftHeld) {
-				xv = standardStep;
-				facingRight = 1;
-				if(southC)
-					runningAni.start();
-			} else if (isLeftHeld && !isRightHeld) {
-				xv = -standardStep;
-				facingRight = -1;
-				if(southC)
-					runningAni.start();
-			}
-		}
+		xv += xa * time;
+
 		if (southC) {
 			if (yv > 0)
 				yv = 0;
-			if(isUpHeld){
-				yv = -9; //if this line not commented out, can jump up platform uppersides
-				//currently 1 less magnitude than "space key" jump velocity
+			if (isUpHeld) {
+				yv = -9; // if this line not commented out, can jump up platform
+							// uppersides
+				// currently 1 less magnitude than "space key" jump velocity
 			}
-		} else
+		} 
+		else
 			yv += time * GRAVITY;
 		if (eastC) {
 			if (xv > 0)
@@ -150,35 +168,52 @@ public class Player extends Movable {
 			if (xv < 0)
 				xv = 0;
 		}
-		if (northC) { //FIX THIS
+		if (northC) {
 			if (yv < 0)
 				yv = 0;
 		}
-		if (yv > TERMINAL_VELOCITY)
-			yv = TERMINAL_VELOCITY;
-		if(!southC){
-			x += time * xv * .8;
-		}
-		else{
-			x += time * xv;
-		}
-		y += time * yv;
+		if (Math.abs(xv) > TERMINAL_VELOCITY_X)
+			xv = TERMINAL_VELOCITY_X * xv / Math.abs(xv);
+		if (Math.abs(yv) > TERMINAL_VELOCITY_Y)
+			yv = TERMINAL_VELOCITY_Y * yv / Math.abs(yv);
 		
-		if (isShooting){
+		if(!(isRightHeld || isLeftHeld) && Math.abs(xv * time) < 1){
+			xv = 0;
+		}
+		
+		x += time * xv;
+		y += time * yv;
+
+		if (isShooting) {
 			currentWeapon.fire();
 		}
-		if(currentWeapon != null){
+		if (currentWeapon != null) {
 			currentWeapon.update(time);
 		}
 		// update projectile list
-		
+
 		isRightPressed = false;
 		isLeftPressed = false;
 	}
-	
-// --------------------------------COLLISION METHODS-------------------------------- //
-	
-	public void resetCollisionState(){
+
+	public double completeAccel() {// (C1 - v)^2/C1*C2
+		double accel = (standardStep - facingRight * xv) * accelSpeed;
+		if(accel > 0) return accel;
+		return 0;
+		// return (double)(Math.pow(standardStep - Math.abs(xv), 2)/
+		// standardStep / accelSpeed);
+	}
+
+	public double stoppingFriction() {// (v^2 - 2v*C1)/C1*C2
+		if(isLeftHeld || isRightHeld){
+			return (Math.abs(xv)) * accelSpeed;
+		}
+		return (Math.abs(xv)) * accelSpeed * 5;
+	}
+
+	// --------------------------------COLLISION METHODS-------------------------------- //
+
+	public void resetCollisionState() {
 		northC = false;
 		eastC = false;
 		southC = false;
@@ -202,77 +237,82 @@ public class Player extends Movable {
 		y += time * yv;
 	}
 
-// --------------------------------GET/SET METHODS-------------------------------- //
-	
-	public Weapon getCurrentWeapon(){
+	// --------------------------------GET/SET METHODS-------------------------------- //
+
+	public Weapon getCurrentWeapon() {
 		return currentWeapon;
 	}
-	
-	public void giveCurrentWeapon(Weapon w){
+
+	public void giveCurrentWeapon(Weapon w) {
 		currentWeapon = w;
 		w.setOwner(this);
 	}
-	
-	public void setHitTimer(long t){
+
+	public void setHitTimer(long t) {
 		hitTimer = t;
 	}
-	
-	public boolean isHit(){
+
+	public boolean isHit() {
 		return isHit;
 	}
-	
-	public void setIsHit(boolean hit){
+
+	public void setIsHit(boolean hit) {
 		isHit = hit;
 	}
 
-
-	public double getMouseX(){
+	public double getMouseX() {
 		return mouseX;
 	}
-	
-	public double getMouseY(){
+
+	public double getMouseY() {
 		return mouseY;
 	}
-	
-	public void setMousePos(){
-		mouseX = ((double) realMouseX) / GamePanel.getScaleX() + GamePanel.getOffsetX();
-		mouseY = ((double) realMouseY) / GamePanel.getScaleY() + GamePanel.getOffsetY();
+
+	public void setMousePos() {
+		mouseX = ((double) realMouseX) / GamePanel.getScaleX()
+				+ GamePanel.getOffsetX();
+		mouseY = ((double) realMouseY) / GamePanel.getScaleY()
+				+ GamePanel.getOffsetY();
 	}
 
-// --------------------------------KEY/MOUSE LISTENER METHODS-------------------------------- //
-	
+	// --------------------------------KEY/MOUSE LISTENER METHODS-------------------------------- //
+
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
-		
-//		if (key == KeyEvent.VK_LEFT) {
-//			isLeftHeld = true;
-//			isLeftPressed = true;
-//			setXV(-5);
-//
-//		}
-//
-//		else if (key == KeyEvent.VK_RIGHT) {
-//			isRightHeld = true;
-//			isRightPressed = true;
-//			setXV(5);
-//		}
-//
-//		else if (key == KeyEvent.VK_UP) {
-//			isUpHeld = true;
-//			if (southC)
-//				setYV(-10);
-//		}
+
+		// if (key == KeyEvent.VK_LEFT) {
+		// isLeftHeld = true;
+		// isLeftPressed = true;
+		// setXV(-5);
+		//
+		// }
+		//
+		// else if (key == KeyEvent.VK_RIGHT) {
+		// isRightHeld = true;
+		// isRightPressed = true;
+		// setXV(5);
+		// }
+		//
+		// else if (key == KeyEvent.VK_UP) {
+		// isUpHeld = true;
+		// if (southC)
+		// setYV(-10);
+		// }
 
 		if (key == KeyEvent.VK_A) {
 			isLeftHeld = true;
 			isLeftPressed = true;
-			setXV(-5);
+			isRightHeld = false;
+			isLeftPressed = false;
+			// setXV(-5);
 		}
 
 		else if (key == KeyEvent.VK_D) {
 			isRightHeld = true;
 			isRightPressed = true;
-			setXV(5);
+			isLeftHeld = false;
+			isLeftPressed = true;
+			// setXV(5);
 		}
 
 		else if (key == KeyEvent.VK_W) {
@@ -280,17 +320,17 @@ public class Player extends Movable {
 			if (southC)
 				setYV(-10);
 		}
-//
-//		else if (key == KeyEvent.VK_SPACE) {
-//			if(currentWeapon != null)
-//				isShooting = true;
-////			shoot();
-//		}
-		
+		//
+		// else if (key == KeyEvent.VK_SPACE) {
+		// if(currentWeapon != null)
+		// isShooting = true;
+		// // shoot();
+		// }
+
 		else if (key == KeyEvent.VK_T) {
-			if(currentWeapon != null)
+			if (currentWeapon != null)
 				currentWeapon.reload();
-//			shoot();
+			// shoot();
 		}
 
 	}
@@ -298,64 +338,64 @@ public class Player extends Movable {
 	public void keyReleased(KeyEvent e) {
 		int key = e.getKeyCode();
 
-//		if (key == KeyEvent.VK_LEFT) {
-//			runningAni.stop();
-//			isLeftHeld = false;
-//			setXV(0);
-//		}
-//
-//		else if (key == KeyEvent.VK_RIGHT) {
-//			runningAni.stop();
-//			isRightHeld = false;
-//			setXV(0);
-//		}
-//
-//		else if (key == KeyEvent.VK_UP) {
-//			isUpHeld = false;
-//		}
+		// if (key == KeyEvent.VK_LEFT) {
+		// runningAni.stop();
+		// isLeftHeld = false;
+		// setXV(0);
+		// }
+		//
+		// else if (key == KeyEvent.VK_RIGHT) {
+		// runningAni.stop();
+		// isRightHeld = false;
+		// setXV(0);
+		// }
+		//
+		// else if (key == KeyEvent.VK_UP) {
+		// isUpHeld = false;
+		// }
 
 		if (key == KeyEvent.VK_A) {
 			runningAni.stop();
 			isLeftHeld = false;
-			setXV(0);
+			// setXV(0);
 		}
 
 		else if (key == KeyEvent.VK_D) {
 			runningAni.stop();
 			isRightHeld = false;
-			setXV(0);
+			// setXV(0);
 		}
 
 		else if (key == KeyEvent.VK_W) {
 			isUpHeld = false;
 		}
 
-//		else if (key == KeyEvent.VK_SPACE) {
-//			isShooting = false;
-//		}
+		// else if (key == KeyEvent.VK_SPACE) {
+		// isShooting = false;
+		// }
 
 	}
-	
+
 	public void mousePressed(MouseEvent e) {
-		if(e.getButton() == MouseEvent.BUTTON1){
-			if(currentWeapon != null)
+		if (e.getButton() == MouseEvent.BUTTON1) {
+			if (currentWeapon != null)
 				isShooting = true;
 		}
 	}
 
 	public void mouseReleased(MouseEvent e) {
-		if(e.getButton() == MouseEvent.BUTTON1){
+		if (e.getButton() == MouseEvent.BUTTON1) {
 			isShooting = false;
 		}
 	}
-	
-	public void mouseDragged(MouseEvent e){
+
+	public void mouseDragged(MouseEvent e) {
 		realMouseX = e.getX();
 		realMouseY = e.getY();
 		setMousePos();
 	}
-	
-	public void mouseMoved(MouseEvent e){
+
+	public void mouseMoved(MouseEvent e) {
 		realMouseX = e.getX();
 		realMouseY = e.getY();
 		setMousePos();
