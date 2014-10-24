@@ -1,11 +1,14 @@
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
+import java.awt.MediaTracker;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.Transparency;
 import java.awt.event.KeyAdapter;
@@ -13,11 +16,19 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+///SVC Libraries
+
+import org.apache.batik.transcoder.Transcoder;
+import org.apache.batik.transcoder.TranscoderInput;
+import org.apache.batik.transcoder.TranscoderOutput;
+import org.apache.batik.transcoder.image.PNGTranscoder;
+import org.apache.commons.io.output.ByteArrayOutputStream;
 
 public class GamePanel extends JPanel implements Runnable{
 	
@@ -53,11 +64,11 @@ public class GamePanel extends JPanel implements Runnable{
 	
 //	dbg: graphics of the game
 //	dbImage: image that is drawn to the screen for the painting part of the game loop
-	private Graphics dbg;
+	private Graphics db;
 	private Image dbImage = null;
 
 //	Background: Not moving, Background2: Moving
-	private BufferedImage background;
+	private Image background;
 	private BufferedImage background2;
 	
 //	period: forced minimum time in milliseconds between frames, fps ~ 1000/period
@@ -124,8 +135,8 @@ public class GamePanel extends JPanel implements Runnable{
 		Map testm = new Map("src/Map1.txt");
 		testm.initializeMap(this);
 		
-//		player = new Player(loadImage("Standing.png"), 100, 50, 20, 20, 100, null);
-//		//player.giveCurrentWeapon(new Pistol());
+		player = new Player(loadImage("Standing.png"), 100, 50, 20, 20, 100, null);
+		//player.giveCurrentWeapon(new Pistol());
 //		el = new EntityList();
 //		ArrayList<Entity> es = new ArrayList<Entity>();
 //		es.add(new Platform(null, 50, 200, 200, 20));
@@ -143,7 +154,8 @@ public class GamePanel extends JPanel implements Runnable{
 
 		
 //		Testing backgrounds
-		background = loadImage("Background3.png");
+		background = transcodeSVGDocument(this.getClass().getResource("BackgroundSample.svg"), screenW, screenH);
+//		background = loadImage("Background3.png");
 		background2 = loadImage("Background2.png");
 		
 		final RocketLauncher rl = new RocketLauncher((int) Math.pow(w/2 * w/2 + h/2 * h/2, .5));
@@ -272,11 +284,19 @@ public class GamePanel extends JPanel implements Runnable{
 			return;
 		}
 		else{
-			dbg = dbImage.getGraphics();
+			db = dbImage.getGraphics();
 		}
+		Graphics2D dbg = (Graphics2D) db;
+		RenderingHints rh = new RenderingHints(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		RenderingHints rh2 = new RenderingHints( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		dbg.setRenderingHints(rh);
+		dbg.setRenderingHints(rh2);
+		dbg.setColor(Color.white);
+		dbg.fillRect(0, 0, screenW, screenH);
 		dbg.drawImage(background,0, 0, screenW, screenH, null, null);
 		dbg.drawImage(background2, 0, 0, screenW, screenH, 0 + getOffsetX(), 0, screenW + getOffsetX(), 506, null);
-//		dbg.fillRect(0, 0, w, h);
+		dbg.setColor(Color.green);
+		dbg.fillRect(300, 300, 1, 1);
 		
 		dbg.setColor(Color.black);
 		dbg.drawString(updateCycle + "", 50, 50);
@@ -442,6 +462,54 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	public static int getOffsetY(){
 		return offsetY;
+	}
+	
+	
+	///
+	
+	
+	public static Image transcodeSVGDocument(URL url, int x, int y ){
+	    // Create a PNG transcoder.
+	    Transcoder t = new PNGTranscoder();
+
+	    // Set the transcoding hints.
+	    t.addTranscodingHint( PNGTranscoder.KEY_WIDTH,  new Float(x) );
+	    t.addTranscodingHint( PNGTranscoder.KEY_HEIGHT, new Float(y) );
+
+	    // Create the transcoder input.
+	    TranscoderInput input = new TranscoderInput(url.toString());
+
+	    ByteArrayOutputStream ostream = null;
+	    try {
+	        // Create the transcoder output.
+	        ostream = new ByteArrayOutputStream();
+	        TranscoderOutput output = new TranscoderOutput( ostream );
+
+	        // Save the image.
+	        t.transcode( input, output );
+
+	        // Flush and close the stream.
+	        ostream.flush();
+	        ostream.close();
+	    } catch( Exception ex ){
+	        ex.printStackTrace();
+	    }
+
+	    // Convert the byte stream into an image.
+	    byte[] imgData = ostream.toByteArray();
+	    Image img = Toolkit.getDefaultToolkit().createImage( imgData );
+
+	    // Wait until the entire image is loaded.
+	    MediaTracker tracker = new MediaTracker( new JPanel() );
+	    tracker.addImage( img, 0 );
+	    try {
+	        tracker.waitForID( 0 );
+	    } catch( InterruptedException ex ){
+	        ex.printStackTrace();
+	    }
+
+	    // Return the newly rendered image.
+	    return img;
 	}
 	
 }
