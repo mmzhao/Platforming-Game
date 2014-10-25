@@ -15,7 +15,7 @@ public class RocketLauncher extends Weapon{
 // --------------------------------CONSTRUCTOR-------------------------------- //
 	
 	public RocketLauncher(int range){
-		super("RocketLauncher", null, 15, 1, 20, 100, 10, 0, 4, 100, null);
+		super("RocketLauncher", null, 15, 1, 25, 100, 10, 0, 6, 100, null);
 		BufferedImage img = null;
 		try{
 			img = ImageIO.read(getClass().getResource("SamplePistol.png"));

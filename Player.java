@@ -116,6 +116,7 @@ public class Player extends Movable {
 	// --------------------------------UPDATE-------------------------------- //
 
 	public void update(double time) {
+//		System.out.println(x + " " + y);
 //		System.out.println(System.currentTimeMillis() % 10000 + ": " + xv);
 		xa = 0;
 		// System.out.println(xv);

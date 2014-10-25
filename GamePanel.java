@@ -135,8 +135,8 @@ public class GamePanel extends JPanel implements Runnable{
 		Map testm = new Map("src/Map1.txt");
 		testm.initializeMap(this);
 		
-		player = new Player(loadImage("Standing.png"), 100, 50, 20, 20, 100, null);
-		//player.giveCurrentWeapon(new Pistol());
+//		player = new Player(loadImage("Standing.png"), 100, 50, 20, 20, 100, null);
+//		player.giveCurrentWeapon(new Pistol());
 //		el = new EntityList();
 //		ArrayList<Entity> es = new ArrayList<Entity>();
 //		es.add(new Platform(null, 50, 200, 200, 20));
