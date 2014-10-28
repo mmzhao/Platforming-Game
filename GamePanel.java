@@ -146,7 +146,7 @@ public class GamePanel extends JPanel implements Runnable{
 //		es.add(new Platform(null, 80 + 140 + 350, 140, 350, 20));
 //		Baddie baddie1 = new Baddie(null, 150, 100, 20, 20, true, -3, 0, 1000000);
 //		Baddie baddie2 = new Baddie(null, 200, 100, 20, 20, true, 0, 0, 1000000);
-//		Baddie baddie3 = new Baddie(null, 600, 100, 20, 20, true, 0, 0, 1000000);
+//		Baddie baddie3 = new Baddie(null, 600, 100, 20, 20, true, 0w, 0, 1000000);
 //		es.add(baddie1);
 //		es.add(baddie2);
 //		es.add(baddie3);
