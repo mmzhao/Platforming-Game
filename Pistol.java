@@ -18,4 +18,8 @@ public class Pistol extends Weapon{
 		bi = img;	
 	}
 	
+	public Pistol(BufferedImage img){
+		super("Pistol", null, 5, 1, 20, 1000, 20, .25, 5, 1, null);
+		bi = img;	
+	}
 }

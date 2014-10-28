@@ -1,7 +1,9 @@
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Shape;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
@@ -31,15 +33,25 @@ public class Rocket extends Projectile{
 	private final int TERMINAL_VELOCITY = 20;
 	private final static long LIFE_DURATION = 2000;
 	
+	
+	///
+	private double angle;
+	protected AffineTransform  at;
+	
 // --------------------------------CONTRUCTOR-------------------------------- //	
 	
-	public Rocket(BufferedImage b, double x, double y, double w, double h, double xv, double yv, int dmg) {
+	public Rocket(BufferedImage b, double x, double y, double w, double h, double xv, double yv, int dmg, double angle) {
 		super(b, x, y, w, h, xv, yv, 0, 0, dmg);
 		explodeTimer = -2000;
 		explode = false;
 		explosion = Explosions.getRandom();
-		explodeRadius = 20;
+		explodeRadius = 50;
 		knockBack = 5;
+		bi = ImageGetter.getSVG("Rocket.svg", 411, 194, this);
+		this.angle = angle;
+		at = new AffineTransform();
+        at.translate(x, y);
+        
 	}
 	
 // --------------------------------DRAW METHODS-------------------------------- //
@@ -51,16 +63,18 @@ public class Rocket extends Projectile{
 	public void draw(Graphics g, int offsetX, int offsetY, double scaleX, double scaleY) {
 		if(explode){
 			g.setColor(Color.black);
-			g.fillOval((int) ((getMidX() - 2 - offsetX) * scaleX), (int) ((getMidY() - 2 - offsetY) * scaleY), (int) (4 * scaleY), (int) (4 * scaleY));
-			g.drawOval((int)((getMidX() - offsetX) * scaleX) - (int) (explodeRadius * scaleX), (int) ((getMidY() - offsetY) * scaleY) - (int) (explodeRadius * scaleY), (int) (2 * explodeRadius * scaleX), (int) (2 * explodeRadius * scaleY));
-			g.drawOval((int)((getMidX() - offsetX) * scaleX) - (int) (1.5 * explodeRadius * scaleX), (int) ((getMidY() - offsetY) * scaleY) - (int) (1.5 * explodeRadius * scaleY), (int) (3 * explodeRadius * scaleX), (int) (3 * explodeRadius * scaleY));
+			//g.fillOval((int) ((getMidX() - 2 - offsetX) * scaleX), (int) ((getMidY() - 2 - offsetY) * scaleY), (int) (4 * scaleY), (int) (4 * scaleY));
+			//g.drawOval((int)((getMidX() - offsetX) * scaleX) - (int) (explodeRadius * scaleX), (int) ((getMidY() - offsetY) * scaleY) - (int) (explodeRadius * scaleY), (int) (2 * explodeRadius * scaleX), (int) (2 * explodeRadius * scaleY));
+			//g.drawOval((int)((getMidX() - offsetX) * scaleX) - (int) (1.5 * explodeRadius * scaleX), (int) ((getMidY() - offsetY) * scaleY) - (int) (1.5 * explodeRadius * scaleY), (int) (3 * explodeRadius * scaleX), (int) (3 * explodeRadius * scaleY));
 			g.drawImage(current, (int)((getMidX() - offsetX) * scaleX) - (int) (explodeRadius * scaleX), (int) ((getMidY() - offsetY) * scaleY) - (int) (explodeRadius * scaleY), (int) (2 * explodeRadius * scaleX), (int) (2 * explodeRadius * scaleY), null);
 			return;
 		}
-		
-		g.setColor(Color.blue);
-		g.drawLine((int) ((x - offsetX + w/2) * scaleX), (int) ((y - offsetY + h/2) * scaleY), (int) ((x - offsetX + w/2 - xv * 3) * scaleX), (int) ((y - offsetY + h/2 - yv * 3) * scaleY));
-		g.fillOval((int) ((x - offsetX) * scaleX), (int) ((y - offsetY) * scaleY), (int) (w * scaleX), (int) (h * scaleY));
+		at.setToRotation(angle, (x - offsetX) * scaleX ,(y - offsetY) * scaleY);
+		Graphics2D newGraphics = (Graphics2D)g.create();
+		newGraphics.setTransform(at);
+		//g.setColor(Color.blue);
+		//g.drawLine((int) ((x - offsetX + w/2) * scaleX), (int) ((y - offsetY + h/2) * scaleY), (int) ((x - offsetX + w/2 - xv * 3) * scaleX), (int) ((y - offsetY + h/2 - yv * 3) * scaleY));
+		newGraphics.drawImage(bi, (int) ((x - offsetX) * scaleX), (int) ((y - offsetY) * scaleY), (int) (15 * scaleX), (int) (10 * scaleY), null);
 	}
 	
 // --------------------------------UPDATE-------------------------------- //

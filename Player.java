@@ -64,6 +64,10 @@ public class Player extends Movable {
 	private final double AIR_RESISTANCE = .5;
 	private final double TERMINAL_VELOCITY_X = 15;
 	private final double TERMINAL_VELOCITY_Y = 15;
+	
+	
+	///
+	private int runningdir = 0;
 
 	// --------------------------------CONSTRUCTOR-------------------------------- //
 
@@ -73,9 +77,9 @@ public class Player extends Movable {
 		standingImg = b;
 		currentImg = b;
 		this.currentWeapon = currentWeapon;
-		standardStep = 6; //only reaches ~4 when standard step is 5
+		standardStep = 7; //only reaches ~4 when standard step is 5
 		accelSpeed = .04;
-		runningAni = new Animation("Running.png", 6, 2, 3);
+		runningAni = new Animation("Running2.svg", 1171, 474, 6, 2, 3);
 	}
 
 	// --------------------------------DRAW METHODS-------------------------------- //
@@ -118,6 +122,8 @@ public class Player extends Movable {
 	public void update(double time) {
 //		System.out.println(x + " " + y);
 //		System.out.println(System.currentTimeMillis() % 10000 + ": " + xv);
+		//System.out.println("y" + (y + h));
+		//System.out.println("x" + x);
 		xa = 0;
 		// System.out.println(xv);
 		// System.out.println(mouseX + " " + mouseY);
@@ -130,16 +136,20 @@ public class Player extends Movable {
 		}
 		
 		if (isRightHeld && !isLeftHeld) {
+			runningdir = -1;
 			xa = completeAccel();
-			facingRight = 1;
 			if (southC)
 				runningAni.start();
 		} else if (isLeftHeld && !isRightHeld) {
+			runningdir = 1;
 			xa = -completeAccel();
-			facingRight = -1;
 			if (southC)
 				runningAni.start();
 		}
+		
+		facingRight = 1;
+		if(mouseX - x < 0)
+			facingRight = -1;
 		
 		if (xa == 0) {
 			if (southC) {
@@ -198,7 +208,7 @@ public class Player extends Movable {
 	}
 
 	public double completeAccel() {// (C1 - v)^2/C1*C2
-		double accel = (standardStep - facingRight * xv) * accelSpeed;
+		double accel = (standardStep + runningdir * xv) * accelSpeed;
 		if(accel > 0) return accel;
 		return 0;
 		// return (double)(Math.pow(standardStep - Math.abs(xv), 2)/

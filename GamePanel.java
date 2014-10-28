@@ -68,7 +68,7 @@ public class GamePanel extends JPanel implements Runnable{
 	private Image dbImage = null;
 
 //	Background: Not moving, Background2: Moving
-	private Image background;
+	private BufferedImage background;
 	private BufferedImage background2;
 	
 //	period: forced minimum time in milliseconds between frames, fps ~ 1000/period
@@ -135,7 +135,7 @@ public class GamePanel extends JPanel implements Runnable{
 		Map testm = new Map("src/Map1.txt");
 		testm.initializeMap(this);
 		
-//		player = new Player(loadImage("Standing.png"), 100, 50, 20, 20, 100, null);
+//		player = new Player(ImageGetter.getSVG("Standing2.svg", 832, 1080, this), 100, 93, 47, 60, 100, null);
 //		player.giveCurrentWeapon(new Pistol());
 //		el = new EntityList();
 //		ArrayList<Entity> es = new ArrayList<Entity>();
@@ -154,12 +154,12 @@ public class GamePanel extends JPanel implements Runnable{
 
 		
 //		Testing backgrounds
-		background = transcodeSVGDocument(this.getClass().getResource("BackgroundSample.svg"), screenW, screenH);
+		background = ImageGetter.getSVG("BackgroundSample.svg", screenW, screenH, this);
 //		background = loadImage("Background3.png");
-		background2 = loadImage("Background2.png");
+		background2 = ImageGetter.getSVG("Background.svg", entireW * 2, entireH * 2, this);
 		
 		final RocketLauncher rl = new RocketLauncher((int) Math.pow(w/2 * w/2 + h/2 * h/2, .5));
-		final Pistol p = new Pistol();
+		final Pistol p = new Pistol(ImageGetter.getSVG("Revolver.svg", 568, 234, this));
 		player.giveCurrentWeapon(rl);
 		
 		addKeyListener(new KeyAdapter(){
@@ -291,12 +291,13 @@ public class GamePanel extends JPanel implements Runnable{
 		RenderingHints rh2 = new RenderingHints( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		dbg.setRenderingHints(rh);
 		dbg.setRenderingHints(rh2);
+		
 		dbg.setColor(Color.white);
 		dbg.fillRect(0, 0, screenW, screenH);
 		dbg.drawImage(background,0, 0, screenW, screenH, null, null);
-		dbg.drawImage(background2, 0, 0, screenW, screenH, 0 + getOffsetX(), 0, screenW + getOffsetX(), 506, null);
-		dbg.setColor(Color.green);
-		dbg.fillRect(300, 300, 1, 1);
+		//dbg.drawImage(background2,0, 0, screenW, screenH, null, null);
+		dbg.drawImage(background2, 0, 0, screenW, screenH, getOffsetX() * 2, getOffsetY() * 2, screenW + getOffsetX() * 2, screenH + getOffsetY() * 2, null);
+		//dbg.drawImage(background2, 0, 0, screenW, screenH, 0 + getOffsetX(), 0 + getOffsetY(), (int)((screenW + getOffsetX()) * scaleX), (int)((screenH + getOffsetY()) * scaleY), null);
 		
 		dbg.setColor(Color.black);
 		dbg.drawString(updateCycle + "", 50, 50);
@@ -311,7 +312,9 @@ public class GamePanel extends JPanel implements Runnable{
 		}
 		for(Entity e: el.getEntities(getCurrScreen())){
 //			e.draw(dbg, offsetX, offsetY);
-			e.draw(dbg, offsetX, offsetY, scaleX, scaleY);
+			if(e instanceof Baddie){
+				e.draw(dbg, offsetX, offsetY, scaleX, scaleY);
+			}
 		}
 		
 //		player.draw(dbg, offsetX, offsetY);
@@ -468,48 +471,6 @@ public class GamePanel extends JPanel implements Runnable{
 	///
 	
 	
-	public static Image transcodeSVGDocument(URL url, int x, int y ){
-	    // Create a PNG transcoder.
-	    Transcoder t = new PNGTranscoder();
-
-	    // Set the transcoding hints.
-	    t.addTranscodingHint( PNGTranscoder.KEY_WIDTH,  new Float(x) );
-	    t.addTranscodingHint( PNGTranscoder.KEY_HEIGHT, new Float(y) );
-
-	    // Create the transcoder input.
-	    TranscoderInput input = new TranscoderInput(url.toString());
-
-	    ByteArrayOutputStream ostream = null;
-	    try {
-	        // Create the transcoder output.
-	        ostream = new ByteArrayOutputStream();
-	        TranscoderOutput output = new TranscoderOutput( ostream );
-
-	        // Save the image.
-	        t.transcode( input, output );
-
-	        // Flush and close the stream.
-	        ostream.flush();
-	        ostream.close();
-	    } catch( Exception ex ){
-	        ex.printStackTrace();
-	    }
-
-	    // Convert the byte stream into an image.
-	    byte[] imgData = ostream.toByteArray();
-	    Image img = Toolkit.getDefaultToolkit().createImage( imgData );
-
-	    // Wait until the entire image is loaded.
-	    MediaTracker tracker = new MediaTracker( new JPanel() );
-	    tracker.addImage( img, 0 );
-	    try {
-	        tracker.waitForID( 0 );
-	    } catch( InterruptedException ex ){
-	        ex.printStackTrace();
-	    }
-
-	    // Return the newly rendered image.
-	    return img;
-	}
+	
 	
 }

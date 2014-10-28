@@ -1,5 +1,7 @@
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -41,6 +43,10 @@ public class Weapon extends Item{
 	protected int numBullets;
 	protected long startReload;
 	protected boolean reloading = false;
+	protected AffineTransform  at;
+	
+	protected double pivotX = 0;
+	protected double pivotY = 0;
 	
 // --------------------------------CONSTRUCTOR-------------------------------- //
 
@@ -63,6 +69,9 @@ public class Weapon extends Item{
 		
 		numBullets = clipsize;
 		startReload = 0;
+		at = new AffineTransform();
+        at.translate(x, y);
+        
 	}
 	
 // --------------------------------DRAW METHODS-------------------------------- //
@@ -76,10 +85,15 @@ public class Weapon extends Item{
 	}
 	
 	public void draw(Graphics g, int offsetX, int offsetY, double scaleX, double scaleY){
+		pivotX = (x - offsetX) * scaleX + facingRight * w/2;
+		pivotY =  (y - offsetY) * scaleY + h/2;
+		at.setToRotation(getAngle(), pivotX, pivotY);
+		Graphics2D newGraphics = (Graphics2D)g.create();
+		newGraphics.setTransform(at);
 		if (facingRight == 1) {
-			g.drawImage(super.bi, (int)((x - offsetX) * scaleX), (int)((y - offsetY) * scaleY), (int)(w * scaleX), (int)(h * scaleY), null, null);
+			newGraphics.drawImage(super.bi, (int)((x - offsetX) * scaleX), (int)((y - offsetY) * scaleY), (int)(w * scaleX), (int)(h * scaleY), null, null);
 		} else{
-			g.drawImage(super.bi, (int)((x + (int)w/6 - offsetX) * scaleX), (int)((y - offsetY) * scaleY), -(int)(w * scaleX),(int)(h * scaleY), null, null);
+			newGraphics.drawImage(super.bi, (int)((x - offsetX) * scaleX), (int)((y - offsetY) * scaleY + h), (int)(w * scaleX), -(int)(h * scaleY), null, null);
 		}
 		for(int i = 0; i < es.size(); i++){
 			es.get(i).draw(g, offsetX, offsetY, scaleX, scaleY);
@@ -103,11 +117,12 @@ public class Weapon extends Item{
 		}
 		if(owner != null){
 			facingRight = owner.getFacingRight();
-			w = owner.getW()/2;
-			h = owner.getH()/2;
-			x = owner.getX() + 9;
-			y = owner.getY() + 3*(int)h/4;
-			x += facingRight * w;
+			w = 58;
+			h = 15;
+			x = owner.getMidX() - w/2;
+			if(facingRight == -1)
+				x += 3*w/2;
+			y = owner.getMidY() - 2*owner.getH()/5;
 		}
 		else{
 			x = 0;
@@ -126,6 +141,13 @@ public class Weapon extends Item{
 		updateEmptyShells();
 	}
 	
+	public double getAngle(){
+		double angle = Math.atan(fireY/fireX);
+		if(facingRight == -1)
+			angle += Math.PI;
+		return angle;
+	}
+	
 	public void updateReload(){
 		if(GamePanel.getUpdateCycle() < startReload + reloadSpeed){}
 		else{
@@ -139,7 +161,7 @@ public class Weapon extends Item{
 //		double difX = owner.getMouseX() - (x - 2.5 + facingRight * 10);
 //		double difY = owner.getMouseY() - (y - 1);
 		double difX = owner.getMouseX() - owner.getMidX();
-		double difY = owner.getMouseY() - owner.getMidY();
+		double difY = owner.getMouseY() - y;
 		double magnitude = Math.pow(difX * difX +  difY * difY, .5);
 		fireX = difX / magnitude;
 		fireY = difY / magnitude;
