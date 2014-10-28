@@ -30,7 +30,7 @@ public class Rocket extends Projectile{
 //	TERMINAL_VELOCITY: max magnitude of velocity (x and y combined)
 //	LIFE_DURATION: number of milliseconds that this projectile stays before exploding
 	private final String[] EXPLOSIONS = {"DarknessExplosion", "Explosion1", "Explosion2", "Explosion3", "IceExplosion"};
-	private final int TERMINAL_VELOCITY = 20;
+	private final int TERMINAL_VELOCITY = 200;
 	private final static long LIFE_DURATION = 2000;
 	
 	
@@ -45,13 +45,12 @@ public class Rocket extends Projectile{
 		explodeTimer = -2000;
 		explode = false;
 		explosion = Explosions.getRandom();
-		explodeRadius = 50;
+		explodeRadius = 70;
 		knockBack = 5;
 		bi = ImageGetter.getSVG("Rocket.svg", 411, 194, this);
 		this.angle = angle;
 		at = new AffineTransform();
         at.translate(x, y);
-        
 	}
 	
 // --------------------------------DRAW METHODS-------------------------------- //

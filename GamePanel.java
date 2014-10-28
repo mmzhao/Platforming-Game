@@ -136,7 +136,7 @@ public class GamePanel extends JPanel implements Runnable{
 		Map testm = new Map("src/Map1.txt");
 		testm.initializeMap(this);
 		
-		player = new Player(ImageGetter.getSVG("Standing2.svg", 832, 1080, this), 100, 93, 47, 60, 100, null);
+		player = new Player(ImageGetter.getSVG("Standing2.svg", 832, 1080, this), 100, 93, 43, 70, 100, null);
 		//player.giveCurrentWeapon(new Pistol());
 //		el = new EntityList();
 //		ArrayList<Entity> es = new ArrayList<Entity>();
@@ -147,7 +147,7 @@ public class GamePanel extends JPanel implements Runnable{
 //		es.add(new Platform(null, 80 + 140 + 350, 140, 350, 20));
 //		Baddie baddie1 = new Baddie(null, 150, 100, 20, 20, true, -3, 0, 1000000);
 //		Baddie baddie2 = new Baddie(null, 200, 100, 20, 20, true, 0, 0, 1000000);
-//		Baddie baddie3 = new Baddie(null, 600, 100, 20, 20, true, 0, 0, 1000000);
+//		Baddie baddie3 = new Baddie(null, 600, 100, 20, 20, true, 0w, 0, 1000000);
 //		es.add(baddie1);
 //		es.add(baddie2);
 //		es.add(baddie3);

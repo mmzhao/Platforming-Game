@@ -85,7 +85,9 @@ public class Weapon extends Item{
 	}
 	
 	public void draw(Graphics g, int offsetX, int offsetY, double scaleX, double scaleY){
-		pivotX = (x - offsetX) * scaleX + facingRight * w/2;
+		pivotX = (x - offsetX) * scaleX + w/2;
+		if(facingRight == -1)
+			pivotX -= 3*w/2;
 		pivotY =  (y - offsetY) * scaleY + h/2;
 		at.setToRotation(getAngle(), pivotX, pivotY);
 		Graphics2D newGraphics = (Graphics2D)g.create();

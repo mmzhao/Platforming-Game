@@ -60,7 +60,7 @@ public class Map {
 					continue;
 				}
 				else if(map[i][j] == 'M'){
-					GamePanel.setPlayer(new Player(g.loadImage("Standing.png"), j * 5, i * 5, 20, 20, 100, null));
+					//GamePanel.setPlayer(new Player(g.loadImage("Standing.png"), j * 5, i * 5, 20, 20, 100, null));
 				}
 				else if(map[i][j] == 'B'){
 //					GamePanel.getEL().addEntity(new Baddie(null, j * 5, i * 5, 20, 20, true, -3 * Math.pow(-1, (int) (Math.random() * 2)), 0, 1000000));
