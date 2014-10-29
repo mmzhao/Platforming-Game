@@ -68,6 +68,8 @@ public class Player extends Movable {
 	
 	///
 	private int runningdir = 0;
+	
+	protected final double minChange = 1;
 
 	// --------------------------------CONSTRUCTOR-------------------------------- //
 
@@ -192,8 +194,16 @@ public class Player extends Movable {
 			xv = 0;
 		}
 		
-		x += time * xv;
-		y += time * yv;
+		//don't move if not enough change, also implemented in weapon
+		double newX = x + time * xv;
+		double newY = y + time * yv;
+		if(Math.abs(newX - x) > minChange){
+			x = newX;
+		}
+		if(Math.abs(newY - y) > minChange){
+			y = newY;
+		}
+		
 
 		if (isShooting) {
 			currentWeapon.fire();

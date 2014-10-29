@@ -155,7 +155,7 @@ public class Rocket extends Projectile{
 		
 		if(m instanceof Baddie){
 			m.setXV(m.getXV() + xdif/dif * knockBack);
-			m.setYV(Math.min(m.getYV() + ydif/dif * knockBack - 15, ydif/dif * knockBack - 15));
+			m.setYV(Math.min(m.getYV() + ydif/dif * knockBack - 10, ydif/dif * knockBack - 10));
 			return;
 		}
 		

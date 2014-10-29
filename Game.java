@@ -17,6 +17,7 @@ public class Game extends JFrame {
 		setTitle("Game Frame"); 
 		GamePanel panel = new GamePanel(entireW, entireH, w, h, screenW, screenH);
 		add(panel);
+		panel.setDoubleBuffered(true);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
 		pack();

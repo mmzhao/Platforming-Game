@@ -48,6 +48,8 @@ public class Weapon extends Item{
 	protected double pivotX = 0;
 	protected double pivotY = 0;
 	
+	protected final double minChange = 1;
+	
 // --------------------------------CONSTRUCTOR-------------------------------- //
 
 	public Weapon(String name, BufferedImage b, int firerate, int facingRight, int clipsize, int reloadSpeed, double velocity,
@@ -72,6 +74,10 @@ public class Weapon extends Item{
 		at = new AffineTransform();
         at.translate(x, y);
         
+
+		w = 58;
+		h = 15;
+        
 	}
 	
 // --------------------------------DRAW METHODS-------------------------------- //
@@ -85,13 +91,35 @@ public class Weapon extends Item{
 	}
 	
 	public void draw(Graphics g, int offsetX, int offsetY, double scaleX, double scaleY){
-		pivotX = (x - offsetX) * scaleX + w/2;
-		if(facingRight == -1)
-			pivotX -= 3*w/2;
-		pivotY =  (y - offsetY) * scaleY + h/2;
+//		System.out.println(getMidX());
+//		System.out.println(getMidY());
+//		System.out.println(x);
+//		System.out.println(y);
+//		System.out.println(w);
+//		System.out.println(h);
+//		System.out.println();
+//		pivotX = (x - offsetX) * scaleX + w/2;
+//		if(facingRight == -1)
+//			pivotX -= 3*w/2;
+//		pivotY =  (y - offsetY) * scaleY + h/2;
+		
+//		double newPivotX = (getMidX() - offsetX) * scaleX;
+//		double newPivotY = (getMidY() - offsetY) * scaleY;
+//		if(Math.abs(newPivotX - pivotX) > Math.abs(minChange * scaleX)){
+//			pivotX = newPivotX;
+//		}
+//		if(Math.abs(newPivotY - pivotY) > Math.abs(minChange * scaleX)){
+//			pivotY = newPivotY;
+//		}
+		
+		pivotX = (getMidX() - offsetX) * scaleX;
+		pivotY =  (getMidY() - offsetY) * scaleY;
+
 		at.setToRotation(getAngle(), pivotX, pivotY);
+		
 		Graphics2D newGraphics = (Graphics2D)g.create();
 		newGraphics.setTransform(at);
+		
 		if (facingRight == 1) {
 			newGraphics.drawImage(super.bi, (int)((x - offsetX) * scaleX), (int)((y - offsetY) * scaleY), (int)(w * scaleX), (int)(h * scaleY), null, null);
 		} else{
@@ -118,13 +146,29 @@ public class Weapon extends Item{
 			updateReload();
 		}
 		if(owner != null){
-			facingRight = owner.getFacingRight();
-			w = 58;
-			h = 15;
-			x = owner.getMidX() - w/2;
+//			facingRight = owner.getFacingRight();
+//			x = owner.getMidX() - w/2;
+			double newX = owner.getMidX() - w/2;
+			double newY = owner.getMidY() - 2*owner.getH()/5;
 			if(facingRight == -1)
-				x += 3*w/2;
-			y = owner.getMidY() - 2*owner.getH()/5;
+				newY -= w/7;
+			if(Math.abs(newX - x) > Math.abs(minChange)){
+				x = newX;
+			}
+			if(Math.abs(newY - y) > Math.abs(minChange)){
+				y = newY;
+			}
+//			x = owner.getMidX() - w/2;
+//			y = owner.getMidY() - 2*owner.getH()/5;
+
+//			System.out.println(owner.getMidX());
+//			System.out.println(owner.getMidY());
+//			System.out.println(x);
+//			System.out.println(y);
+//			System.out.println(w);
+//			System.out.println(h);
+//			System.out.println();
+			
 		}
 		else{
 			x = 0;
@@ -165,8 +209,22 @@ public class Weapon extends Item{
 		double difX = owner.getMouseX() - owner.getMidX();
 		double difY = owner.getMouseY() - y;
 		double magnitude = Math.pow(difX * difX +  difY * difY, .5);
+//		double newFireX = difX / magnitude;
+//		double newFireY = difY / magnitude;
+//		if(Math.abs(newFireX - fireX) > Math.abs(minChange)){
+//			fireX = newFireX;
+//		}
+//		if(Math.abs(newFireY - fireY) > Math.abs(minChange)){
+//			fireY = newFireY;
+//		}
 		fireX = difX / magnitude;
 		fireY = difY / magnitude;
+		if(fireX < 0){
+			facingRight = -1;
+		}
+		else{
+			facingRight = 1;
+		}
 //		System.out.println(fireX);
 //		System.out.println(fireY);
 //		System.out.println();

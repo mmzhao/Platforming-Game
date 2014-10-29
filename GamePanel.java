@@ -272,11 +272,11 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	public void gameRender(){
 		if(dbImage == null){
-//			dbImage = createImage(screenW, screenH);
-			GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		    GraphicsDevice device = env.getDefaultScreenDevice();
-		    GraphicsConfiguration config = device.getDefaultConfiguration();
-		    dbImage = config.createCompatibleImage(screenW, screenH, Transparency.TRANSLUCENT);
+			dbImage = createImage(screenW, screenH);
+//			GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+//		    GraphicsDevice device = env.getDefaultScreenDevice();
+//		    GraphicsConfiguration config = device.getDefaultConfiguration();
+//		    dbImage = config.createCompatibleImage(screenW, screenH, Transparency.TRANSLUCENT);
 //			dbImage = createImage(w, h);
 		}
 		if(dbImage == null){
@@ -287,10 +287,12 @@ public class GamePanel extends JPanel implements Runnable{
 			db = dbImage.getGraphics();
 		}
 		Graphics2D dbg = (Graphics2D) db;
-		RenderingHints rh = new RenderingHints(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-		RenderingHints rh2 = new RenderingHints( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		dbg.setRenderingHints(rh);
-		dbg.setRenderingHints(rh2);
+		dbg.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		dbg.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+	    dbg.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+	    dbg.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+	    dbg.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+	    
 		
 		dbg.setColor(Color.white);
 		dbg.fillRect(0, 0, screenW, screenH);
@@ -299,6 +301,8 @@ public class GamePanel extends JPanel implements Runnable{
 		dbg.drawImage(background2, 0, 0, screenW, screenH, getOffsetX() * 2, getOffsetY() * 2, screenW + getOffsetX() * 2, screenH + getOffsetY() * 2, null);
 		//dbg.drawImage(background2, 0, 0, screenW, screenH, 0 + getOffsetX(), 0 + getOffsetY(), (int)((screenW + getOffsetX()) * scaleX), (int)((screenH + getOffsetY()) * scaleY), null);
 		
+		
+//		dbg.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		dbg.setColor(Color.black);
 		dbg.drawString(updateCycle + "", 50, 50);
 		dbg.drawString(updateCycle/((System.currentTimeMillis() - startTime)/1000 + 1) + "", 50, 75);

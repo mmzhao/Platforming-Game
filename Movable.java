@@ -29,7 +29,7 @@ public class Movable extends Entity{
 //	GRAVITY: acceleration due to gravity
 //	TIME_UNIT: how much time passes per frame update
 //	TERMINAL_VELOCITY: max velocity for one direction for this movable
-	protected final double GRAVITY = 1; //positive acceleration goes SOUTH and EAST
+	protected final double GRAVITY = .5; //positive acceleration goes SOUTH and EAST
 	protected final double TIME_UNIT = .7;
 	protected final double TERMINAL_VELOCITY = 10;
 
