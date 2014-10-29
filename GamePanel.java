@@ -270,13 +270,13 @@ public class GamePanel extends JPanel implements Runnable{
 	}
 	
 	
-	public void gameRender(){
+	public void gameRender(){ //use the graphics environment for more efficiency
 		if(dbImage == null){
-			dbImage = createImage(screenW, screenH);
-//			GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
-//		    GraphicsDevice device = env.getDefaultScreenDevice();
-//		    GraphicsConfiguration config = device.getDefaultConfiguration();
-//		    dbImage = config.createCompatibleImage(screenW, screenH, Transparency.TRANSLUCENT);
+//			dbImage = createImage(screenW, screenH);
+			GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		    GraphicsDevice device = env.getDefaultScreenDevice();
+		    GraphicsConfiguration config = device.getDefaultConfiguration();
+		    dbImage = config.createCompatibleImage(screenW, screenH, Transparency.TRANSLUCENT);
 //			dbImage = createImage(w, h);
 		}
 		if(dbImage == null){
@@ -287,11 +287,11 @@ public class GamePanel extends JPanel implements Runnable{
 			db = dbImage.getGraphics();
 		}
 		Graphics2D dbg = (Graphics2D) db;
-		dbg.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-		dbg.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-	    dbg.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-	    dbg.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-	    dbg.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+//		dbg.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+//		dbg.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+//	    dbg.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+//	    dbg.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+//	    dbg.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
 	    
 		
 		dbg.setColor(Color.white);
