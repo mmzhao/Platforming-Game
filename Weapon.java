@@ -269,6 +269,13 @@ public class Weapon extends Item{
 		return angle;
 	}
 	
+	public double getAngle(int facingRight){
+		double angle = Math.atan(fireY/fireX);
+		if(facingRight == -1)
+			angle += Math.PI;
+		return angle;
+	}
+	
 	public ArrayList<Projectile> getProjectiles() {
 		return ps;
 	}

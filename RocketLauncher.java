@@ -41,7 +41,7 @@ public class RocketLauncher extends Weapon{
 //			es.add(new EmptyShell(null, x, y, Math.random() * 5 - 2 , -5));
 			double exitX = getMidX() + Math.cos(getAngle()) * w / 2 - owner.facingRight * 15;
 			double exitY = getMidY() + Math.sin(getAngle()) * w / 2 - owner.facingRight * 9;
-			ps.add(new Rocket(null, (int)(owner.getMidX()), (int)(owner.getMidY()), bulletsize, bulletsize, fireX * velocity, fireY * velocity, damage, super.getAngle()));
+			ps.add(new Rocket(null, (int)(owner.getMidX()), (int)(owner.getMidY()), bulletsize, bulletsize, fireX * velocity, fireY * velocity, damage, getAngle(facingRight)));
 //			ps.add(new Rocket(null, owner.getMidX(), y, bulletsize, bulletsize, fireX * velocity, fireY * velocity, damage, super.getAngle()));
 //			ps.add(new HomingRocket(null, x - 2.5 - facingRight * 10, y - 1, bulletsize, bulletsize, fireX * velocity, fireY * velocity, damage, homingLvl, range));
 		}
