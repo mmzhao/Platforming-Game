@@ -13,8 +13,7 @@ public class Projectile extends Movable{
 //	timer: set to initial time that the rocket was created
 //	TERMINAL_VELOCITY: max total (pythag) velocity for a projectile
 //	LIFE_DURATION: number of milliseconds that this projectile stays before dying
-	protected double xa;
-	protected double ya;
+	protected Vector a;
 	protected int dmg;
 	protected long timer;
 	protected final int TERMINAL_VELOCITY = 24;
@@ -24,8 +23,7 @@ public class Projectile extends Movable{
 	
 	public Projectile(BufferedImage b, double x, double y, double w, double h, double xv, double yv, double xa, double ya, int dmg){
 		super(b, x, y, w, h, true, xv, yv, 0, 0);
-		this.xa = xa;
-		this.ya = ya;
+		this.a = new Vector(xa, ya);
 		this.dmg = dmg;
 		timer = System.currentTimeMillis();
 	}
@@ -52,15 +50,12 @@ public class Projectile extends Movable{
 			kill();
 		}
 		
-		xv += time * xa;
-		yv += time * ya;
-		if(speed() > TERMINAL_VELOCITY){
-			double scale = TERMINAL_VELOCITY / speed();
-			xv *= scale;
-			yv *= scale;
+		v.add(a.scale(time));
+		if(v.magnitude() > TERMINAL_VELOCITY){
+			v = v.scale(TERMINAL_VELOCITY / v.magnitude());
 		}
-		x += time * xv;
-		y += time * yv;
+		x += time * v.getCX();
+		y += time * v.getCY();
 	}
 	
 // --------------------------------COLLISION METHODS-------------------------------- //
@@ -71,12 +66,20 @@ public class Projectile extends Movable{
 	
 // --------------------------------GET/SET METHODS-------------------------------- //
 
-	public double getXA(){
-		return xa;
+	public Vector getA(){
+		return a;
+	}
+	
+	public void setA(Vector a){
+		this.a = a;
 	}
 	
 	public void setXA(double xa){
-		this.xa = xa;
+		a.setCX(xa);
+	}
+	
+	public void setYA(double ya){
+		a.setCY(ya);
 	}
 	
 	public int getDamage(){

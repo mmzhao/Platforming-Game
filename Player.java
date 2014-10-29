@@ -14,7 +14,7 @@ import javax.imageio.ImageIO;
 
 public class Player extends Movable {
 
-	protected double xa, ya;
+	protected Vector a;
 
 	// isRightHeld: whether or not right move button is held
 	// isLeftHeld: whether or not left move button is held
@@ -62,11 +62,10 @@ public class Player extends Movable {
 
 	// AIR_RESISTANCE: factor by which movement is reduced in air
 	private final double AIR_RESISTANCE = .5;
-	private final double TERMINAL_VELOCITY_X = 15;
-	private final double TERMINAL_VELOCITY_Y = 15;
+	protected Vector g = new Vector(0, .5);
+	protected Vector jump = new Vector(0, -18);
 	
-	
-	///
+	//
 	private int runningdir = 0;
 	
 	protected final double minChange = 1;
@@ -76,6 +75,7 @@ public class Player extends Movable {
 	public Player(BufferedImage b, double x, double y, double w, double h,
 			int health, Weapon currentWeapon) {
 		super(b, x, y, w, h, true, 0, 0, health, 1);
+		a = new Vector(0, 0);
 		standingImg = b;
 		currentImg = b;
 		this.currentWeapon = currentWeapon;
@@ -122,13 +122,14 @@ public class Player extends Movable {
 	// --------------------------------UPDATE-------------------------------- //
 
 	public void update(double time) {
+//		v.print();
 //		System.out.println(x + " " + y);
 //		System.out.println(System.currentTimeMillis() % 10000 + ": " + xv);
-		//System.out.println("y" + (y + h));
-		//System.out.println("x" + x);
-		xa = 0;
-		// System.out.println(xv);
-		// System.out.println(mouseX + " " + mouseY);
+//		System.out.println("y" + (y + h));
+//		System.out.println("x" + x);
+		setA(new Vector(0, 0));
+//		System.out.println(xv);
+//		System.out.println(mouseX + " " + mouseY);
 		setMousePos();
 
 		if (runningAni.getStarted()) {
@@ -139,70 +140,79 @@ public class Player extends Movable {
 		
 		if (isRightHeld && !isLeftHeld) {
 			runningdir = -1;
-			xa = completeAccel();
+			a.add(completeAccel());
 			if (southC)
 				runningAni.start();
 		} else if (isLeftHeld && !isRightHeld) {
 			runningdir = 1;
-			xa = -completeAccel();
+			a.add(completeAccel().scale(-1));
 			if (southC)
 				runningAni.start();
 		}
+		
 		
 		facingRight = 1;
 		if(mouseX - x < 0)
 			facingRight = -1;
 		
-		if (xa == 0) {
+		if (a.magnitude() == 0) {
 			if (southC) {
-				xa = -(double) (xv + .001) / Math.abs(xv + .001) * stoppingFriction();
+				a.add(stoppingFriction().scale(-(v.getCX() + .001) / Math.abs(v.getCX() + .001)));
 			} else {
-				xa = -(double) .1 * (xv + .001) / Math.abs(xv + .001) * stoppingFriction();
+				a.add(stoppingFriction().scale(-.1 * (v.getCX() + .001) / Math.abs(v.getCX() + .001)));
 			}
 		}
-		xv += xa * time;
-
+		
 		if (southC) {
-			if (yv > 0)
-				yv = 0;
+			if (v.getCY() > 0)
+				v.setCY(0);
 			if (isUpHeld) {
-				yv = -9; // if this line not commented out, can jump up platform
+				a.add(jump); // if this line not commented out, can jump up platform
 							// uppersides
 				// currently 1 less magnitude than "space key" jump velocity
 			}
 		} 
 		else
-			yv += time * GRAVITY;
-		if (eastC) {
-			if (xv > 0)
-				xv = 0;
-		}
-		if (westC) {
-			if (xv < 0)
-				xv = 0;
-		}
-		if (northC) {
-			if (yv < 0)
-				yv = 0;
-		}
-		if (Math.abs(xv) > TERMINAL_VELOCITY_X)
-			xv = TERMINAL_VELOCITY_X * xv / Math.abs(xv);
-		if (Math.abs(yv) > TERMINAL_VELOCITY_Y)
-			yv = TERMINAL_VELOCITY_Y * yv / Math.abs(yv);
+			a.add(g);
 		
-		if(!(isRightHeld || isLeftHeld) && Math.abs(xv * time) < 1){
-			xv = 0;
+//		v.print();
+//		a.print();
+//		System.out.println();
+		
+		v.add(a.scale(time));
+
+		
+		if(eastC){
+			if(v.getCX() > 0) v.setCX(0);
 		}
+		if(westC){
+			if(v.getCX() < 0) v.setCX(0);
+		}
+		if(northC){
+			if(v.getCY() < 0) v.setCY(0);
+		}
+		if(v.magnitude() > TERMINAL_VELOCITY){
+			v = v.scale(TERMINAL_VELOCITY / v.magnitude());
+		}
+		
+		if(!(isRightHeld || isLeftHeld) && Math.abs(v.getCX() * time) < 1){
+			v.setCX(0);
+		}
+		
+//		a.print();
 		
 		//don't move if not enough change, also implemented in weapon
-		double newX = x + time * xv;
-		double newY = y + time * yv;
+		double newX = x + time * v.getCX();
+		double newY = y + time * v.getCY();
 		if(Math.abs(newX - x) > minChange){
+//			System.out.println("x change: " + Math.abs(newX - x));
 			x = newX;
 		}
 		if(Math.abs(newY - y) > minChange){
+//			System.out.println("y change: " + Math.abs(newY - y));
 			y = newY;
 		}
+//		System.out.println();
 		
 
 		if (isShooting) {
@@ -217,19 +227,19 @@ public class Player extends Movable {
 		isLeftPressed = false;
 	}
 
-	public double completeAccel() {// (C1 - v)^2/C1*C2
-		double accel = (standardStep + runningdir * xv) * accelSpeed;
-		if(accel > 0) return accel;
-		return 0;
+	public Vector completeAccel() {// (C1 - v)^2/C1*C2
+		double accel = (standardStep + runningdir * v.getCX()) * accelSpeed;
+		if(accel > 0) return new Vector(accel, 0);
+		return new Vector(0, 0);
 		// return (double)(Math.pow(standardStep - Math.abs(xv), 2)/
 		// standardStep / accelSpeed);
 	}
 
-	public double stoppingFriction() {// (v^2 - 2v*C1)/C1*C2
+	public Vector stoppingFriction() {// (v^2 - 2v*C1)/C1*C2
 		if(isLeftHeld || isRightHeld){
-			return (Math.abs(xv)) * accelSpeed;
+			return new Vector((Math.abs(v.getCX())) * accelSpeed, 0);
 		}
-		return (Math.abs(xv)) * accelSpeed * 5;
+		return new Vector((Math.abs(v.getCX())) * accelSpeed * 5, 0);
 	}
 
 	// --------------------------------COLLISION METHODS-------------------------------- //
@@ -243,23 +253,30 @@ public class Player extends Movable {
 	}
 
 	public void updateC(double time) {
-		// System.out.println(xv + " " + yv);
-		yv += time * GRAVITY;
-		if (yv > TERMINAL_VELOCITY)
-			yv = TERMINAL_VELOCITY;
-		if (!(isRightHeld && isLeftHeld)) {
-			if (isRightHeld) {
-				xv = 5;
-			} else if (isLeftHeld) {
-				xv = -5;
-			}
-		}
-		x += time * xv;
-		y += time * yv;
+		//don't move if not enough change, also implemented in weapon
+		x += time * v.getCX();
+		y += time * v.getCY();
+		
 	}
 
 	// --------------------------------GET/SET METHODS-------------------------------- //
 
+	public Vector getA(){
+		return a;
+	}
+	
+	public void setA(Vector a){
+		this.a = a;
+	}
+	
+	public void setXA(double xa){
+		a.setCX(xa);
+	}
+	
+	public void setYA(double ya){
+		a.setCY(ya);
+	}
+	
 	public Weapon getCurrentWeapon() {
 		return currentWeapon;
 	}
@@ -339,7 +356,7 @@ public class Player extends Movable {
 		else if (key == KeyEvent.VK_W) {
 			isUpHeld = true;
 			if (southC)
-				setYV(-10);
+				v.setCY(-10);
 		}
 		//
 		// else if (key == KeyEvent.VK_SPACE) {

@@ -114,26 +114,29 @@ public class Weapon extends Item{
 		
 		pivotX = (getMidX() - offsetX) * scaleX;
 		pivotY =  (getMidY() - offsetY) * scaleY;
-
 		at.setToRotation(getAngle(), pivotX, pivotY);
 		
 		Graphics2D newGraphics = (Graphics2D)g.create();
 		newGraphics.setTransform(at);
 		
+		
 		if (facingRight == 1) {
 			newGraphics.drawImage(super.bi, (int)((x - offsetX) * scaleX), (int)((y - offsetY) * scaleY), (int)(w * scaleX), (int)(h * scaleY), null, null);
 		} else{
-			newGraphics.drawImage(super.bi, (int)((x - offsetX) * scaleX), (int)((y - offsetY) * scaleY + h), (int)(w * scaleX), -(int)(h * scaleY), null, null);
+			newGraphics.drawImage(super.bi, (int)((x - offsetX + w) * scaleX), (int)((y - offsetY) * scaleY), -(int)(w * scaleX), (int)(h * scaleY), null, null);
 		}
 		for(int i = 0; i < es.size(); i++){
 			es.get(i).draw(g, offsetX, offsetY, scaleX, scaleY);
 		}
+		
+			
 	}
 
 // --------------------------------UPDATE-------------------------------- //
 	
 	public void update(double time){
 		updateFireVector();
+		facingRight = owner.getFacingRight();
 		if(GamePanel.getUpdateCycle()-lastFired <= firerate)
 			canFire = false;
 		else if(numBullets == 0)
@@ -148,10 +151,10 @@ public class Weapon extends Item{
 		if(owner != null){
 //			facingRight = owner.getFacingRight();
 //			x = owner.getMidX() - w/2;
-			double newX = owner.getMidX() - w/2;
-			double newY = owner.getMidY() - 2*owner.getH()/5;
-			if(facingRight == -1)
-				newY -= w/7;
+			double newX = owner.getMidX() - 1 * w/2;
+			double newY = owner.getMidY() - 2 * owner.getH()/5;
+//			if(facingRight == -1)
+//				newY -= w/7;
 			if(Math.abs(newX - x) > Math.abs(minChange)){
 				x = newX;
 			}
@@ -187,13 +190,6 @@ public class Weapon extends Item{
 		updateEmptyShells();
 	}
 	
-	public double getAngle(){
-		double angle = Math.atan(fireY/fireX);
-		if(facingRight == -1)
-			angle += Math.PI;
-		return angle;
-	}
-	
 	public void updateReload(){
 		if(GamePanel.getUpdateCycle() < startReload + reloadSpeed){}
 		else{
@@ -206,8 +202,8 @@ public class Weapon extends Item{
 //		System.out.println(owner.getMouseY() + " " + getMidY());
 //		double difX = owner.getMouseX() - (x - 2.5 + facingRight * 10);
 //		double difY = owner.getMouseY() - (y - 1);
-		double difX = owner.getMouseX() - owner.getMidX();
-		double difY = owner.getMouseY() - y;
+		double difX = owner.getMouseX() - getMidX();
+		double difY = owner.getMouseY() - getMidY();
 		double magnitude = Math.pow(difX * difX +  difY * difY, .5);
 //		double newFireX = difX / magnitude;
 //		double newFireY = difY / magnitude;
@@ -219,12 +215,12 @@ public class Weapon extends Item{
 //		}
 		fireX = difX / magnitude;
 		fireY = difY / magnitude;
-		if(fireX < 0){
-			facingRight = -1;
-		}
-		else{
-			facingRight = 1;
-		}
+//		if(fireX < 0){
+//			facingRight = -1;
+//		}
+//		else{
+//			facingRight = 1;
+//		}
 //		System.out.println(fireX);
 //		System.out.println(fireY);
 //		System.out.println();
@@ -265,6 +261,13 @@ public class Weapon extends Item{
 	}
 	
 // --------------------------------GET/SET METHODS-------------------------------- //
+	
+	public double getAngle(){
+		double angle = Math.atan(fireY/fireX);
+//		if(facingRight == -1)
+//			angle += Math.PI;
+		return angle;
+	}
 	
 	public ArrayList<Projectile> getProjectiles() {
 		return ps;

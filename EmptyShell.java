@@ -36,32 +36,33 @@ public class EmptyShell extends Projectile {
 // --------------------------------UPDATE-------------------------------- //
 	
 	public void update(double time){
-		if(xv > TERMINAL_VELOCITY) xv = TERMINAL_VELOCITY;
-		if(yv > TERMINAL_VELOCITY) yv = TERMINAL_VELOCITY;
+		
+		if(southC){
+			if(v.getCY() > 0) v.setCY(-1 * Math.abs(v.getCY()));
+		}
+		else v.add(g.scale(time));
+		if(eastC){
+			if(v.getCX() > 0) v.setCX(-v.getCX());
+		}
+		if(westC){
+			if(v.getCX() < 0) v.setCX(-v.getCX());
+		}
+		if(northC){
+			if(v.getCY() < 0) v.setCY(Math.abs(v.getCY()));
+		}
 		if(northC && southC){
-			yv = 0;
+			v.setCY(0);
 		}
-		else if(southC){
-				yv = -1 * Math.abs(yv);
-				bounce = true;
+		if(eastC && westC){
+			v.setCX(0);
 		}
-		else if(northC){
-				yv =  1 * Math.abs(yv);
+		if(v.magnitude() > TERMINAL_VELOCITY){
+			v = v.scale(TERMINAL_VELOCITY / v.magnitude());
 		}
 		
-		if(eastC && westC){
-			xv = 0;
-		}
-		else if(eastC){
-				xv = -1 * Math.abs(xv);
-		}
-		else if(westC){
-				xv =  1 * Math.abs(xv);
-		}
-		x += time * xv;
-		xv += time * xa;
-		yv += time*GRAVITY;
-		y += yv;
+		v.add(g.scale(time));
+		x += time * v.getCX();
+		y += time * v.getCY();
 	}
 
 // --------------------------------GET/SET METHODS-------------------------------- //

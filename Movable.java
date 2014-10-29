@@ -6,16 +6,14 @@ import java.util.ArrayList;
 
 public class Movable extends Entity{
 	
-//	xv: x directional velocity
-//	yv: y directional velocity
+//	v: velocity vector
 //	southC: whether or not this movable is collided from below
 //	eastC: whether or not this movable is collided from right
 //	westC: whether or not this movable is collided from left
 //	northC: whether or not this movable is collided from above
 //	health: how much health remains until this movable needs to be removed
 //	facingRight: whether or not this movable is facing right
-	protected double xv;
-	protected double yv;
+	protected Vector v;
 	protected boolean southC;
 	protected boolean eastC;
 	protected boolean westC;
@@ -29,7 +27,7 @@ public class Movable extends Entity{
 //	GRAVITY: acceleration due to gravity
 //	TIME_UNIT: how much time passes per frame update
 //	TERMINAL_VELOCITY: max velocity for one direction for this movable
-	protected final double GRAVITY = .5; //positive acceleration goes SOUTH and EAST
+	protected Vector g = new Vector(0, .5); //positive acceleration goes SOUTH and EAST
 	protected final double TIME_UNIT = .7;
 	protected final double TERMINAL_VELOCITY = 10;
 
@@ -38,16 +36,14 @@ public class Movable extends Entity{
 	public Movable(BufferedImage b, double x, double y, double w, double h, boolean c, double xv, double yv, int health, int facingRight){
 		super(b, x, y, w, h, c);
 		this.facingRight = facingRight;
-		this.xv = xv;
-		this.yv = yv;
+		this.v = new Vector(xv, yv);
 		this.health = health;
-		save = new Movable(b, x, y, w, h, xv, yv);
+		save = new Movable(b, x, y, w, h, v.getCX(), v.getCY());
 	}
 	
 	public Movable(BufferedImage b, double x, double y, double w, double h, double xv, double yv){
 		super(b, x, y, w, h, true);
-		this.xv = xv;
-		this.yv = yv;
+		this.v = new Vector(xv, yv);
 	}
 
 // --------------------------------DRAW METHODS-------------------------------- //
@@ -75,23 +71,25 @@ public class Movable extends Entity{
 			remove = true;
 			return;
 		}
-		if(yv > TERMINAL_VELOCITY) yv = TERMINAL_VELOCITY;
 		if(southC){
-			if(yv > 0) yv = 0;
+			if(v.getCY() > 0) v.setCY(0);
 		}
-		else yv += time * GRAVITY;
+		else v.add(g.scale(time));
 		if(eastC){
-			if(xv > 0) xv = 0;
+			if(v.getCX() > 0) v.setCX(0);
 		}
 		if(westC){
-			if(xv < 0) xv = 0;
+			if(v.getCX() < 0) v.setCX(0);
 		}
 		if(northC){
-			if(yv < 0) yv = 0;
+			if(v.getCY() < 0) v.setCY(0);
+		}
+		if(v.magnitude() > TERMINAL_VELOCITY){
+			v = v.scale(TERMINAL_VELOCITY / v.magnitude());
 		}
 
-		x += time * xv;
-		y += time * yv;
+		x += time * v.getCX();
+		y += time * v.getCY();
 	}
 	
 // --------------------------------COLLISION SAVE STATE METHODS-------------------------------- //
@@ -108,8 +106,7 @@ public class Movable extends Entity{
 		save.setY(y);
 		save.setH(h);
 		save.setW(w);
-		save.setXV(xv);
-		save.setYV(yv);
+		save.setV(v.get());
 	}
 	
 	public void updateC() {
@@ -117,11 +114,12 @@ public class Movable extends Entity{
 	}
 	
 	public void updateC(double time) {
-		yv += time * GRAVITY;
-		if (yv > TERMINAL_VELOCITY)
-			yv = TERMINAL_VELOCITY;
-		x += time * xv;
-		y += time * yv;
+//		if(v.magnitude() > TERMINAL_VELOCITY){
+//			v = v.scale(TERMINAL_VELOCITY / v.magnitude());
+//		}
+
+		x += time * v.getCX();
+		y += time * v.getCY();
 	}
 	
 	public void reset() {
@@ -129,8 +127,7 @@ public class Movable extends Entity{
 		y = save.getY();
 		w = save.getW();
 		h = save.getH();
-		xv = save.getXV();
-		yv = save.getYV();
+		v = save.getV();
 	}
 	
 // --------------------------------LIFE METHODS-------------------------------- //
@@ -149,23 +146,23 @@ public class Movable extends Entity{
 // --------------------------------GET/SET METHODS-------------------------------- //
 
 	public double speed(){
-		return Math.pow(xv * xv + yv * yv, .5);
+		return v.magnitude();
 	}
 	
-	public double getXV(){
-		return xv;
+	public Vector getV(){
+		return v;
 	}
 
+	public void setV(Vector v){
+		this.v = v;
+	}
+	
 	public void setXV(double xv){
-		this.xv = xv;
+		v.setCX(xv);
 	}
 	
-	public double getYV(){
-		return yv;
-	}
-
 	public void setYV(double yv){
-		this.yv = yv;
+		v.setCY(yv);
 	}
 	
 	public boolean getNorthC(){

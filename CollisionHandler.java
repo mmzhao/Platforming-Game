@@ -33,7 +33,7 @@ public class CollisionHandler {
 					double disty = Math.abs(p.getSave().getMidY() - e.getMidY())
 							- p.getSave().getH() / 2 - e.getH() / 2;
 					if(disty < 0 && -disty < Map.UNIT){
-						p.getSave().setY(p.getSave().getY() + disty);
+						p.getSave().setY(p.getSave().getY() + disty + 1); //add the 1 to make it so he actually collides with platform
 						p.setY(p.getY() + disty);
 					}
 					if (distx < 0 && disty < 0) {
@@ -55,9 +55,9 @@ public class CollisionHandler {
 							p.setEastC(true);
 						}
 					} else {
-						if (distx / p.getSave().getXV() < 0
-								|| disty / p.getSave().getYV() < 0)
-						if (distx / p.getSave().getXV() < disty / p.getSave().getYV()) {
+						if (distx / p.getSave().getV().getCX() < 0
+								|| disty / p.getSave().getV().getCY() < 0)
+						if (distx / p.getSave().getV().getCX() < disty / p.getSave().getV().getCY()) {
 							if (p.getSave().getMidY() > e.getMidY()) {
 								p.setNorthC(true);
 							} else {
@@ -143,8 +143,8 @@ public class CollisionHandler {
 						}
 					} 
 					else {
-						if (distx / es.getSave().getXV() < 0 || disty / es.getSave().getYV() < 0)
-						if (distx / es.getSave().getXV() < disty / es.getSave().getYV()) {
+						if (distx / es.getSave().getV().getCX() < 0 || disty / es.getSave().getV().getCY() < 0)
+						if (distx / es.getSave().getV().getCX() < disty / es.getSave().getV().getCY()) {
 							if (es.getSave().getMidY() > e.getMidY()) {
 								es.setNorthC(true);
 							} 
@@ -189,7 +189,7 @@ public class CollisionHandler {
 					double disty = Math.abs(b.getSave().getMidY() - e.getMidY())
 							- b.getSave().getH() / 2 - e.getH() / 2;
 					if(disty < 0 && -disty < Map.UNIT){
-						b.getSave().setY(b.getSave().getY() + disty);
+						b.getSave().setY(b.getSave().getY() + disty + 1); // add 1 for the same reason as before
 						b.setY(b.getY() + disty);
 					}
 					if (distx < 0 && disty < 0) {
@@ -211,9 +211,9 @@ public class CollisionHandler {
 							b.setEastC(true);
 						}
 					} else {
-						if (distx / b.getSave().getXV() < 0
-								|| disty / b.getSave().getYV() < 0)
-						if (distx / b.getSave().getXV() < disty / b.getSave().getYV()) {
+						if (distx / b.getSave().getV().getCX() < 0
+								|| disty / b.getSave().getV().getCY() < 0)
+						if (distx / b.getSave().getV().getCX() < disty / b.getSave().getV().getCY()) {
 							if (b.getSave().getMidY() > e.getMidY()) {
 								b.setNorthC(true);
 							} else {

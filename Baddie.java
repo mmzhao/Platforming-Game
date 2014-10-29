@@ -13,6 +13,8 @@ public class Baddie extends Movable{
 	private BufferedImage current;
 	private Animation move;
 	
+	protected Vector g = new Vector(0, .5);
+	
 // --------------------------------CONSTRUCTOR-------------------------------- //
 	
 	public Baddie(BufferedImage b, double x, double y, double w, double h, boolean c, double xv, double yv, int health) {
@@ -53,29 +55,42 @@ public class Baddie extends Movable{
 //			w += .1 * w;
 //			h += .1 * h;
 		}
-		double tempXV = xv;
+		
+		
+//		double tempXV = xv;
 //		if(!southC){
 //			xv = 0;
 //		}
-		if(yv > TERMINAL_VELOCITY) yv = TERMINAL_VELOCITY;
-		if(xv > TERMINAL_VELOCITY) xv = TERMINAL_VELOCITY;
+		
+//		System.out.println(northC + " " + eastC + " " + southC + " " + westC);
+		
+//		Vector v1 = new Vector(10, 5);
+//		Vector v2 = new Vector(5, 10);
+//		Vector.add(v1, v2).print();
+		
 		if(southC){
-			if(yv > 0) yv = 0;
+			if(v.getCY() > 0) v.setCY(0);
 		}
-		else yv += time * GRAVITY;
+		else v.add(g.scale(time));
 		if(eastC){
-			if(xv > 0) xv = -xv;
+			if(v.getCX() > 0) v.setCX(-v.getCX());
 		}
 		if(westC){
-			if(xv < 0) xv = -xv;
+			if(v.getCX() < 0) v.setCX(-v.getCX());
 		}
 		if(northC){
-			if(yv < 0) yv = 0;
+			if(v.getCY() < 0) v.setCY(0);
 		}
+		if(v.magnitude() > TERMINAL_VELOCITY){
+			v = v.scale(TERMINAL_VELOCITY / v.magnitude());
+		}
+		
+//		v.print();
 
-		x += time * xv;
-		y += time * yv;
-		if(xv == 0) xv = tempXV;
+		x += time * v.getCX();
+		y += time * v.getCY();
+		
+//		if(xv == 0) xv = tempXV;
 		current = move.loop(time);
 	}
 

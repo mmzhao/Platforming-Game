@@ -97,13 +97,12 @@ public class Rocket extends Projectile{
 			return;
 		}
 		
-		if(speed() > TERMINAL_VELOCITY){
-			double scale = TERMINAL_VELOCITY / speed();
-			xv *= scale;
-			yv *= scale;
+		if(v.magnitude() > TERMINAL_VELOCITY){
+			v = v.scale(TERMINAL_VELOCITY / v.magnitude());
 		}
-		x += time * xv;
-		y += time * yv;
+		
+		x += time * v.getCX();
+		y += time * v.getCY();
 	}
 
 // --------------------------------COLLISION METHODS-------------------------------- //
@@ -154,8 +153,8 @@ public class Rocket extends Projectile{
 		double dif = Math.pow(xdif * xdif + ydif * ydif, .5);
 		
 		if(m instanceof Baddie){
-			m.setXV(m.getXV() + xdif/dif * knockBack);
-			m.setYV(Math.min(m.getYV() + ydif/dif * knockBack - 10, ydif/dif * knockBack - 10));
+			m.setXV(m.getV().getCX() + xdif/dif * knockBack);
+			m.setYV(Math.min(m.getV().getCY() + ydif/dif * knockBack - 10, ydif/dif * knockBack - 10));
 			return;
 		}
 		

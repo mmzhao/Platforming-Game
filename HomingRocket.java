@@ -89,9 +89,9 @@ public class HomingRocket extends Projectile{
 //			g.drawLine((int) ((x - offsetX) * scaleX), (int) ((y - offsetY + 3) * scaleY), (int) ((x - offsetX + xv * 3) * scaleX), (int) ((y - offsetY + yv * 3 + 3) * scaleY));
 //		}
 //		else
-		g.setColor(Color.green);
-			g.drawLine((int) ((x - offsetX + w/2) * scaleX), (int) ((y - offsetY + h/2) * scaleY), (int) ((x - offsetX + w/2 - xv * 3) * scaleX), (int) ((y - offsetY + h/2 - yv * 3) * scaleY));
-			g.fillOval((int) ((x - offsetX) * scaleX), (int) ((y - offsetY) * scaleY), (int) (w * scaleX), (int) (h * scaleY));
+//		g.setColor(Color.green);
+//			g.drawLine((int) ((x - offsetX + w/2) * scaleX), (int) ((y - offsetY + h/2) * scaleY), (int) ((x - offsetX + w/2 - xv * 3) * scaleX), (int) ((y - offsetY + h/2 - yv * 3) * scaleY));
+//			g.fillOval((int) ((x - offsetX) * scaleX), (int) ((y - offsetY) * scaleY), (int) (w * scaleX), (int) (h * scaleY));
 		
 		
 	}
@@ -126,26 +126,26 @@ public class HomingRocket extends Projectile{
 	}
 	
 	public void knockBack(Movable m){ //radial from center of explosion radius
-		double xdif = (m.getMidX() - this.getMidX());
-		double ydif = (m.getMidY() - this.getMidY());
-		double dif = Math.pow(xdif * xdif + ydif * ydif, .5);
-		
-		if(m instanceof Baddie){
-			m.setXV(m.getXV() + xdif/dif * knockBack);
-			m.setYV(Math.min(m.getYV() + ydif/dif * knockBack - 15, ydif/dif * knockBack - 15));
-			return;
-		}
-		
-		else if(m instanceof Player){
-			double changeX = xdif/dif * knockBack + (xdif)/Math.abs(xdif) * 2;
-			if(changeX * m.getXV() > 0){
-				m.setXV(m.getXV() + changeX);
-			}
-			else{
-				m.setXV(changeX);
-			}
-			m.setYV(Math.min(m.getYV() + ydif/dif * knockBack * 3 - 5, ydif/dif * knockBack * 3 - 10));
-		}
+//		double xdif = (m.getMidX() - this.getMidX());
+//		double ydif = (m.getMidY() - this.getMidY());
+//		double dif = Math.pow(xdif * xdif + ydif * ydif, .5);
+//		
+//		if(m instanceof Baddie){
+//			m.setXV(m.getXV() + xdif/dif * knockBack);
+//			m.setYV(Math.min(m.getYV() + ydif/dif * knockBack - 15, ydif/dif * knockBack - 15));
+//			return;
+//		}
+//		
+//		else if(m instanceof Player){
+//			double changeX = xdif/dif * knockBack + (xdif)/Math.abs(xdif) * 2;
+//			if(changeX * m.getXV() > 0){
+//				m.setXV(m.getXV() + changeX);
+//			}
+//			else{
+//				m.setXV(changeX);
+//			}
+//			m.setYV(Math.min(m.getYV() + ydif/dif * knockBack * 3 - 5, ydif/dif * knockBack * 3 - 10));
+//		}
 	}
 	
 	public void update(double time){
@@ -189,13 +189,13 @@ public class HomingRocket extends Projectile{
 //		}
 //		
 //		
-		if(speed() > TERMINAL_VELOCITY){
-			double scale = TERMINAL_VELOCITY / speed();
-			xv *= scale;
-			yv *= scale;
-		}
-		x += time * xv;
-		y += time * yv;
+//		if(speed() > TERMINAL_VELOCITY){
+//			double scale = TERMINAL_VELOCITY / speed();
+//			xv *= scale;
+//			yv *= scale;
+//		}
+//		x += time * xv;
+//		y += time * yv;
 	}
 	
 	public Baddie getClosestBaddie(){ //improve so that it checks for directness

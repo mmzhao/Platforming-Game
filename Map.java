@@ -18,10 +18,10 @@ public class Map {
 	//Line 6 -- (n / 5 + 5): row number and map 5x5 objects
 	
 //	map: character array representation of the text file map block
-//		M - player
-//		B - baddie
-//		P - platform
-//		0 - nothing
+//		'M' - player
+//		'B' - baddie
+//		'P' - platform
+//		'.' or '-' - nothing
 //	name: name of the map
 //	bg1: path to background1
 //	bg2: path to background2
@@ -56,7 +56,7 @@ public class Map {
 	public void initializeMap(GamePanel g){
 		for(int i = 0; i < map.length; i++){
 			for(int j = 0; j < map[0].length; j++){
-				if(map[i][j] == '0'){
+				if(map[i][j] == '.' || map[i][j] == '-'){
 					continue;
 				}
 				else if(map[i][j] == 'M'){

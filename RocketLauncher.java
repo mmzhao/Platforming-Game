@@ -34,14 +34,33 @@ public class RocketLauncher extends Weapon{
 	
 // --------------------------------FIRE METHOD-------------------------------- //
 	
-	public void fire() { //currently fires from center of owner, needs to change
+	public void fire() { 
 		//reimplement canFire later but now no cuz funsies
 		if(canFire){
 			lastFired = GamePanel.getUpdateCycle();
 //			es.add(new EmptyShell(null, x, y, Math.random() * 5 - 2 , -5));
-			ps.add(new Rocket(null, owner.getMidX(), y, bulletsize, bulletsize, fireX * velocity, fireY * velocity, damage, super.getAngle()));
+			double exitX = getMidX() + Math.cos(getAngle()) * w / 2 - owner.facingRight * 15;
+			double exitY = getMidY() + Math.sin(getAngle()) * w / 2 - owner.facingRight * 9;
+			ps.add(new Rocket(null, (int)(owner.getMidX()), (int)(owner.getMidY()), bulletsize, bulletsize, fireX * velocity, fireY * velocity, damage, super.getAngle()));
+//			ps.add(new Rocket(null, owner.getMidX(), y, bulletsize, bulletsize, fireX * velocity, fireY * velocity, damage, super.getAngle()));
 //			ps.add(new HomingRocket(null, x - 2.5 - facingRight * 10, y - 1, bulletsize, bulletsize, fireX * velocity, fireY * velocity, damage, homingLvl, range));
 		}
 	}
+	
+//	public void updateFireVector(){
+//		double difX = owner.getMouseX() - getMidX();
+//		double difY = owner.getMouseY() - getMidY();
+//		double magnitude = Math.pow(difX * difX +  difY * difY, .5);
+//
+//		fireX = difX / magnitude;
+//		fireY = difY / magnitude;
+//		if(fireX < 0){
+//			facingRight = -1;
+//		}
+//		else{
+//			facingRight = 1;
+//		}
+//
+//	}
 
 }
