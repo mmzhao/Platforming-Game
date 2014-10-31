@@ -72,7 +72,7 @@ public class GamePanel extends JPanel implements Runnable{
 	private BufferedImage background2;
 	
 //	period: forced minimum time in milliseconds between frames, fps ~ 1000/period
-	private long period = 15;
+	private long period = 0;
 	
 //	CollisionHandler: class that handles all collisions
 	private CollisionHandler ch;
@@ -160,7 +160,8 @@ public class GamePanel extends JPanel implements Runnable{
 		
 		final RocketLauncher rl = new RocketLauncher((int) Math.pow(w/2 * w/2 + h/2 * h/2, .5));
 		final Pistol p = new Pistol(ImageGetter.getSVG("Revolver.svg", 568, 234, this));
-		player.giveCurrentWeapon(rl);
+		final MeleeWeapon mw = new MeleeWeapon("sword", null, player, 100);
+		player.giveCurrentWeapon(mw);
 		
 		addKeyListener(new KeyAdapter(){
 			public void keyPressed(KeyEvent e){
@@ -170,6 +171,9 @@ public class GamePanel extends JPanel implements Runnable{
 				}
 				if((keyCode == KeyEvent.VK_2)){
 					player.giveCurrentWeapon(rl);
+				}
+				if((keyCode == KeyEvent.VK_3)){
+					player.giveCurrentWeapon(mw);
 				}
 			}
 		});

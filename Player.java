@@ -122,15 +122,9 @@ public class Player extends Movable {
 	// --------------------------------UPDATE-------------------------------- //
 
 	public void update(double time) {
-//		v.print();
-//		System.out.println(x + " " + y);
-//		System.out.println(System.currentTimeMillis() % 10000 + ": " + xv);
-//		System.out.println("y" + (y + h));
-//		System.out.println("x" + x);
-		setA(new Vector(0, 0));
-//		System.out.println(xv);
-//		System.out.println(mouseX + " " + mouseY);
 		setMousePos();
+		
+		setA(new Vector(0, 0));
 
 		if (runningAni.getStarted()) {
 			currentImg = runningAni.loop(time);
@@ -164,6 +158,7 @@ public class Player extends Movable {
 		}
 		
 		if (southC) {
+			a.add(normalForce());
 			if (v.getCY() > 0)
 				v.setCY(0);
 			if (isUpHeld) {
@@ -172,12 +167,9 @@ public class Player extends Movable {
 				// currently 1 less magnitude than "space key" jump velocity
 			}
 		} 
-		else
-			a.add(g);
+		a.add(g);
 		
-//		v.print();
 //		a.print();
-//		System.out.println();
 		
 		v.add(a.scale(time));
 
@@ -226,6 +218,8 @@ public class Player extends Movable {
 		isRightPressed = false;
 		isLeftPressed = false;
 	}
+	
+	// --------------------------------FORCE METHODS-------------------------------- //
 
 	public Vector completeAccel() {// (C1 - v)^2/C1*C2
 		double accel = (standardStep + runningdir * v.getCX()) * accelSpeed;
@@ -241,6 +235,11 @@ public class Player extends Movable {
 		}
 		return new Vector((Math.abs(v.getCX())) * accelSpeed * 5, 0);
 	}
+	
+	public Vector normalForce(){
+		return g.scale(-1);
+	}
+	
 
 	// --------------------------------COLLISION METHODS-------------------------------- //
 
@@ -358,13 +357,7 @@ public class Player extends Movable {
 			if (southC)
 				v.setCY(-10);
 		}
-		//
-		// else if (key == KeyEvent.VK_SPACE) {
-		// if(currentWeapon != null)
-		// isShooting = true;
-		// // shoot();
-		// }
-
+		
 		else if (key == KeyEvent.VK_T) {
 			if (currentWeapon != null)
 				currentWeapon.reload();

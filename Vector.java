@@ -42,8 +42,7 @@ public class Vector {
 	
 	//returns this vector rotated angle degrees
 	public Vector rotate(double angle){
-		angle %= 360;
-		angle *= Math.PI/180;
+		angle %= 2 * Math.PI;
 		return new Vector(Math.cos(angle) * getCX() - Math.sin(angle) * getCY(), Math.sin(angle) * getCX() + Math.cos(angle) * getCY());
 	}
 	

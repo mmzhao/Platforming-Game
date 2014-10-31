@@ -33,7 +33,7 @@ public class CollisionHandler {
 					double disty = Math.abs(p.getSave().getMidY() - e.getMidY())
 							- p.getSave().getH() / 2 - e.getH() / 2;
 					if(disty < 0 && -disty < Map.UNIT){
-						p.getSave().setY(p.getSave().getY() + disty + 1); //add the 1 to make it so he actually collides with platform
+						p.getSave().setY(p.getSave().getY() + disty + .5); //add the .5 to make it so he actually collides with platform and doesn't jiggle
 						p.setY(p.getY() + disty);
 					}
 					if (distx < 0 && disty < 0) {
@@ -77,7 +77,7 @@ public class CollisionHandler {
 		p.reset();
 		
 		//projectiles
-		if(p.getCurrentWeapon() != null){
+		if(p.getCurrentWeapon() != null && !(p.getCurrentWeapon() instanceof MeleeWeapon)){ //fix this crap code
 			projectileCollision(p.getCurrentWeapon().getProjectiles(), screen);
 			emptyShellCollision(p.getCurrentWeapon().getEmptyShells(), screen);
 		}
@@ -189,7 +189,7 @@ public class CollisionHandler {
 					double disty = Math.abs(b.getSave().getMidY() - e.getMidY())
 							- b.getSave().getH() / 2 - e.getH() / 2;
 					if(disty < 0 && -disty < Map.UNIT){
-						b.getSave().setY(b.getSave().getY() + disty + 1); // add 1 for the same reason as before
+						b.getSave().setY(b.getSave().getY() + disty + .5); // add .5 for the same reason as before
 						b.setY(b.getY() + disty);
 					}
 					if (distx < 0 && disty < 0) {

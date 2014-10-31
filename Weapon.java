@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -51,7 +52,11 @@ public class Weapon extends Item{
 	protected final double minChange = 1;
 	
 // --------------------------------CONSTRUCTOR-------------------------------- //
-
+	
+	public Weapon(BufferedImage b, String name) {
+		super(b, 0, 0, 0, 0, false, name);
+	}
+	
 	public Weapon(String name, BufferedImage b, int firerate, int facingRight, int clipsize, int reloadSpeed, double velocity,
 					double accel, int bulletsize, int damage, Movable owner){
 		super(b, 0, 0, 0, 0, false, name);
@@ -81,7 +86,7 @@ public class Weapon extends Item{
 	}
 	
 // --------------------------------DRAW METHODS-------------------------------- //
-	
+
 	public void draw(Graphics g){
 		draw(g, 0, 0);
 	}
@@ -112,6 +117,22 @@ public class Weapon extends Item{
 //			pivotY = newPivotY;
 //		}
 		
+//		double px = w/2;
+//		double py = h/2;
+//		at.setToRotation(getAngle(facingRight), px, py);
+//		
+//		((Graphics2D) g).translate((getMidX() - offsetX) * scaleX, (getMidY() - offsetY) * scaleY);
+//		
+//		if (facingRight == 1) {
+//			((Graphics2D) g).drawImage(bi, at, null);
+//		} else{
+//			((Graphics2D) g).drawImage(bi, at, null);
+//		}
+//		for(int i = 0; i < es.size(); i++){
+//			es.get(i).draw(g, offsetX, offsetY, scaleX, scaleY);
+//		}
+
+		
 		pivotX = (getMidX() - offsetX) * scaleX;
 		pivotY =  (getMidY() - offsetY) * scaleY;
 		at.setToRotation(getAngle(), pivotX, pivotY);
@@ -121,9 +142,9 @@ public class Weapon extends Item{
 		
 		
 		if (facingRight == 1) {
-			newGraphics.drawImage(super.bi, (int)((x - offsetX) * scaleX), (int)((y - offsetY) * scaleY), (int)(w * scaleX), (int)(h * scaleY), null, null);
+			newGraphics.drawImage(bi, (int)((x - offsetX) * scaleX), (int)((y - offsetY) * scaleY), (int)(w * scaleX), (int)(h * scaleY), null, null);
 		} else{
-			newGraphics.drawImage(super.bi, (int)((x - offsetX + w) * scaleX), (int)((y - offsetY) * scaleY), -(int)(w * scaleX), (int)(h * scaleY), null, null);
+			newGraphics.drawImage(bi, (int)((x - offsetX + w) * scaleX), (int)((y - offsetY) * scaleY), -(int)(w * scaleX), (int)(h * scaleY), null, null);
 		}
 		for(int i = 0; i < es.size(); i++){
 			es.get(i).draw(g, offsetX, offsetY, scaleX, scaleY);
