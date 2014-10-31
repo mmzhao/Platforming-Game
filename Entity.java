@@ -31,7 +31,11 @@ public class Entity {
 	private final int EXTRA = 0;
 	
 // --------------------------------CONSTRUCTOR-------------------------------- //
-
+	
+	public Entity(){
+		
+	}
+	
 	public Entity(BufferedImage b, double x, double y, double w, double h, boolean c) {
 		bi = b;
 		this.x = x;

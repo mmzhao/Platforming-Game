@@ -21,6 +21,31 @@ public class Path {
 		this.vs = v;
 	}
 	
+	public Vector timePlace(double length){
+		Vector v = new Vector(x, y);
+		double totalLength = pathLength();
+		length %= totalLength;
+		int index = 0;
+		while(length > vs.get(index).magnitude() && index < vs.size()){
+			length -= vs.get(index).magnitude();
+			v.add(vs.get(index));
+			index++;
+		}
+		if(index < vs.size()){
+			v.add(vs.get(index).scale(length / vs.get(index).magnitude()));
+		}
+		return v;
+		
+	}
+	
+	public double pathLength(){
+		double l = 0;
+		for(Vector v: vs){
+			l += v.magnitude();
+		}
+		return l;
+	}
+	
 	public ArrayList<Line2D> getLines(){
 		ArrayList<Line2D> ls = new ArrayList<Line2D>();
 		double currX = x;

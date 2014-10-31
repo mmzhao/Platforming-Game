@@ -19,7 +19,8 @@ public class MeleeWeapon extends Weapon{
 	protected double pivotX = 0;
 	protected double pivotY = 0;
 	
-	protected final long LIFETIME = 200;
+	protected final long LIFETIME = 500;
+	protected final long COOLDOWN = 300;
 	protected final double minChange = 1;
 
 	public MeleeWeapon(String name, BufferedImage b, Movable owner, int dmg) {
@@ -39,15 +40,15 @@ public class MeleeWeapon extends Weapon{
 	}
 	
 	public void draw(Graphics g, int offsetX, int offsetY, double scaleX, double scaleY){
-		double finalX = owner.getMouseX() - owner.getMidX();
-		double finalY = owner.getMouseY() - owner.getMidY() + 8;
-		double length = (new Vector(finalX, finalY)).magnitude();
-		finalX *= 50 / length;
-		finalY *= 50 / length;
-		finalX += owner.getMidX();
-		finalY += owner.getMidY() - 8;
+//		double finalX = owner.getMouseX() - owner.getMidX();
+//		double finalY = owner.getMouseY() - owner.getMidY() + 8;
+//		double length = (new Vector(finalX, finalY)).magnitude();
+//		finalX *= 50 / length;
+//		finalY *= 50 / length;
+//		finalX += owner.getMidX();
+//		finalY += owner.getMidY() - 8;
 //		System.out.println(finalX + " " + finalY);
-		g.drawLine((int)((owner.getMidX() - offsetX) * scaleX), (int)((owner.getMidY() - 8 - offsetY) * scaleY), (int)((finalX - offsetX) * scaleX), (int)((finalY - offsetY) * scaleY));
+//		g.drawLine((int)((owner.getMidX() - offsetX) * scaleX), (int)((owner.getMidY() - 8 - offsetY) * scaleY), (int)((finalX - offsetX) * scaleX), (int)((finalY - offsetY) * scaleY));
 
 //		mas.get(0).draw(g, offsetX, offsetY, scaleX, scaleY);
 		
@@ -93,11 +94,13 @@ public class MeleeWeapon extends Weapon{
 	}
 	
 	public void attack(){
-		startTime = System.currentTimeMillis();
-		cycle %= mas.size();
-		currAttack = mas.get(cycle);
-		currAttack.attack(owner.getMidX(), owner.getMidY(), getAngle(facingRight));
-		cycle++;
+		if(System.currentTimeMillis() > startTime + COOLDOWN){
+			startTime = System.currentTimeMillis();
+			cycle %= mas.size();
+			currAttack = mas.get(cycle);
+			currAttack.attack(owner.getMidX(), owner.getMidY(), getAngle(facingRight));
+			cycle++;
+		}
 	}
 	
 	public void updateFireVector(){
@@ -114,12 +117,12 @@ public class MeleeWeapon extends Weapon{
 //		Path p1 = new Path(20, 20);
 //		p1.add(new Vector(50, -20));
 //		p1.add(new Vector(-50, -20));
-//		mas.add(new MeleeAttack(owner, damage, p1));
+//		mas.add(new MeleeAttack(owner, this, damage, p1, LIFETIME));
 //		
 //		Path p2 = new Path(20, 40);
 //		p2.add(new Vector(50, -40));
 //		p2.add(new Vector(-50, -40));
-//		mas.add(new MeleeAttack(owner, damage, p2));
+//		mas.add(new MeleeAttack(owner, this, damage, p2, LIFETIME));
 //	}
 	
 	public void initializeMas(){
@@ -129,13 +132,13 @@ public class MeleeWeapon extends Weapon{
 			Path p1 = new Path(20, (10 + i));
 			p1.add(new Vector(50, -(10 + i)));
 			p1.add(new Vector(-50, -(10 + i)));
-			mas.add(new MeleeAttack(owner, damage, p1));
+			mas.add(new MeleeAttack(owner, this, damage, p1, LIFETIME));
 		}
 		for(int i = 29; i >= 1; i-=2){
 			Path p1 = new Path(20, (10 + i));
 			p1.add(new Vector(50, -(10 + i)));
 			p1.add(new Vector(-50, -(10 + i)));
-			mas.add(new MeleeAttack(owner, damage, p1));
+			mas.add(new MeleeAttack(owner, this, damage, p1, LIFETIME));
 		}
 		
 	}

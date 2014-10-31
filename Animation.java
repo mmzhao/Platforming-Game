@@ -59,6 +59,7 @@ public class Animation {
 		elapsedTime = 0;
 	}
 	
+	
 // --------------------------------SET UP ANIMATION-------------------------------- //	
 	
 	//loads initial sprite map image
