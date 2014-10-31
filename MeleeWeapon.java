@@ -64,6 +64,11 @@ public class MeleeWeapon extends Weapon{
 				currAttack = null;
 			}
 		}
+		
+		if(currAttack != null){
+			currAttack.update(time);
+		}
+		
 		updateFireVector();
 		facingRight = owner.getFacingRight();
 		if(owner != null){
