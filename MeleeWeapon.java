@@ -17,7 +17,7 @@ public class MeleeWeapon extends Weapon{
 	protected double pivotX = 0;
 	protected double pivotY = 0;
 	
-	protected final long LIFETIME = 1000;
+	protected final long LIFETIME = 400;
 	protected final long COOLDOWN = 300;
 	protected final double minChange = 1;
 
@@ -113,13 +113,16 @@ public class MeleeWeapon extends Weapon{
 	public void initializeMas(){
 		mas = new ArrayList<MeleeAttack>();
 		
-		Path p1 = new Path(28, 64);
-		p1.add(new Vector(20, -20));
+		Path p1 = new Path(26, 63);
+		p1.add(new Vector(8, -5));
+		p1.add(new Vector(12, -20));
 		p1.add(new Vector(4, -20));
 		p1.add(new Vector(0, -20));
 		p1.add(new Vector(-4, -8));
 		p1.add(new Vector(-8, -20));
-		p1.add(new Vector(-16, -20));	
+		p1.add(new Vector(-16, -20));
+		p1.add(new Vector(-25, -16));
+		p1.add(new Vector(-32, -1));
 		mas.add(new MeleeAttack(this, damage, p1, LIFETIME));
 		
 //		Path p2 = new Path(20, 40);

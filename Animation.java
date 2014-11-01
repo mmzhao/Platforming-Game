@@ -59,6 +59,15 @@ public class Animation {
 		elapsedTime = 0;
 	}
 	
+	public Animation(BufferedImage[] bi, int spriteWidth, int spriteHeight, double loopTime){
+		this.bi = bi;
+		this.spriteWidth = spriteWidth;
+		this.spriteHeight = spriteHeight;
+		current = 0;
+		this.loopTime = loopTime;
+		elapsedTime = 0;
+	}
+	
 	
 // --------------------------------SET UP ANIMATION-------------------------------- //	
 	
@@ -123,6 +132,10 @@ public class Animation {
 	
 	
 // ------------------------------GET/SET METHODS------------------------------- //
+	
+	public Animation get(){
+		return new Animation(bi, spriteWidth, spriteHeight, loopTime);
+	}
 	
 	public boolean getStarted(){
 		return started;

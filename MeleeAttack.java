@@ -31,7 +31,7 @@ public class MeleeAttack extends Entity{
 //		real = p.get();
 		this.duration = duration;
 		startTime = System.currentTimeMillis();
-		ani = new Animation("Slash6.svg", 400, 846, 4, 6, 2);
+		ani = new Animation("Slash6.svg", 400, 846, 4, 6, 1);
 		current = null;
 		angle = 0;
 		facingRight = 1;
@@ -49,7 +49,23 @@ public class MeleeAttack extends Entity{
 		this.duration = duration;
 		startTime = System.currentTimeMillis();
 		this.facingRight = facingRight;
-		ani = new Animation("Slash6.svg", 400, 846, 4, 6, 2);
+		ani = new Animation("Slash6.svg", 400, 846, 4, 6, 1);
+		current = null;
+	}
+	
+	public MeleeAttack(MeleeWeapon w, double x, double y, double angle, int dmg, Path p, long duration, int facingRight, Animation ani){
+//		this.owner = owner;
+		this.x = x;
+		this.y = y;
+		this.angle = angle;
+		this.mw = w;
+		this.dmg = dmg;
+		base = p;
+//		real = p.get();
+		this.duration = duration;
+		startTime = System.currentTimeMillis();
+		this.facingRight = facingRight;
+		this.ani = ani;
 		current = null;
 	}
 	
@@ -83,16 +99,16 @@ public class MeleeAttack extends Entity{
 		}
 		
 		
-//		double xstart = x + base.getX();
-//		double ystart = y + base.getY();
-//		ArrayList<Vector> vs = base.getVS();
-//		g.setColor(Color.green);
-//		
-//		for(Vector v: vs){
-//			g.drawLine((int)((xstart - offsetX) * scaleX), (int)((ystart - offsetY) * scaleY), (int)((xstart + v.getCX() - offsetX) * scaleX), (int)((ystart + v.getCY() - offsetY) * scaleY));
-//			xstart += v.getCX();
-//			ystart += v.getCY();
-//		}
+		double xstart = x + base.getX();
+		double ystart = y + base.getY();
+		ArrayList<Vector> vs = base.getVS();
+		g.setColor(Color.green);
+		
+		for(Vector v: vs){
+			g.drawLine((int)((xstart - offsetX) * scaleX), (int)((ystart - offsetY) * scaleY), (int)((xstart + v.getCX() - offsetX) * scaleX), (int)((ystart + v.getCY() - offsetY) * scaleY));
+			xstart += v.getCX();
+			ystart += v.getCY();
+		}
 		
 	}
 	
@@ -111,9 +127,9 @@ public class MeleeAttack extends Entity{
 	
 	public MeleeAttack getRotatedVersion(double x, double y, double angle, int facingRight){
 		if(facingRight == -1){
-			return new MeleeAttack(mw, x, y, angle, dmg, base.rotate(0, 0, -angle).reflect(), duration, facingRight);
+			return new MeleeAttack(mw, x, y, angle, dmg, base.rotate(0, 0, -angle).reflect(), duration, facingRight, ani.get());
 		}
-		return new MeleeAttack(mw, x, y, angle, dmg, base.rotate(0, 0, angle), duration, facingRight);
+		return new MeleeAttack(mw, x, y, angle, dmg, base.rotate(0, 0, angle), duration, facingRight, ani.get());
 	}
 	
 	public void attack(){
