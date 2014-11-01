@@ -47,7 +47,7 @@ public class Rocket extends Projectile{
 		explosion = Explosions.getRandom();
 		explodeRadius = 70;
 		knockBack = 5;
-		bi = ImageGetter.getSVG("Rocket.svg", 411, 194, this);
+		bi = ImageGetter.getSVG("Rocket.svg", 411, 194);
 		this.angle = angle;
 		at = new AffineTransform();
         at.translate(x, y);

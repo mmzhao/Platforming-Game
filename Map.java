@@ -60,7 +60,7 @@ public class Map {
 					continue;
 				}
 				else if(map[i][j] == 'M'){
-					GamePanel.setPlayer(new Player(ImageGetter.getSVG("Standing2.svg", 832, 1080, this), j * 5, i * 5, 31, 40, 100, null));
+					GamePanel.setPlayer(new Player(ImageGetter.getSVG("Standing2.svg", 832, 1080), j * 5, i * 5, 31, 40, 100, null));
 //					GamePanel.setPlayer(new Player(g.loadImage("Standing.png"), j * 5, i * 5, 20, 20, 100, null));
 				}
 				else if(map[i][j] == 'B'){

@@ -50,7 +50,7 @@ public class Animation {
 	}
 	
 	public Animation(String path, int x, int y, int spriteWidth, int spriteHeight, double loopTime){
-		spriteMap = ImageGetter.getSVG(path, x, y, this);
+		spriteMap = ImageGetter.getSVG(path, x, y);
 		this.spriteWidth = spriteWidth;
 		this.spriteHeight = spriteHeight;
 		bi = splitImage(spriteMap, spriteWidth, spriteHeight);
