@@ -85,6 +85,7 @@ public class GamePanel extends JPanel implements Runnable{
 	
 //	GUIs
 	private WeaponGUI weaponGUI;
+	private HealthGUI healthGUI;
 	
 // --------------------------------CONSTRUCTOR-------------------------------- //
 	
@@ -108,6 +109,7 @@ public class GamePanel extends JPanel implements Runnable{
 		setScale();
 		
 		weaponGUI = new WeaponGUI( screenW - (int)(screenW/3), screenH - (int)(screenW/3 * .289), (int)(screenW/3), (int)(screenW/3 * .289));
+		healthGUI = new HealthGUI(0, 0, (int)(2*screenW/3));
 		
 		try {
 			initialState();
@@ -255,6 +257,7 @@ public class GamePanel extends JPanel implements Runnable{
 			}
 			player.update();
 			el.update();
+			healthGUI.setHealthPercent(player.getHealth());
 			
 			setOffset();
 			setScale();
@@ -333,6 +336,7 @@ public class GamePanel extends JPanel implements Runnable{
 		
 		// draw game elements
 		weaponGUI.draw(dbg, offsetX, offsetY, scaleX, scaleY);
+		healthGUI.draw(dbg, offsetX, offsetY, scaleX, scaleY);
 		
 		if(gameOver){
 			// you can get rekt later
