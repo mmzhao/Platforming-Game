@@ -16,10 +16,10 @@ import org.apache.commons.io.output.ByteArrayOutputStream;
 
 public class ImageGetter {
 	
-	public static BufferedImage getSVG(String path, int x, int y, Object o){
+	public static BufferedImage getSVG(String path, int x, int y){
 	    // Create a PNG transcoder.
 	    Transcoder t = new PNGTranscoder();
-	    URL image = o.getClass().getResource(path);
+	    URL image = ImageGetter.class.getResource(path);
 
 	    // Set the transcoding hints.
 	    t.addTranscodingHint( PNGTranscoder.KEY_WIDTH,  new Float(x) );

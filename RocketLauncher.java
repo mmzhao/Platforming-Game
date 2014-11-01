@@ -16,7 +16,7 @@ public class RocketLauncher extends RangedWeapon{
 	
 	public RocketLauncher(int range){
 		super("RocketLauncher", null, 35, 1, 20, 100, 20, -2, 9, 100, null);
-		bi = ImageGetter.getSVG("RocketLauncher.svg", 404, 105, this);
+		bi = ImageGetter.getSVG("RocketLauncher.svg", 404, 105);
 		homingLvl = 1;
 		this.range = range;
 	}

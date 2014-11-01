@@ -155,12 +155,12 @@ public class GamePanel extends JPanel implements Runnable{
 
 		
 //		Testing backgrounds
-		background = ImageGetter.getSVG("BackgroundSample.svg", screenW, screenH, this);
+		background = ImageGetter.getSVG("BackgroundSample.svg", screenW, screenH);
 //		background = loadImage("Background3.png");
-		background2 = ImageGetter.getSVG("Background.svg", (int)(entireW * scaleX), (int)(entireH * scaleY), this);
+		background2 = ImageGetter.getSVG("Background.svg", (int)(entireW * scaleX), (int)(entireH * scaleY));
 		
 		final RocketLauncher rl = new RocketLauncher((int) Math.pow(w/2 * w/2 + h/2 * h/2, .5));
-		final Pistol p = new Pistol(ImageGetter.getSVG("Revolver.svg", 568, 234, this));
+		final Pistol p = new Pistol(ImageGetter.getSVG("Revolver.svg", 568, 234));
 		final MeleeWeapon mw = new MeleeWeapon("sword", null, player, 100);
 		player.giveCurrentWeapon(mw);
 		

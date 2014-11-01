@@ -113,8 +113,8 @@ public class MeleeWeapon extends Weapon{
 	public void initializeMas(){
 		mas = new ArrayList<MeleeAttack>();
 		
-		Path p1 = new Path(26, 63);
-		p1.add(new Vector(8, -5));
+		Path p1 = new Path(18, 68);
+		p1.add(new Vector(16, -10));
 		p1.add(new Vector(12, -20));
 		p1.add(new Vector(4, -20));
 		p1.add(new Vector(0, -20));
