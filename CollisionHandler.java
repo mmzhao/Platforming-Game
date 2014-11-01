@@ -26,7 +26,12 @@ public class CollisionHandler {
 						p.setHitTimer(System.currentTimeMillis());
 					}
 				}
+			} else if (e instanceof Baddie) {
+				if (e.makeRect().intersects(p.makeRect())) {
+					p.takeDamage(1);
+				}
 			} else if (e instanceof Platform) {
+				
 				if (e.makeRect().intersects(p.makeRect())) {
 					double distx = Math.abs(p.getSave().getMidX() - e.getMidX())
 							- p.getSave().getW() / 2 - e.getW() / 2;

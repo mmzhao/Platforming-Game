@@ -99,16 +99,16 @@ public class MeleeAttack extends Entity{
 		}
 		
 		
-		double xstart = x + base.getX();
-		double ystart = y + base.getY();
-		ArrayList<Vector> vs = base.getVS();
-		g.setColor(Color.green);
-		
-		for(Vector v: vs){
-			g.drawLine((int)((xstart - offsetX) * scaleX), (int)((ystart - offsetY) * scaleY), (int)((xstart + v.getCX() - offsetX) * scaleX), (int)((ystart + v.getCY() - offsetY) * scaleY));
-			xstart += v.getCX();
-			ystart += v.getCY();
-		}
+//		double xstart = x + base.getX();
+//		double ystart = y + base.getY();
+//		ArrayList<Vector> vs = base.getVS();
+//		g.setColor(Color.green);
+//		
+//		for(Vector v: vs){
+//			g.drawLine((int)((xstart - offsetX) * scaleX), (int)((ystart - offsetY) * scaleY), (int)((xstart + v.getCX() - offsetX) * scaleX), (int)((ystart + v.getCY() - offsetY) * scaleY));
+//			xstart += v.getCX();
+//			ystart += v.getCY();
+//		}
 		
 	}
 	

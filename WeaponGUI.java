@@ -40,7 +40,7 @@ public class WeaponGUI {
 		}
 		length = (int)(length * scaleConstant);
 		for(int i = 0; i < WEAPONS.length; i ++){
-			System.out.println(WEAPONS[i] + "Icon.svg");
+//			System.out.println(WEAPONS[i] + "Icon.svg");
 			m.put(WEAPONS[i], ImageGetter.getSVG(WEAPONS[i] + "Icon.svg", length, length));
 		}
 		
