@@ -76,6 +76,16 @@ public class Path {
 		return new Rectangle((int) minX, (int) minY, (int) (maxX - minX), (int) (maxY - minY));
 	}
 	
+	public Path reflect(){
+		Path newP = new Path(-x, y);
+		for(Vector v: vs){
+			Vector refV = v.get();
+			refV.setCX(-refV.getCX());
+			newP.add(refV);
+		}
+		return newP;
+	}
+	
 	public Path rotate(double pX, double pY, double angle){
 		Vector start = new Vector(x, y);
 		start = start.rotate(angle);

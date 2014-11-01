@@ -207,34 +207,17 @@ public class RangedWeapon extends Weapon{
 		}
 	}
 	
-	public void updateFireVector(){
-//		System.out.println(owner.getMouseY() + " " + getMidY());
-//		double difX = owner.getMouseX() - (x - 2.5 + facingRight * 10);
-//		double difY = owner.getMouseY() - (y - 1);
-		double difX = owner.getMouseX() - getMidX();
-		double difY = owner.getMouseY() - getMidY();
-		double magnitude = Math.pow(difX * difX +  difY * difY, .5);
-//		double newFireX = difX / magnitude;
-//		double newFireY = difY / magnitude;
-//		if(Math.abs(newFireX - fireX) > Math.abs(minChange)){
-//			fireX = newFireX;
-//		}
-//		if(Math.abs(newFireY - fireY) > Math.abs(minChange)){
-//			fireY = newFireY;
-//		}
-		fireX = difX / magnitude;
-		fireY = difY / magnitude;
-//		if(fireX < 0){
-//			facingRight = -1;
-//		}
-//		else{
-//			facingRight = 1;
-//		}
-//		System.out.println(fireX);
-//		System.out.println(fireY);
-//		System.out.println();
-	}
-	
+//	public void updateFireVector(){
+//
+//		double difX = owner.getMouseX() - getMidX();
+//		double difY = owner.getMouseY() - getMidY();
+//		double magnitude = Math.pow(difX * difX +  difY * difY, .5);
+//
+//		fireX = difX / magnitude;
+//		fireY = difY / magnitude;
+//
+//	}
+
 	public void updateProjectiles() {
 		for (int i = ps.size() - 1; i >= 0; i--) {
 			if (ps.get(i).needRemoval())

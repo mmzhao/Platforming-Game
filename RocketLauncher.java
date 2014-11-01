@@ -47,20 +47,5 @@ public class RocketLauncher extends RangedWeapon{
 		}
 	}
 	
-//	public void updateFireVector(){
-//		double difX = owner.getMouseX() - getMidX();
-//		double difY = owner.getMouseY() - getMidY();
-//		double magnitude = Math.pow(difX * difX +  difY * difY, .5);
-//
-//		fireX = difX / magnitude;
-//		fireY = difY / magnitude;
-//		if(fireX < 0){
-//			facingRight = -1;
-//		}
-//		else{
-//			facingRight = 1;
-//		}
-//
-//	}
 
 }

@@ -66,116 +66,13 @@ public class Weapon extends Item{
 	}
 	
 	public void draw(Graphics g, int offsetX, int offsetY, double scaleX, double scaleY){
-//		System.out.println(getMidX());
-//		System.out.println(getMidY());
-//		System.out.println(x);
-//		System.out.println(y);
-//		System.out.println(w);
-//		System.out.println(h);
-//		System.out.println();
-//		pivotX = (x - offsetX) * scaleX + w/2;
-//		if(facingRight == -1)
-//			pivotX -= 3*w/2;
-//		pivotY =  (y - offsetY) * scaleY + h/2;
 		
-//		double newPivotX = (getMidX() - offsetX) * scaleX;
-//		double newPivotY = (getMidY() - offsetY) * scaleY;
-//		if(Math.abs(newPivotX - pivotX) > Math.abs(minChange * scaleX)){
-//			pivotX = newPivotX;
-//		}
-//		if(Math.abs(newPivotY - pivotY) > Math.abs(minChange * scaleX)){
-//			pivotY = newPivotY;
-//		}
-		
-//		double px = w/2;
-//		double py = h/2;
-//		at.setToRotation(getAngle(facingRight), px, py);
-//		
-//		((Graphics2D) g).translate((getMidX() - offsetX) * scaleX, (getMidY() - offsetY) * scaleY);
-//		
-//		if (facingRight == 1) {
-//			((Graphics2D) g).drawImage(bi, at, null);
-//		} else{
-//			((Graphics2D) g).drawImage(bi, at, null);
-//		}
-//		for(int i = 0; i < es.size(); i++){
-//			es.get(i).draw(g, offsetX, offsetY, scaleX, scaleY);
-//		}
-
-		
-//		pivotX = (getMidX() - offsetX) * scaleX;
-//		pivotY =  (getMidY() - offsetY) * scaleY;
-//		at.setToRotation(getAngle(), pivotX, pivotY);
-//		
-//		Graphics2D newGraphics = (Graphics2D)g.create();
-//		newGraphics.setTransform(at);
-//		
-//		
-//		if (facingRight == 1) {
-//			newGraphics.drawImage(bi, (int)((x - offsetX) * scaleX), (int)((y - offsetY) * scaleY), (int)(w * scaleX), (int)(h * scaleY), null, null);
-//		} else{
-//			newGraphics.drawImage(bi, (int)((x - offsetX + w) * scaleX), (int)((y - offsetY) * scaleY), -(int)(w * scaleX), (int)(h * scaleY), null, null);
-//		}
-		
-			
 	}
 
 // --------------------------------UPDATE-------------------------------- //
 	
 	public void update(double time){
-//		updateFireVector();
-//		facingRight = owner.getFacingRight();
-//		if(GamePanel.getUpdateCycle()-lastFired <= firerate)
-//			canFire = false;
-//		else if(numBullets == 0)
-//			canFire = false;
-//		else if(reloading)
-//			canFire = false;
-//		else
-//			canFire = true;
-//		if(reloading){
-//			updateReload();
-//		}
-//		if(owner != null){
-//			facingRight = owner.getFacingRight();
-//			x = owner.getMidX() - w/2;
-//			double newX = owner.getMidX() - 1 * w/2;
-//			double newY = owner.getMidY() - 2 * owner.getH()/5;
-//			if(facingRight == -1)
-//				newY -= w/7;
-//			if(Math.abs(newX - x) > Math.abs(minChange)){
-//				x = newX;
-//			}
-//			if(Math.abs(newY - y) > Math.abs(minChange)){
-//				y = newY;
-//			}
-//			x = owner.getMidX() - w/2;
-//			y = owner.getMidY() - 2*owner.getH()/5;
 
-//			System.out.println(owner.getMidX());
-//			System.out.println(owner.getMidY());
-//			System.out.println(x);
-//			System.out.println(y);
-//			System.out.println(w);
-//			System.out.println(h);
-//			System.out.println();
-			
-//		}
-//		else{
-//			x = 0;
-//			y = 0;
-//		}
-//		for(int i = 0; i < ps.size(); i++){
-//			ps.get(i).update(time);
-//		}
-//		for(int i = 0; i < es.size(); i++){
-//			es.get(i).update(time);
-//		}
-//		if(es.size() >= 40){
-//			es.remove(0);
-//		}  
-//		updateProjectiles();
-//		updateEmptyShells();
 	}
 
 	
@@ -218,8 +115,6 @@ public class Weapon extends Item{
 	
 	public double getAngle(){
 		double angle = Math.atan(fireY/fireX);
-//		if(facingRight == -1)
-//			angle += Math.PI;
 		return angle;
 	}
 	
