@@ -312,10 +312,6 @@ public class GamePanel extends JPanel implements Runnable{
 		
 		
 //		dbg.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-		dbg.setColor(Color.black);
-		dbg.drawString(updateCycle + "", 50, 50);
-		dbg.drawString(updateCycle/((System.currentTimeMillis() - startTime)/1000 + 1) + "", 50, 75);
-		dbg.drawString("updateTime: " + (int) ((double)updateTime/(((double)System.currentTimeMillis() - (double)startTime) + 1) * 100) + ",  renderTime: " + (int) ((double)renderTime/((double)(System.currentTimeMillis() - (double)startTime) + 1) * 100) + ", paintTime:  " + (int) ((double)paintTime/(((double)System.currentTimeMillis() - (double)startTime) + 1) * 100), 50, 100);
 
 		if(player.getCurrentWeapon() instanceof RangedWeapon){
 			for(Projectile p: ((RangedWeapon) player.getCurrentWeapon()).getProjectiles()){
@@ -337,6 +333,12 @@ public class GamePanel extends JPanel implements Runnable{
 		// draw game elements
 		weaponGUI.draw(dbg, offsetX, offsetY, scaleX, scaleY);
 		healthGUI.draw(dbg, offsetX, offsetY, scaleX, scaleY);
+		
+		dbg.setColor(Color.red);
+		dbg.drawString(updateCycle + "", 50, 250);
+		dbg.drawString(updateCycle/((System.currentTimeMillis() - startTime)/1000 + 1) + "", 50, 275);
+		dbg.drawString("updateTime: " + (int) ((double)updateTime/(((double)System.currentTimeMillis() - (double)startTime) + 1) * 100) + ",  renderTime: " + (int) ((double)renderTime/((double)(System.currentTimeMillis() - (double)startTime) + 1) * 100) + ", paintTime:  " + (int) ((double)paintTime/(((double)System.currentTimeMillis() - (double)startTime) + 1) * 100), 50, 300);
+
 		
 		if(gameOver){
 			// you can get rekt later

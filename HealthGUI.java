@@ -28,7 +28,7 @@ public class HealthGUI {
 	}
 	
 	public void draw(Graphics g, int offsetX, int offsetY, double scaleX, double scaleY){
-		g.drawImage(bar, x, y, w, h, x, y, (int)(w * healthPercent/100), h, null);
+		g.drawImage(bar, x, y, (int)(w * healthPercent/100), h, x, y, w, h, null);
 		g.drawImage(gui, x, y, w, h, null);
 	}
 	
