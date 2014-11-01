@@ -40,15 +40,15 @@ public class MeleeWeapon extends Weapon{
 	}
 	
 	public void draw(Graphics g, int offsetX, int offsetY, double scaleX, double scaleY){
-//		double finalX = owner.getMouseX() - owner.getMidX();
-//		double finalY = owner.getMouseY() - owner.getMidY() + 8;
-//		double length = (new Vector(finalX, finalY)).magnitude();
-//		finalX *= 50 / length;
-//		finalY *= 50 / length;
-//		finalX += owner.getMidX();
-//		finalY += owner.getMidY() - 8;
+		double finalX = owner.getMouseX() - owner.getMidX();
+		double finalY = owner.getMouseY() - owner.getMidY() + 8;
+		double length = (new Vector(finalX, finalY)).magnitude();
+		finalX *= 50 / length;
+		finalY *= 50 / length;
+		finalX += owner.getMidX();
+		finalY += owner.getMidY() - 8;
 //		System.out.println(finalX + " " + finalY);
-//		g.drawLine((int)((owner.getMidX() - offsetX) * scaleX), (int)((owner.getMidY() - 8 - offsetY) * scaleY), (int)((finalX - offsetX) * scaleX), (int)((finalY - offsetY) * scaleY));
+		g.drawLine((int)((owner.getMidX() - offsetX) * scaleX), (int)((owner.getMidY() - 8 - offsetY) * scaleY), (int)((finalX - offsetX) * scaleX), (int)((finalY - offsetY) * scaleY));
 
 //		mas.get(0).draw(g, offsetX, offsetY, scaleX, scaleY);
 		
@@ -87,10 +87,6 @@ public class MeleeWeapon extends Weapon{
 			x = 0;
 			y = 0;
 		}
-	}
-	
-	public void fire() {
-		attack();
 	}
 	
 	public void attack(){

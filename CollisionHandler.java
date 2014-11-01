@@ -77,9 +77,9 @@ public class CollisionHandler {
 		p.reset();
 		
 		//projectiles
-		if(p.getCurrentWeapon() != null && !(p.getCurrentWeapon() instanceof MeleeWeapon)){ //fix this crap code
-			projectileCollision(p.getCurrentWeapon().getProjectiles(), screen);
-			emptyShellCollision(p.getCurrentWeapon().getEmptyShells(), screen);
+		if(p.getCurrentWeapon() != null && p.getCurrentWeapon() instanceof RangedWeapon){ //fix this crap code
+			projectileCollision(((RangedWeapon)(p.getCurrentWeapon())).getProjectiles(), screen);
+			emptyShellCollision(((RangedWeapon)(p.getCurrentWeapon())).getEmptyShells(), screen);
 		}
 	}
 	

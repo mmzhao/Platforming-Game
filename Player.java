@@ -33,7 +33,7 @@ public class Player extends Movable {
 	protected boolean isLeftHeld = false;
 	protected boolean isUpHeld = false;
 	protected boolean isHit = false;
-	protected boolean isShooting = false;
+	protected boolean isAttacking = false;
 	protected double mouseX = 0;
 	protected double mouseY = 0;
 	protected double realMouseX = 0;
@@ -111,9 +111,10 @@ public class Player extends Movable {
 		}
 
 		if (currentWeapon != null) {
-			for (int i = 0; i < currentWeapon.getProjectiles().size(); i++) {
-				currentWeapon.getProjectiles().get(i)
-						.draw(g, offsetX, offsetY, scaleX, scaleY);
+			if(currentWeapon instanceof RangedWeapon){
+				for (int i = 0; i < ((RangedWeapon) currentWeapon).getProjectiles().size(); i++) {
+					((RangedWeapon) currentWeapon).getProjectiles().get(i).draw(g, offsetX, offsetY, scaleX, scaleY);
+				}
 			}
 			currentWeapon.draw(g, offsetX, offsetY, scaleX, scaleY);
 		}
@@ -207,8 +208,8 @@ public class Player extends Movable {
 //		System.out.println();
 		
 
-		if (isShooting) {
-			currentWeapon.fire();
+		if (isAttacking) {
+			currentWeapon.attack();
 		}
 		if (currentWeapon != null) {
 			currentWeapon.update(time);
@@ -359,8 +360,8 @@ public class Player extends Movable {
 		}
 		
 		else if (key == KeyEvent.VK_T) {
-			if (currentWeapon != null)
-				currentWeapon.reload();
+			if (currentWeapon != null && currentWeapon instanceof RangedWeapon)
+				((RangedWeapon) currentWeapon).reload();
 			// shoot();
 		}
 
@@ -410,13 +411,13 @@ public class Player extends Movable {
 	public void mousePressed(MouseEvent e) {
 		if (e.getButton() == MouseEvent.BUTTON1) {
 			if (currentWeapon != null)
-				isShooting = true;
+				isAttacking = true;
 		}
 	}
 
 	public void mouseReleased(MouseEvent e) {
 		if (e.getButton() == MouseEvent.BUTTON1) {
-			isShooting = false;
+			isAttacking = false;
 		}
 	}
 

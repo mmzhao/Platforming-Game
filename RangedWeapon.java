@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 import javax.swing.text.Position;
 
-public class Weapon extends Item{
+public class RangedWeapon extends Weapon{
 	
 //	ps: list of all projectiles fired from this weapon
 //	es: list of all empty shells emitted from this weapon
@@ -27,31 +27,49 @@ public class Weapon extends Item{
 //	numBullets: number of bullets left in the clip
 //	startReload: system millisecond start time for the reload
 //	reloading: whether or not this weapon is reloading
-	protected Movable owner;
+	protected ArrayList<Projectile> ps;
+	protected ArrayList<EmptyShell> es;
+	protected long lastFired;
+	protected int firerate;
 	protected int facingRight;
-	protected int damage;
-	protected double fireX, fireY;
-	protected AffineTransform  at;
-	
-	protected double pivotX = 0;
-	protected double pivotY = 0;
-	
-	protected final double minChange = 1;
+	protected int clipsize;
+	protected int reloadSpeed;
+	protected double velocity;
+	protected double accel;
+	protected int bulletsize;
+	protected boolean canFire;
+	protected int numBullets;
+	protected long startReload;
+	protected boolean reloading = false;
 	
 // --------------------------------CONSTRUCTOR-------------------------------- //
 	
-	public Weapon(BufferedImage b, String name) {
-		super(b, 0, 0, 0, 0, false, name);
-	}
 	
-	public Weapon(String name, BufferedImage b, int facingRight, int damage, Movable owner){
-		super(b, 0, 0, 0, 0, false, name);
+	public RangedWeapon(String name, BufferedImage b, int firerate, int facingRight, int clipsize, int reloadSpeed, double velocity,
+					double accel, int bulletsize, int damage, Movable owner){
+		super(b, name);
+		ps = new ArrayList<Projectile>();
+		lastFired = 0;
+		this.firerate = firerate;
 		this.facingRight = facingRight;
+		this.clipsize = clipsize;
+		this.reloadSpeed = reloadSpeed;
+		this.velocity = velocity;
+		this.accel = accel;
+		this.bulletsize = bulletsize;
 		this.damage = damage;
 		this.owner = owner;
+		canFire = true;
+		es = new ArrayList<EmptyShell>();
 		
+		numBullets = clipsize;
+		startReload = 0;
 		at = new AffineTransform();
         at.translate(x, y);
+        
+
+		w = 58;
+		h = 15;
         
 	}
 	
@@ -103,19 +121,22 @@ public class Weapon extends Item{
 //		}
 
 		
-//		pivotX = (getMidX() - offsetX) * scaleX;
-//		pivotY =  (getMidY() - offsetY) * scaleY;
-//		at.setToRotation(getAngle(), pivotX, pivotY);
-//		
-//		Graphics2D newGraphics = (Graphics2D)g.create();
-//		newGraphics.setTransform(at);
-//		
-//		
-//		if (facingRight == 1) {
-//			newGraphics.drawImage(bi, (int)((x - offsetX) * scaleX), (int)((y - offsetY) * scaleY), (int)(w * scaleX), (int)(h * scaleY), null, null);
-//		} else{
-//			newGraphics.drawImage(bi, (int)((x - offsetX + w) * scaleX), (int)((y - offsetY) * scaleY), -(int)(w * scaleX), (int)(h * scaleY), null, null);
-//		}
+		pivotX = (getMidX() - offsetX) * scaleX;
+		pivotY =  (getMidY() - offsetY) * scaleY;
+		at.setToRotation(getAngle(), pivotX, pivotY);
+		
+		Graphics2D newGraphics = (Graphics2D)g.create();
+		newGraphics.setTransform(at);
+		
+		
+		if (facingRight == 1) {
+			newGraphics.drawImage(bi, (int)((x - offsetX) * scaleX), (int)((y - offsetY) * scaleY), (int)(w * scaleX), (int)(h * scaleY), null, null);
+		} else{
+			newGraphics.drawImage(bi, (int)((x - offsetX + w) * scaleX), (int)((y - offsetY) * scaleY), -(int)(w * scaleX), (int)(h * scaleY), null, null);
+		}
+		for(int i = 0; i < es.size(); i++){
+			es.get(i).draw(g, offsetX, offsetY, scaleX, scaleY);
+		}
 		
 			
 	}
@@ -123,32 +144,32 @@ public class Weapon extends Item{
 // --------------------------------UPDATE-------------------------------- //
 	
 	public void update(double time){
-//		updateFireVector();
-//		facingRight = owner.getFacingRight();
-//		if(GamePanel.getUpdateCycle()-lastFired <= firerate)
-//			canFire = false;
-//		else if(numBullets == 0)
-//			canFire = false;
-//		else if(reloading)
-//			canFire = false;
-//		else
-//			canFire = true;
-//		if(reloading){
-//			updateReload();
-//		}
-//		if(owner != null){
+		updateFireVector();
+		facingRight = owner.getFacingRight();
+		if(GamePanel.getUpdateCycle()-lastFired <= firerate)
+			canFire = false;
+		else if(numBullets == 0)
+			canFire = false;
+		else if(reloading)
+			canFire = false;
+		else
+			canFire = true;
+		if(reloading){
+			updateReload();
+		}
+		if(owner != null){
 //			facingRight = owner.getFacingRight();
 //			x = owner.getMidX() - w/2;
-//			double newX = owner.getMidX() - 1 * w/2;
-//			double newY = owner.getMidY() - 2 * owner.getH()/5;
+			double newX = owner.getMidX() - 1 * w/2;
+			double newY = owner.getMidY() - 2 * owner.getH()/5;
 //			if(facingRight == -1)
 //				newY -= w/7;
-//			if(Math.abs(newX - x) > Math.abs(minChange)){
-//				x = newX;
-//			}
-//			if(Math.abs(newY - y) > Math.abs(minChange)){
-//				y = newY;
-//			}
+			if(Math.abs(newX - x) > Math.abs(minChange)){
+				x = newX;
+			}
+			if(Math.abs(newY - y) > Math.abs(minChange)){
+				y = newY;
+			}
 //			x = owner.getMidX() - w/2;
 //			y = owner.getMidY() - 2*owner.getH()/5;
 
@@ -160,24 +181,31 @@ public class Weapon extends Item{
 //			System.out.println(h);
 //			System.out.println();
 			
-//		}
-//		else{
-//			x = 0;
-//			y = 0;
-//		}
-//		for(int i = 0; i < ps.size(); i++){
-//			ps.get(i).update(time);
-//		}
-//		for(int i = 0; i < es.size(); i++){
-//			es.get(i).update(time);
-//		}
-//		if(es.size() >= 40){
-//			es.remove(0);
-//		}  
-//		updateProjectiles();
-//		updateEmptyShells();
+		}
+		else{
+			x = 0;
+			y = 0;
+		}
+		for(int i = 0; i < ps.size(); i++){
+			ps.get(i).update(time);
+		}
+		for(int i = 0; i < es.size(); i++){
+			es.get(i).update(time);
+		}
+		if(es.size() >= 40){
+			es.remove(0);
+		}  
+		updateProjectiles();
+		updateEmptyShells();
 	}
-
+	
+	public void updateReload(){
+		if(GamePanel.getUpdateCycle() < startReload + reloadSpeed){}
+		else{
+			numBullets = clipsize;
+			reloading = false;
+		}
+	}
 	
 	public void updateFireVector(){
 //		System.out.println(owner.getMouseY() + " " + getMidY());
@@ -207,30 +235,60 @@ public class Weapon extends Item{
 //		System.out.println();
 	}
 	
+	public void updateProjectiles() {
+		for (int i = ps.size() - 1; i >= 0; i--) {
+			if (ps.get(i).needRemoval())
+				ps.remove(i);
+		}
+	}
 	
-// --------------------------------ATTACK METHODS-------------------------------- //
+	public void updateEmptyShells() {
+		for (int i = es.size() - 1; i >= 0; i--) {
+			if (es.get(i).needRemoval())
+				es.remove(i);
+		}
+	}
+	
+// --------------------------------RELOAD AND FIRE METHODS-------------------------------- //
+
+	public void reload(){
+		if(!reloading){
+			reloading = true;
+			startReload = GamePanel.getUpdateCycle();
+		}
+	}
 	
 	public void attack() {
-
+//		if(canFire){
+			lastFired = GamePanel.getUpdateCycle();
+			es.add(new EmptyShell(null, x, y, Math.random() * 5 - 2 , -5));
+			ps.add(new Projectile(null, owner.getMidX(), owner.getMidY(), bulletsize, bulletsize, fireX * velocity, fireY * velocity, fireX * accel, fireY * accel, damage));
+//			ps.add(new Projectile(null, x - 2.5 - facingRight * 10, y - 1, bulletsize, bulletsize, fireX * velocity, fireY * velocity, fireX * accel, fireY * accel, damage));
+//			ps.add(new Projectile(null, x - 2.5 + facingRight * 10, y - 1, bulletsize, bulletsize, facingRight * velocity, facingRight*accel, damage));
+			
+//		}
 	}
 	
 // --------------------------------GET/SET METHODS-------------------------------- //
 	
-	public double getAngle(){
-		double angle = Math.atan(fireY/fireX);
-//		if(facingRight == -1)
-//			angle += Math.PI;
-		return angle;
+	public ArrayList<Projectile> getProjectiles() {
+		return ps;
+	}
+
+	public void setProjectile(ArrayList<Projectile> ps) {
+		this.ps = ps;
 	}
 	
-	public double getAngle(int facingRight){
-		double angle = Math.atan(fireY/fireX);
-		if(facingRight == -1)
-			angle += Math.PI;
-		return angle;
+	public ArrayList<EmptyShell> getEmptyShells() {
+		return es;
 	}
-	
-	public void setOwner(Movable m){
-		owner = m;
+
+	public void setEmptyShells(ArrayList<EmptyShell> es) {
+		this.es = es;
 	}
+
+	public void removeProjectile(Projectile p) {
+		ps.remove(p);
+	}
+
 }

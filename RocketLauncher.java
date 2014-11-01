@@ -5,7 +5,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 
-public class RocketLauncher extends Weapon{
+public class RocketLauncher extends RangedWeapon{
 	
 //	homingLvl: measure of how much homing will affect projectile movement
 //	range: how far the homing rocket can look for a target
@@ -34,7 +34,7 @@ public class RocketLauncher extends Weapon{
 	
 // --------------------------------FIRE METHOD-------------------------------- //
 	
-	public void fire() { 
+	public void attack() { 
 		//reimplement canFire later but now no cuz funsies
 		if(canFire){
 			lastFired = GamePanel.getUpdateCycle();

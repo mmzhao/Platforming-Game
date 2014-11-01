@@ -24,6 +24,7 @@ import javax.swing.JPanel;
 
 ///SVC Libraries
 
+
 import org.apache.batik.transcoder.Transcoder;
 import org.apache.batik.transcoder.TranscoderInput;
 import org.apache.batik.transcoder.TranscoderOutput;
@@ -312,8 +313,8 @@ public class GamePanel extends JPanel implements Runnable{
 		dbg.drawString(updateCycle/((System.currentTimeMillis() - startTime)/1000 + 1) + "", 50, 75);
 		dbg.drawString("updateTime: " + (int) ((double)updateTime/(((double)System.currentTimeMillis() - (double)startTime) + 1) * 100) + ",  renderTime: " + (int) ((double)renderTime/((double)(System.currentTimeMillis() - (double)startTime) + 1) * 100) + ", paintTime:  " + (int) ((double)paintTime/(((double)System.currentTimeMillis() - (double)startTime) + 1) * 100), 50, 100);
 
-		if(player.getCurrentWeapon() != null){
-			for(Projectile p: player.getCurrentWeapon().getProjectiles()){
+		if(player.getCurrentWeapon() instanceof RangedWeapon){
+			for(Projectile p: ((RangedWeapon) player.getCurrentWeapon()).getProjectiles()){
 //				p.draw(dbg, offsetX, offsetY);
 				p.draw(dbg, offsetX, offsetY, scaleX, scaleY);
 			}

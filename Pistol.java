@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
 
-public class Pistol extends Weapon{
+public class Pistol extends RangedWeapon{
 	
 	public Pistol(){
 		super("Pistol", null, 5, 1, 20, 1000, 20, .25, 5, 1, null);
