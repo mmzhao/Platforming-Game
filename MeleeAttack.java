@@ -28,7 +28,7 @@ public class MeleeAttack extends Entity{
 		base = p;
 		real = p.get();
 		this.duration = duration;
-		ani = new Animation("Slash2.png", 7, 2, 2);
+		ani = new Animation("Slash6.svg", 400, 846, 4, 6, 1);
 		current = null;
 	}
 	
