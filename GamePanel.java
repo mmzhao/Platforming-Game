@@ -92,6 +92,9 @@ public class GamePanel extends JPanel implements Runnable{
 	private long pauseStart = 0;
 	private long pauseTime = 0;
 	
+//	GUIs
+	private WeaponGUI weaponGUI;
+	
 // --------------------------------CONSTRUCTOR-------------------------------- //
 	
 	public GamePanel(int w, int h){
@@ -113,7 +116,7 @@ public class GamePanel extends JPanel implements Runnable{
 		offsetY = 0;
 		setScale();
 		
-		
+		weaponGUI = new WeaponGUI( screenW - (int)(screenW/3), screenH - (int)(screenW/3 * .289), (int)(screenW/3), (int)(screenW/3 * .289));
 		
 		try {
 			initialState();
@@ -164,17 +167,24 @@ public class GamePanel extends JPanel implements Runnable{
 		final MeleeWeapon mw = new MeleeWeapon("sword", null, player, 100);
 		player.giveCurrentWeapon(mw);
 		
+		weaponGUI.addWeapon("Revolver", 0);
+		weaponGUI.addWeapon("RocketLauncher", 1);
+		
+		
 		addKeyListener(new KeyAdapter(){
 			public void keyPressed(KeyEvent e){
 				int keyCode = e.getKeyCode();
 				if((keyCode == KeyEvent.VK_1)){
 					player.giveCurrentWeapon(p);
+					weaponGUI.select(0);
 				}
 				if((keyCode == KeyEvent.VK_2)){
 					player.giveCurrentWeapon(rl);
+					weaponGUI.select(1);
 				}
 				if((keyCode == KeyEvent.VK_3)){
 					player.giveCurrentWeapon(mw);
+					weaponGUI.select(2);
 				}
 			}
 		});
@@ -331,6 +341,7 @@ public class GamePanel extends JPanel implements Runnable{
 		
 		
 		// draw game elements
+		weaponGUI.draw(dbg, offsetX, offsetY, scaleX, scaleY);
 		
 		if(gameOver){
 			// you can get rekt later
