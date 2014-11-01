@@ -124,7 +124,10 @@ public class Player extends Movable {
 
 	public void update(double time) {
 		setMousePos();
-		
+//		System.out.println(isHit + " " + health);
+		if(System.currentTimeMillis() > hitTimer + 1000){
+			isHit = false;
+		}
 		setA(new Vector(0, 0));
 
 		if (runningAni.getStarted()) {

@@ -1,20 +1,8 @@
 import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.MediaTracker;
-import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
-import javax.swing.JPanel;
-
-import org.apache.batik.transcoder.Transcoder;
-import org.apache.batik.transcoder.TranscoderInput;
-import org.apache.batik.transcoder.TranscoderOutput;
-import org.apache.batik.transcoder.image.PNGTranscoder;
-import org.apache.commons.io.output.ByteArrayOutputStream;
 
 
 public class Animation {

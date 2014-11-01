@@ -22,13 +22,10 @@ public class CollisionHandler {
 			if (e instanceof Baddie) {
 				if (e.makeRect().intersects(p.makeRect())) {
 					if (!p.isHit()) {
+						p.takeDamage(1); //change eventually to how much damage the baddie actually does
 						p.setIsHit(true);
 						p.setHitTimer(System.currentTimeMillis());
 					}
-				}
-			} else if (e instanceof Baddie) {
-				if (e.makeRect().intersects(p.makeRect())) {
-					p.takeDamage(1);
 				}
 			} else if (e instanceof Platform) {
 				

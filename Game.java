@@ -4,7 +4,7 @@ import javax.swing.JFrame;
 public class Game extends JFrame {
 	
 // --------------------------------CONTRUCTOR-------------------------------- //
-	
+
 	public Game() {	
 		int entireW = 1000;
 		int entireH = 400;
