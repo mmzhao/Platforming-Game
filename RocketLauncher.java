@@ -15,7 +15,7 @@ public class RocketLauncher extends RangedWeapon{
 // --------------------------------CONSTRUCTOR-------------------------------- //
 	
 	public RocketLauncher(int range){
-		super("RocketLauncher", null, 35, 1, 20, 100, 20, -2, 9, 100, null);
+		super("RocketLauncher", null, 35, 1, 10, 100, 20, -2, 9, 100, null);
 		bi = ImageGetter.getSVG("RocketLauncher.svg", 404, 105);
 		homingLvl = 1;
 		this.range = range;
@@ -44,6 +44,10 @@ public class RocketLauncher extends RangedWeapon{
 			ps.add(new Rocket(null, (int)(owner.getMidX()), (int)(owner.getMidY()), bulletsize, bulletsize, fireX * velocity, fireY * velocity, damage, getAngle(facingRight)));
 //			ps.add(new Rocket(null, owner.getMidX(), y, bulletsize, bulletsize, fireX * velocity, fireY * velocity, damage, super.getAngle()));
 //			ps.add(new HomingRocket(null, x - 2.5 - facingRight * 10, y - 1, bulletsize, bulletsize, fireX * velocity, fireY * velocity, damage, homingLvl, range));
+			numBullets--;
+		}
+		if(numBullets == 0){
+			reload();
 		}
 	}
 	

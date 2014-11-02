@@ -13,6 +13,13 @@ public class WeaponGUI {
 	private BufferedImage[] selection;
 	private HashMap<String, BufferedImage> m;
 	private int numWeapons;
+	
+	private int leftCircleX;
+	private int leftCircleY;
+	
+	private int currClip;
+	private int currAmmo;
+	
 	private int x;
 	private int y;
 	private int w;
@@ -25,6 +32,8 @@ public class WeaponGUI {
 	private int length = 286;
 	
 	public WeaponGUI(int x, int y, int w, int h){
+		currClip = -1;
+		currAmmo = -1;
 		this.x = x;
 		this.y = y;
 		this.w = w;
@@ -44,6 +53,11 @@ public class WeaponGUI {
 			m.put(WEAPONS[i], ImageGetter.getSVG(WEAPONS[i] + "Icon.svg", length, length));
 		}
 		
+		
+		leftCircleX = (int)(1735*scaleConstant + x);
+		leftCircleY = (int)(302*scaleConstant + y);
+
+		
 		gui = ImageGetter.getSVG("WeaponGUI.svg", w, h);
 		background = ImageGetter.getSVG("WeaponGUIBackground.svg", w, h);
 	}
@@ -54,11 +68,32 @@ public class WeaponGUI {
 		g.fillRect(xcoordinates[selected] + x, ycoordinates[selected] + y , length + (int)(24*scaleConstant), length + (int)(24*scaleConstant));
 		g.drawImage(gui, x, y, w, h, null);
 		
+		g.setColor(Color.black);
+		if(currClip >= 0){
+			if(currClip < 10){
+				g.drawString(" " + currClip, leftCircleX, leftCircleY);
+			}
+			else{
+				g.drawString("" + currClip, leftCircleX, leftCircleY);
+			}
+		}
+		else{
+			//Implement Melee Weapon
+		}
+		
 		for(int i = 0; i < icons.length; i++){
 			if(icons[i] != null){
 				g.drawImage(icons[i], xcoordinates[i] + x, ycoordinates[i] + y, length, length, null);
 			}
 		}
+	}
+	
+	public void setAmmo(int ammo){
+		currAmmo = ammo;
+	}
+	
+	public void setClip(int clip){
+		currClip = clip;
 	}
 	
 	public void addWeapon(String name, int position){

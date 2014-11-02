@@ -1,5 +1,7 @@
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
@@ -13,7 +15,12 @@ import java.awt.Transparency;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
@@ -86,6 +93,7 @@ public class GamePanel extends JPanel implements Runnable{
 //	GUIs
 	private WeaponGUI weaponGUI;
 	private HealthGUI healthGUI;
+	private Font font;
 	
 // --------------------------------CONSTRUCTOR-------------------------------- //
 	
@@ -110,6 +118,9 @@ public class GamePanel extends JPanel implements Runnable{
 		
 		weaponGUI = new WeaponGUI( screenW - (int)(screenW/3), screenH - (int)(screenW/3 * .289), (int)(screenW/3), (int)(screenW/3 * .289));
 		healthGUI = new HealthGUI(0, 0, (int)(2*screenW/3));
+		try {
+			font = resizefont(loadFont("src/berylium.bold-italic.ttf"), 32);
+		} catch (FontFormatException e1) {System.out.println("potato1");} catch (IOException e1) {System.out.println("potato2");}
 		
 		try {
 			initialState();
@@ -258,6 +269,10 @@ public class GamePanel extends JPanel implements Runnable{
 			player.update();
 			el.update();
 			healthGUI.setHealthPercent(player.getHealth());
+			if(player.getCurrentWeapon() != null){
+				weaponGUI.setAmmo(player.getCurrentWeapon().getAmmo());
+				weaponGUI.setClip(player.getCurrentWeapon().getNumBullets());
+			}
 			
 			setOffset();
 			setScale();
@@ -296,12 +311,15 @@ public class GamePanel extends JPanel implements Runnable{
 			db = dbImage.getGraphics();
 		}
 		Graphics2D dbg = (Graphics2D) db;
-//		dbg.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		dbg.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 //		dbg.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 //	    dbg.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 //	    dbg.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 //	    dbg.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
 	    
+		//Setting Font
+		
+		dbg.setFont(font);
 		
 		dbg.setColor(Color.white);
 		dbg.fillRect(0, 0, screenW, screenH);
@@ -431,6 +449,16 @@ public class GamePanel extends JPanel implements Runnable{
 			img = ImageIO.read(getClass().getResource(path));
 		} catch(IOException e){}
 		return img;
+	}
+	
+	public Font loadFont(String path) throws FontFormatException, IOException{
+		InputStream myStream = new BufferedInputStream(new FileInputStream(path));
+		Font font = Font.createFont(Font.TRUETYPE_FONT, myStream);
+		return font;
+	}
+	
+	public Font resizefont(Font font, double size){
+	    return font.deriveFont((float) size);
 	}
 	
 // --------------------------------GET/SET METHODS-------------------------------- //

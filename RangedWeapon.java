@@ -32,13 +32,12 @@ public class RangedWeapon extends Weapon{
 	protected long lastFired;
 	protected int firerate;
 	protected int facingRight;
-	protected int clipsize;
 	protected int reloadSpeed;
 	protected double velocity;
 	protected double accel;
 	protected int bulletsize;
 	protected boolean canFire;
-	protected int numBullets;
+
 	protected long startReload;
 	protected boolean reloading = false;
 	
@@ -242,14 +241,17 @@ public class RangedWeapon extends Weapon{
 	}
 	
 	public void attack() {
-//		if(canFire){
+		if(canFire){
 			lastFired = GamePanel.getUpdateCycle();
 			es.add(new EmptyShell(null, x, y, Math.random() * 5 - 2 , -5));
 			ps.add(new Projectile(null, owner.getMidX(), owner.getMidY(), bulletsize, bulletsize, fireX * velocity, fireY * velocity, fireX * accel, fireY * accel, damage));
 //			ps.add(new Projectile(null, x - 2.5 - facingRight * 10, y - 1, bulletsize, bulletsize, fireX * velocity, fireY * velocity, fireX * accel, fireY * accel, damage));
 //			ps.add(new Projectile(null, x - 2.5 + facingRight * 10, y - 1, bulletsize, bulletsize, facingRight * velocity, facingRight*accel, damage));
-			
-//		}
+			numBullets--;
+		}
+		if(numBullets == 0){
+			reload();
+		}
 	}
 	
 // --------------------------------GET/SET METHODS-------------------------------- //

@@ -10,7 +10,7 @@ import javax.imageio.ImageIO;
 public class Pistol extends RangedWeapon{
 	
 	public Pistol(){
-		super("Pistol", null, 5, 1, 20, 1000, 20, .25, 5, 1, null);
+		super("Pistol", null, 5, 1, 12, 240, 20, .25, 5, 1, null);
 		BufferedImage img = null;
 		try{
 			img = ImageIO.read(getClass().getResource("SamplePistol.png"));
@@ -19,7 +19,7 @@ public class Pistol extends RangedWeapon{
 	}
 	
 	public Pistol(BufferedImage img){
-		super("Pistol", null, 5, 1, 20, 1000, 20, .25, 5, 1, null);
+		super("Pistol", null, 5, 1, 12, 240, 20, .25, 5, 1, null);
 		bi = img;	
 	}
 }

@@ -161,5 +161,12 @@ public class MeleeWeapon extends Weapon{
 		return facingRight;
 	}
 	
+	public int getClip(){
+		return -1;
+	}
+	
+	public int getAmmo(){
+		return -1;
+	}
 	
 }

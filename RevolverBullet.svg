@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="18.44px" height="6.51px" viewBox="0 0 18.44 6.51" enable-background="new 0 0 18.44 6.51" xml:space="preserve">
+<g id="XMLID_1_">
+	<g>
+		<path d="M7.25,0.25v5.77c-0.22-0.35-0.39-0.71-0.52-1.1l-6.2-1.67l6.13-1.66C6.8,1.11,6.99,0.66,7.25,0.25z"/>
+		<path d="M18.19,0.25v5.98H7.39c-0.05-0.07-0.1-0.14-0.14-0.21V0.25H18.19z"/>
+		<path d="M7.39,6.23C7.4,6.24,7.4,6.25,7.41,6.26C2.25,5.63,0.36,4.94,0.26,3.32l0.27-0.07l6.2,1.67c0.13,0.39,0.3,0.75,0.52,1.1
+			v0.21H7.39z"/>
+		<path d="M7.25,6.02c0.04,0.07,0.09,0.14,0.14,0.21H7.25V6.02z"/>
+		<path d="M7.25,0.25C6.99,0.66,6.8,1.11,6.66,1.59L0.53,3.25L0.26,3.17C0.36,1.57,2.22,0.87,7.25,0.25z"/>
+		<path d="M0.26,3.17l0.27,0.08L0.26,3.32C0.25,3.3,0.25,3.28,0.25,3.25S0.25,3.19,0.26,3.17z"/>
+		<path fill="#FFFFFF" d="M0.25,3.25c0,0.03,0,0.05,0.01,0.07H0.25C0.25,3.3,0.25,3.27,0.25,3.25z"/>
+		<path fill="#FFFFFF" d="M0.26,3.17C0.25,3.19,0.25,3.22,0.25,3.25c0-0.02,0-0.05,0-0.08H0.26z"/>
+	</g>
+	<g>
+		<path fill="none" stroke="#000000" stroke-width="0.01" stroke-miterlimit="10" d="M0.53,3.25l6.13-1.66
+			C6.8,1.11,6.99,0.66,7.25,0.25C2.22,0.87,0.36,1.57,0.26,3.17"/>
+		<path fill="none" stroke="#000000" stroke-width="0.01" stroke-miterlimit="10" d="M0.25,3.25c0,0.02,0,0.05,0,0.07h0.01"/>
+		<path fill="none" stroke="#000000" stroke-width="0.01" stroke-miterlimit="10" d="M7.25,6.02c-0.22-0.35-0.39-0.71-0.52-1.1
+			l-6.2-1.67L0.26,3.17H0.25c0,0.03,0,0.06,0,0.08c0,0.03,0,0.05,0.01,0.07c0.1,1.62,1.99,2.311,7.15,2.94
+			C7.4,6.25,7.4,6.24,7.39,6.23"/>
+		<polygon fill="none" stroke="#000000" stroke-width="0.1" stroke-miterlimit="10" points="7.25,0.25 18.19,0.25 18.19,6.23 
+			7.39,6.23 7.25,6.23 7.25,6.02 		"/>
+	</g>
+</g>
+</svg>

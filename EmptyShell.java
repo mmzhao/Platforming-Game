@@ -27,9 +27,8 @@ public class EmptyShell extends Projectile {
 	}
 	
 	public void draw(Graphics g, int offsetX, int offsetY, double scaleX, double scaleY) {
-		g.setColor(Color.yellow);
-		g.fillRect((int)((x - offsetX) * scaleX), (int) ((y - offsetY) * scaleY), (int) (w * scaleX), (int) (h * scaleY));
 		g.setColor(Color.black);
+		g.fillRect((int)((x - offsetX) * scaleX), (int) ((y - offsetY) * scaleY), (int) (w * scaleX), (int) (h * scaleY));
 		g.drawRect((int)((x - offsetX) * scaleX), (int) ((y - offsetY) * scaleY), (int) (w * scaleX), (int) (h * scaleY));
 	}
 	
@@ -38,7 +37,7 @@ public class EmptyShell extends Projectile {
 	public void update(double time){
 		
 		if(southC){
-			if(v.getCY() > 0) v.setCY(-1 * Math.abs(v.getCY()));
+			if(v.getCY() > 0) v.setCY(-.75 * Math.abs(v.getCY()));
 		}
 		else v.add(g.scale(time));
 		if(eastC){
