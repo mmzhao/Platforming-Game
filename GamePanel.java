@@ -58,7 +58,8 @@ public class GamePanel extends JPanel implements Runnable{
 //	dbg: graphics of the game
 //	dbImage: image that is drawn to the screen for the painting part of the game loop
 	private Graphics2D db;
-	private VolatileImage dbImage = null;
+//	private VolatileImage dbImage = null;
+	private BufferedImage dbImage = null;
 
 //	Background: Not moving, Background2: Moving
 	private BufferedImage background;
@@ -130,7 +131,7 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	public void initialState() throws IOException{
 		el = new EntityList();
-		Map testm = new Map("src/Map1.txt");
+		Map testm = new Map("Map1.txt");
 		testm.initializeMap(this);
 		
 //		player = new Player(ImageGetter.getSVG("Standing2.svg", 832, 1080), 100, 93, 47, 60, 100, null);
@@ -212,6 +213,9 @@ public class GamePanel extends JPanel implements Runnable{
 	private long paintTime = 0;
 	
 	public void run(){
+		updateTime = 0;
+		renderTime = 0;
+		paintTime = 0;
 		long beforeTime, timeDiff, sleepTime;
 		beforeTime = System.currentTimeMillis();
 		running = true;
@@ -285,8 +289,8 @@ public class GamePanel extends JPanel implements Runnable{
 			GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		    GraphicsDevice device = env.getDefaultScreenDevice();
 		    GraphicsConfiguration config = device.getDefaultConfiguration();
-//		    dbImage = config.createCompatibleImage(screenW, screenH, Transparency.TRANSLUCENT);
-		    dbImage = config.createCompatibleVolatileImage(screenW, screenH, Transparency.TRANSLUCENT);
+		    dbImage = config.createCompatibleImage(screenW, screenH, Transparency.TRANSLUCENT);
+//		    dbImage = config.createCompatibleVolatileImage(screenW, screenH, Transparency.TRANSLUCENT);
 //			dbImage = createVolatileImage(screenW, screenH);
 //			System.out.println(dbImage.validate(config));
 		}
