@@ -1,4 +1,5 @@
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
@@ -34,6 +35,9 @@ public class Baddie extends Movable{
 	
 	public void draw(Graphics g, int offsetX, int offsetY, double scaleX, double scaleY){
 		g.drawImage(current, (int)((x - offsetX) * scaleX), (int) ((y - offsetY) * scaleY), (int) (w * scaleX), (int) (h * scaleY), null);
+		
+		g.setColor(Color.green);
+		g.drawRect((int)((x - offsetX) * scaleX), (int) ((y - offsetY) * scaleY), (int) (w * scaleX), (int) (h * scaleY));
 	}
 	
 // --------------------------------UPDATE-------------------------------- //

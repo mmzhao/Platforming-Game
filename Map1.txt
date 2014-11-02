@@ -70,6 +70,23 @@ Null
 0064 ........................................................................................................................................................................................................
 0065 ........................................................................................................................................................................................................
 
+15
+Standing2.svg 832 1080
+BackgroundSample.svg 1000 400
+Background.svg 2000 800
+HealthGUI.svg 789 257
+HealthBar.svg 789 257
+WeaponGUI.svg 394 113
+WeaponGUIBackground.svg 394 113
+Slash6.svg 400 846
+Revolver.svg 568 234
+RocketLauncher.svg 404 105
+Rocket.svg 411 194
+RevolverIcon.svg 50 50
+RocketLauncherIcon.svg 50 50
+MolotovCocktailIcon.svg 50 50
+RifleIcon.svg 50 50
+ShotgunIcon.svg 50 50
 
 //file must be in format:
 //Line 1: Map Name

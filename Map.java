@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 
@@ -30,6 +31,8 @@ public class Map {
 	String bg1;
 	String bg2;
 	
+	static public HashMap<String, BufferedImage> dict;
+	
 	public static final int UNIT = 5;
 	
 // --------------------------------CONSTRUCTOR-------------------------------- //
@@ -48,6 +51,14 @@ public class Map {
 			for(int j = 0; j < map[0].length; j++){
 				map[i][j] = s.charAt(j + 5);
 			}
+		}
+		dict = new HashMap<String, BufferedImage>();
+		br.readLine();
+		int numSVGs = Integer.parseInt(br.readLine());
+		for(int i = 0; i < numSVGs; i++){
+			s = br.readLine();
+			String[] a = s.split(" ");
+			dict.put(a[0].substring(0, a[0].length() - 4), ImageGetter.getSVG(a[0], Integer.parseInt(a[1]), Integer.parseInt(a[2])));
 		}
 	}
 	

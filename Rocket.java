@@ -40,6 +40,19 @@ public class Rocket extends Projectile{
 	
 // --------------------------------CONTRUCTOR-------------------------------- //	
 	
+	public Rocket(double x, double y, double w, double h, double xv, double yv, int dmg, double angle) {
+		super(null, x, y, w, h, xv, yv, 0, 0, dmg);
+		explodeTimer = -2000;
+		explode = false;
+		explosion = Explosions.getRandom();
+		explodeRadius = 70;
+		knockBack = 5;
+		bi = ImageGetter.getSVG("Rocket.svg", 411, 194);
+		this.angle = angle;
+		at = new AffineTransform();
+        at.translate(x, y);
+	}
+	
 	public Rocket(BufferedImage b, double x, double y, double w, double h, double xv, double yv, int dmg, double angle) {
 		super(b, x, y, w, h, xv, yv, 0, 0, dmg);
 		explodeTimer = -2000;
@@ -47,7 +60,6 @@ public class Rocket extends Projectile{
 		explosion = Explosions.getRandom();
 		explodeRadius = 70;
 		knockBack = 5;
-		bi = ImageGetter.getSVG("Rocket.svg", 411, 194);
 		this.angle = angle;
 		at = new AffineTransform();
         at.translate(x, y);

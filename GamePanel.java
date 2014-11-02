@@ -13,6 +13,7 @@ import java.awt.Transparency;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.awt.image.VolatileImage;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -56,8 +57,8 @@ public class GamePanel extends JPanel implements Runnable{
 	
 //	dbg: graphics of the game
 //	dbImage: image that is drawn to the screen for the painting part of the game loop
-	private Graphics db;
-	private Image dbImage = null;
+	private Graphics2D db;
+	private VolatileImage dbImage = null;
 
 //	Background: Not moving, Background2: Moving
 	private BufferedImage background;
@@ -132,7 +133,7 @@ public class GamePanel extends JPanel implements Runnable{
 		Map testm = new Map("src/Map1.txt");
 		testm.initializeMap(this);
 		
-//		player = new Player(ImageGetter.getSVG("Standing2.svg", 832, 1080, this), 100, 93, 47, 60, 100, null);
+//		player = new Player(ImageGetter.getSVG("Standing2.svg", 832, 1080), 100, 93, 47, 60, 100, null);
 //		player.giveCurrentWeapon(new Pistol());
 //		el = new EntityList();
 //		ArrayList<Entity> es = new ArrayList<Entity>();
@@ -143,7 +144,7 @@ public class GamePanel extends JPanel implements Runnable{
 //		es.add(new Platform(null, 80 + 140 + 350, 140, 350, 20));
 //		Baddie baddie1 = new Baddie(null, 150, 100, 20, 20, true, -3, 0, 1000000);
 //		Baddie baddie2 = new Baddie(null, 200, 100, 20, 20, true, 0, 0, 1000000);
-//		Baddie baddie3 = new Baddie(null, 600, 100, 20, 20, true, 0w, 0, 1000000);
+//		Baddie baddie3 = new Baddie(null, 600, 100, 20, 20, true, 0, 0, 1000000);
 //		es.add(baddie1);
 //		es.add(baddie2);
 //		es.add(baddie3);
@@ -152,7 +153,6 @@ public class GamePanel extends JPanel implements Runnable{
 		
 //		Testing backgrounds
 		background = ImageGetter.getSVG("BackgroundSample.svg", screenW, screenH);
-//		background = loadImage("Background3.png");
 		background2 = ImageGetter.getSVG("Background.svg", (int)(entireW * scaleX), (int)(entireH * scaleY));
 		
 		final RocketLauncher rl = new RocketLauncher((int) Math.pow(w/2 * w/2 + h/2 * h/2, .5));
@@ -217,7 +217,8 @@ public class GamePanel extends JPanel implements Runnable{
 		running = true;
 		while(running){
 			long currTime = System.currentTimeMillis();
-			gameUpdate();
+			if(!isPaused)
+				gameUpdate();
 			updateTime += System.currentTimeMillis() - currTime;
 			currTime = System.currentTimeMillis();
 			gameRender();
@@ -233,12 +234,11 @@ public class GamePanel extends JPanel implements Runnable{
 				sleepTime = 0;
 			}
 			
-			try {
-				Thread.sleep(sleepTime);
-			}
-			catch(InterruptedException ex){}
+//			try {
+//				Thread.sleep(sleepTime);
+//			}
+//			catch(InterruptedException ex){}
 			
-			beforeTime = System.currentTimeMillis();
 		}
 		System.exit(0);
 	}
@@ -285,17 +285,18 @@ public class GamePanel extends JPanel implements Runnable{
 			GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		    GraphicsDevice device = env.getDefaultScreenDevice();
 		    GraphicsConfiguration config = device.getDefaultConfiguration();
-		    dbImage = config.createCompatibleImage(screenW, screenH, Transparency.TRANSLUCENT);
-//			dbImage = createImage(w, h);
+//		    dbImage = config.createCompatibleImage(screenW, screenH, Transparency.TRANSLUCENT);
+		    dbImage = config.createCompatibleVolatileImage(screenW, screenH, Transparency.TRANSLUCENT);
+//			dbImage = createVolatileImage(screenW, screenH);
+//			System.out.println(dbImage.validate(config));
 		}
 		if(dbImage == null){
 			System.out.println("dbImage is null");
 			return;
 		}
 		else{
-			db = dbImage.getGraphics();
+			db = dbImage.createGraphics();
 		}
-		Graphics2D dbg = (Graphics2D) db;
 //		dbg.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 //		dbg.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 //	    dbg.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
@@ -303,11 +304,10 @@ public class GamePanel extends JPanel implements Runnable{
 //	    dbg.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
 	    
 		
-		dbg.setColor(Color.white);
-		dbg.fillRect(0, 0, screenW, screenH);
-		dbg.drawImage(background,0, 0, screenW, screenH, null, null);
-		//dbg.drawImage(background2,0, 0, screenW, screenH, null, null);
-		dbg.drawImage(background2, 0, 0, screenW, screenH, getOffsetX() * 2, getOffsetY() * 2, screenW + getOffsetX() * 2, screenH + getOffsetY() * 2, null);
+		db.setColor(Color.white);
+		db.fillRect(0, 0, screenW, screenH);
+		db.drawImage(background,0, 0, screenW, screenH, null, null);
+		db.drawImage(background2, 0, 0, screenW, screenH, getOffsetX() * 2, getOffsetY() * 2, screenW + getOffsetX() * 2, screenH + getOffsetY() * 2, null);
 		//dbg.drawImage(background2, 0, 0, screenW, screenH, 0 + getOffsetX(), 0 + getOffsetY(), (int)((screenW + getOffsetX()) * scaleX), (int)((screenH + getOffsetY()) * scaleY), null);
 		
 		
@@ -315,29 +315,29 @@ public class GamePanel extends JPanel implements Runnable{
 
 		if(player.getCurrentWeapon() instanceof RangedWeapon){
 			for(Projectile p: ((RangedWeapon) player.getCurrentWeapon()).getProjectiles()){
-//				p.draw(dbg, offsetX, offsetY);
-				p.draw(dbg, offsetX, offsetY, scaleX, scaleY);
+//				p.draw(db, offsetX, offsetY);
+				p.draw(db, offsetX, offsetY, scaleX, scaleY);
 			}
 		}
 		for(Entity e: el.getEntities(getCurrScreen())){
-//			e.draw(dbg, offsetX, offsetY);
+//			e.draw(db, offsetX, offsetY);
 			if(e instanceof Baddie){
-				e.draw(dbg, offsetX, offsetY, scaleX, scaleY);
+				e.draw(db, offsetX, offsetY, scaleX, scaleY);
 			}
 		}
 		
-//		player.draw(dbg, offsetX, offsetY);
-		player.draw(dbg, offsetX, offsetY, scaleX, scaleY);
+//		player.draw(db, offsetX, offsetY);
+		player.draw(db, offsetX, offsetY, scaleX, scaleY);
 		
 		
 		// draw game elements
-		weaponGUI.draw(dbg, offsetX, offsetY, scaleX, scaleY);
-		healthGUI.draw(dbg, offsetX, offsetY, scaleX, scaleY);
+		weaponGUI.draw(db, offsetX, offsetY, scaleX, scaleY);
+		healthGUI.draw(db, offsetX, offsetY, scaleX, scaleY);
 		
-		dbg.setColor(Color.red);
-		dbg.drawString(updateCycle + "", 50, 250);
-		dbg.drawString(updateCycle/((System.currentTimeMillis() - startTime)/1000 + 1) + "", 50, 275);
-		dbg.drawString("updateTime: " + (int) ((double)updateTime/(((double)System.currentTimeMillis() - (double)startTime) + 1) * 100) + ",  renderTime: " + (int) ((double)renderTime/((double)(System.currentTimeMillis() - (double)startTime) + 1) * 100) + ", paintTime:  " + (int) ((double)paintTime/(((double)System.currentTimeMillis() - (double)startTime) + 1) * 100), 50, 300);
+		db.setColor(Color.red);
+		db.drawString(updateCycle + "", 50, 250);
+		db.drawString(updateCycle/((System.currentTimeMillis() - startTime)/1000 + 1) + "", 50, 275);
+		db.drawString("updateTime: " + (int) ((double)updateTime/(((double)System.currentTimeMillis() - (double)startTime) + 1) * 100) + ",  renderTime: " + (int) ((double)renderTime/((double)(System.currentTimeMillis() - (double)startTime) + 1) * 100) + ", paintTime:  " + (int) ((double)paintTime/(((double)System.currentTimeMillis() - (double)startTime) + 1) * 100), 50, 300);
 
 		
 		if(gameOver){
@@ -360,12 +360,12 @@ public class GamePanel extends JPanel implements Runnable{
 		}
 	}
 	
-	public void paintComponent(Graphics g){
-		super.paintComponent(g);
-		if(dbImage != null){
-			g.drawImage(dbImage, 0, 0, null);
-		}
-	}
+//	public void paintComponent(Graphics g){
+//		super.paintComponent(g);
+//		if(dbImage != null){
+//			g.drawImage(dbImage, 0, 0, null);
+//		}
+//	}
 	
 	private void readyToQuit(){
 		addKeyListener(new KeyAdapter(){
@@ -374,10 +374,10 @@ public class GamePanel extends JPanel implements Runnable{
 				if(keyCode == KeyEvent.VK_ESCAPE){
 					running = false;
 				}
-				if((keyCode == KeyEvent.VK_R)){
+				if((keyCode == KeyEvent.VK_P)){
 					pauseGame();
 				}
-				if((keyCode == KeyEvent.VK_E)){
+				if((keyCode == KeyEvent.VK_R)){
 					resumeGame();
 				}
 				if((keyCode == KeyEvent.VK_M)){
@@ -385,6 +385,11 @@ public class GamePanel extends JPanel implements Runnable{
 						initialState();
 					} catch (IOException e1) {
 						e1.printStackTrace();
+					}
+				}
+				if((keyCode == KeyEvent.VK_O)){
+					if(isPaused){
+						gameUpdate();
 					}
 				}
 			}

@@ -5,13 +5,13 @@ public class Game extends JFrame {
 	
 // --------------------------------CONTRUCTOR-------------------------------- //
 
-	public Game() {	
+	public Game() {	 //old 420x330
 		int entireW = 1000;
 		int entireH = 400;
-		int w = 420;
-		int h = 330;
-		int screenW = 420 * 2;
-		int screenH = 330 * 2;
+		int w = 592;
+		int h = 333;
+		int screenW = 592 * 2;
+		int screenH = 333 * 2;
 		setSize(screenW, screenH);
 		setResizable(false);
 		setTitle("Game Frame"); 

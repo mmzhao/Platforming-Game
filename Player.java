@@ -109,6 +109,9 @@ public class Player extends Movable {
 					(int) ((y - offsetY) * scaleY), -(int) (w * scaleX),
 					(int) (h * scaleY), null, null);
 		}
+		
+		g.setColor(Color.green);
+		g.drawRect((int) ((x - offsetX) * scaleX), (int) ((y - offsetY) * scaleY), (int) (w * scaleX), (int) (h * scaleY));
 
 		if (currentWeapon != null) {
 			if(currentWeapon instanceof RangedWeapon){

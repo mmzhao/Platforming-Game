@@ -80,8 +80,8 @@ public class Weapon extends Item{
 //		System.out.println(owner.getMouseY() + " " + getMidY());
 //		double difX = owner.getMouseX() - (x - 2.5 + facingRight * 10);
 //		double difY = owner.getMouseY() - (y - 1);
-		double difX = owner.getMouseX() - getMidX();
-		double difY = owner.getMouseY() - getMidY();
+		double difX = owner.getMouseX() - owner.getMidX();
+		double difY = owner.getMouseY() - owner.getMidY();
 		double magnitude = Math.pow(difX * difX +  difY * difY, .5);
 //		double newFireX = difX / magnitude;
 //		double newFireY = difY / magnitude;
