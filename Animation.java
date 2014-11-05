@@ -1,5 +1,9 @@
 import java.awt.Graphics2D;
+import java.awt.GraphicsEnvironment;
+import java.awt.Image;
+import java.awt.Transparency;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -38,7 +42,8 @@ public class Animation {
 	}
 	
 	public Animation(String path, int x, int y, int spriteWidth, int spriteHeight, double loopTime){
-		spriteMap = ImageGetter.getSVG(path, x, y);
+//		spriteMap = ImageGetter.getSVG(path, x, y);
+		spriteMap = GamePanel.getMap().getDict(path.substring(0, path.length() - 4));
 		this.spriteWidth = spriteWidth;
 		this.spriteHeight = spriteHeight;
 		bi = splitImage(spriteMap, spriteWidth, spriteHeight);
@@ -61,11 +66,24 @@ public class Animation {
 	
 	//loads initial sprite map image
 	private BufferedImage loadImage(String path){
-		BufferedImage img = null;
-		try{
-			img = ImageIO.read(getClass().getResource(path));
-		} catch(IOException e){}
-		return img;
+		BufferedImage img;
+	      try
+	      {
+	         Image image = ImageIO.read(getClass().getResource(path));
+	         img = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration().createCompatibleImage(image.getWidth(null), image.getHeight(null), Transparency.TRANSLUCENT);
+	         
+	         Graphics2D g2d = (Graphics2D)img.createGraphics();
+
+	         g2d.drawImage(image, 0, 0, null);
+	         g2d.dispose();
+	         return img;
+	      }
+	      catch (IOException e)
+	      {
+	         e.printStackTrace();
+	      }
+	   
+	      return null;
 	}
 	
 	

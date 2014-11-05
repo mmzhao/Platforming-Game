@@ -23,8 +23,10 @@ public class HealthGUI {
 		this.y = y;
 		this.w = w;
 		this.h = (int)(w * ratio);
-		gui = ImageGetter.getSVG("HealthGUI.svg", w, h);
-		bar = ImageGetter.getSVG("HealthBar.svg", w, h);
+//		gui = ImageGetter.getSVG("HealthGUI.svg", w, h);
+//		bar = ImageGetter.getSVG("HealthBar.svg", w, h);
+		gui = GamePanel.getMap().getDict("HealthGUI");
+		bar = GamePanel.getMap().getDict("HealthBar");
 	}
 	
 	public void draw(Graphics g, int offsetX, int offsetY, double scaleX, double scaleY){

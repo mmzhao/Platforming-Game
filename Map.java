@@ -53,6 +53,7 @@ public class Map {
 			}
 		}
 		dict = new HashMap<String, BufferedImage>();
+//		System.out.println(dict.keySet().size());
 		br.readLine();
 		int numSVGs = Integer.parseInt(br.readLine());
 		for(int i = 0; i < numSVGs; i++){
@@ -60,6 +61,11 @@ public class Map {
 			String[] a = s.split(" ");
 			dict.put(a[0].substring(0, a[0].length() - 4), ImageGetter.getSVG(a[0], Integer.parseInt(a[1]), Integer.parseInt(a[2])));
 		}
+//		System.out.println(dict.size());
+//		for(String key: dict.keySet()){
+//			System.out.println("e");
+//			System.out.println(key);
+//		}
 	}
 	
 // ------------------------------MAKES REAL MAP------------------------------ //
@@ -71,7 +77,8 @@ public class Map {
 					continue;
 				}
 				else if(map[i][j] == 'M'){
-					GamePanel.setPlayer(new Player(ImageGetter.getSVG("Standing2.svg", 832, 1080), j * 5, i * 5, 31, 40, 100, null));
+					GamePanel.setPlayer(new Player(this.getDict("Standing2"), j * 5, i * 5, 31, 40, 100, null));
+//					GamePanel.setPlayer(new Player(ImageGetter.getSVG("Standing2.svg", 832, 1080), j * 5, i * 5, 31, 40, 100, null));
 //					GamePanel.setPlayer(new Player(g.loadImage("Standing.png"), j * 5, i * 5, 20, 20, 100, null));
 				}
 				else if(map[i][j] == 'B'){
@@ -122,6 +129,11 @@ public class Map {
 //			}System.out.println();
 //		}
 		
+	}
+	
+	
+	public BufferedImage getDict(String key){
+		return dict.get(key);
 	}
 	
 	

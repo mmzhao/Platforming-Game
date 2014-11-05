@@ -75,6 +75,7 @@ public class GamePanel extends JPanel implements Runnable{
 //	el: entity list that contains all non player and non projectile entities
 	private static Player player;
 	private static EntityList el;
+	private static Map currMap;
 	
 //	updateCycle: number of update frames the game has gone through
 //	startTime: system millisecond time that the game starts
@@ -110,16 +111,12 @@ public class GamePanel extends JPanel implements Runnable{
 		offsetY = 0;
 		setScale();
 		
-		weaponGUI = new WeaponGUI( screenW - (int)(screenW/3), screenH - (int)(screenW/3 * .289), (int)(screenW/3), (int)(screenW/3 * .289));
-		healthGUI = new HealthGUI(0, 0, (int)(2*screenW/3));
-		
 		try {
 			initialState();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
-		setBackground(Color.white);
 		setPreferredSize(new Dimension(screenW, screenH));
 		setDoubleBuffered(true);
 		setFocusable(true);
@@ -131,8 +128,11 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	public void initialState() throws IOException{
 		el = new EntityList();
-		Map testm = new Map("Map1.txt");
-		testm.initializeMap(this);
+		currMap = new Map("Map1.txt");
+		currMap.initializeMap(this);
+		
+		weaponGUI = new WeaponGUI( screenW - (int)(screenW/3), screenH - (int)(screenW/3 * .289), (int)(screenW/3), (int)(screenW/3 * .289));
+		healthGUI = new HealthGUI(0, 0, (int)(2*screenW/3));
 		
 //		player = new Player(ImageGetter.getSVG("Standing2.svg", 832, 1080), 100, 93, 47, 60, 100, null);
 //		player.giveCurrentWeapon(new Pistol());
@@ -153,11 +153,17 @@ public class GamePanel extends JPanel implements Runnable{
 
 		
 //		Testing backgrounds
-		background = ImageGetter.getSVG("BackgroundSample.svg", screenW, screenH);
-		background2 = ImageGetter.getSVG("Background.svg", (int)(entireW * scaleX), (int)(entireH * scaleY));
+	    GraphicsConfiguration config = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
+		background = config.createCompatibleImage(screenW, screenH, Transparency.TRANSLUCENT);
+//		background.getGraphics().drawImage(ImageGetter.getSVG("BackgroundSample.svg", screenW, screenH), 0, 0, this);
+		background.getGraphics().drawImage(currMap.getDict("BackgroundSample"), 0, 0, this);
+		background2 = config.createCompatibleImage((int)(entireW * scaleX), (int)(entireH * scaleY), Transparency.TRANSLUCENT);
+//		background2.getGraphics().drawImage(ImageGetter.getSVG("Background.svg", (int)(entireW * scaleX), (int)(entireH * scaleY)), 0, 0, this);
+		background2.getGraphics().drawImage(currMap.getDict("Background"), 0, 0, this);
 		
 		final RocketLauncher rl = new RocketLauncher((int) Math.pow(w/2 * w/2 + h/2 * h/2, .5));
-		final Pistol p = new Pistol(ImageGetter.getSVG("Revolver.svg", 568, 234));
+//		final Pistol p = new Pistol(ImageGetter.getSVG("Revolver.svg", 568, 234));
+		final Pistol p = new Pistol(currMap.getDict("Revolver"));
 		final MeleeWeapon mw = new MeleeWeapon("sword", null, player, 100);
 		player.giveCurrentWeapon(mw);
 		
@@ -213,9 +219,9 @@ public class GamePanel extends JPanel implements Runnable{
 	private long paintTime = 0;
 	
 	public void run(){
-		updateTime = 0;
-		renderTime = 0;
-		paintTime = 0;
+//		updateTime = 0;
+//		renderTime = 0;
+//		paintTime = 0;
 		long beforeTime, timeDiff, sleepTime;
 		beforeTime = System.currentTimeMillis();
 		running = true;
@@ -299,7 +305,7 @@ public class GamePanel extends JPanel implements Runnable{
 			return;
 		}
 		else{
-			db = dbImage.createGraphics();
+			db = (Graphics2D) dbImage.getGraphics();
 		}
 //		dbg.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 //		dbg.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
@@ -310,7 +316,7 @@ public class GamePanel extends JPanel implements Runnable{
 		
 		db.setColor(Color.white);
 		db.fillRect(0, 0, screenW, screenH);
-		db.drawImage(background,0, 0, screenW, screenH, null, null);
+		db.drawImage(background, 0, 0, screenW, screenH, null, null);
 		db.drawImage(background2, 0, 0, screenW, screenH, getOffsetX() * 2, getOffsetY() * 2, screenW + getOffsetX() * 2, screenH + getOffsetY() * 2, null);
 		//dbg.drawImage(background2, 0, 0, screenW, screenH, 0 + getOffsetX(), 0 + getOffsetY(), (int)((screenW + getOffsetX()) * scaleX), (int)((screenH + getOffsetY()) * scaleY), null);
 		
@@ -364,12 +370,12 @@ public class GamePanel extends JPanel implements Runnable{
 		}
 	}
 	
-//	public void paintComponent(Graphics g){
-//		super.paintComponent(g);
-//		if(dbImage != null){
-//			g.drawImage(dbImage, 0, 0, null);
-//		}
-//	}
+	public void paintComponent(Graphics g){
+		super.paintComponent(g);
+		if(dbImage != null){
+			g.drawImage(dbImage, 0, 0, null);
+		}
+	}
 	
 	private void readyToQuit(){
 		addKeyListener(new KeyAdapter(){
@@ -471,6 +477,10 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	public static Player getPlayer(){
 		return player;
+	}
+	
+	public static Map getMap(){
+		return currMap;
 	}
 	
 	public static long getUpdateCycle(){

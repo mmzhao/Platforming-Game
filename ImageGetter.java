@@ -1,7 +1,9 @@
 import java.awt.Graphics2D;
+import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.MediaTracker;
 import java.awt.Toolkit;
+import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 import java.net.URL;
 
@@ -63,8 +65,9 @@ public class ImageGetter {
 	    }
 
 	    // Create a buffered image with transparency
-	    BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
-
+//	    BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+	    BufferedImage bimage = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration().createCompatibleImage(img.getWidth(null), img.getHeight(null), Transparency.TRANSLUCENT);
+        
 	    // Draw the image on to the buffered image
 	    Graphics2D bGr = bimage.createGraphics();
 	    bGr.drawImage(img, 0, 0, null);

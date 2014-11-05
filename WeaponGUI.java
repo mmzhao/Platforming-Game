@@ -41,11 +41,15 @@ public class WeaponGUI {
 		length = (int)(length * scaleConstant);
 		for(int i = 0; i < WEAPONS.length; i ++){
 //			System.out.println(WEAPONS[i] + "Icon.svg");
-			m.put(WEAPONS[i], ImageGetter.getSVG(WEAPONS[i] + "Icon.svg", length, length));
+//			m.put(WEAPONS[i], ImageGetter.getSVG(WEAPONS[i] + "Icon.svg", length, length));
+//			System.out.println(WEAPONS[i]+"Icon");
+			m.put(WEAPONS[i], GamePanel.getMap().getDict(WEAPONS[i] + "Icon"));
 		}
 		
-		gui = ImageGetter.getSVG("WeaponGUI.svg", w, h);
-		background = ImageGetter.getSVG("WeaponGUIBackground.svg", w, h);
+//		gui = ImageGetter.getSVG("WeaponGUI.svg", w, h);
+//		background = ImageGetter.getSVG("WeaponGUIBackground.svg", w, h);
+		gui = GamePanel.getMap().getDict("WeaponGUI");
+		background = GamePanel.getMap().getDict("WeaponGUIBackground");
 	}
 	
 	public void draw(Graphics g, int offsetX, int offsetY, double scaleX, double scaleY){
