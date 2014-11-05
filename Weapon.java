@@ -27,6 +27,9 @@ public class Weapon extends Item{
 //	numBullets: number of bullets left in the clip
 //	startReload: system millisecond start time for the reload
 //	reloading: whether or not this weapon is reloading
+//	numBullets: Dynamic amount of ammo in weapon. -1 for melee.
+//	clipSize: Max amount of ammo in weapon at once. -1 for melee
+//	ammo: Amount of ammo carried by player. -1 for melee
 	protected Movable owner;
 	protected int facingRight;
 	protected int damage;
@@ -38,13 +41,22 @@ public class Weapon extends Item{
 	
 	protected final double minChange = 1;
 	
+	protected int clipsize;
+	protected int numBullets;
+	protected int ammo;
+	
+	
 // --------------------------------CONSTRUCTOR-------------------------------- //
 	
 	public Weapon(BufferedImage b, String name) {
 		super(b, 0, 0, 0, 0, false, name);
+		this.clipsize = -1;
+		this.numBullets = -1;
+		this.ammo = -1;
 	}
 	
-	public Weapon(String name, BufferedImage b, int facingRight, int damage, Movable owner){
+	public Weapon(String name, BufferedImage b, int facingRight, int damage, Movable owner, int clipsize, 
+			int numBullets, int ammo){
 		super(b, 0, 0, 0, 0, false, name);
 		this.facingRight = facingRight;
 		this.damage = damage;
@@ -53,6 +65,9 @@ public class Weapon extends Item{
 		at = new AffineTransform();
         at.translate(x, y);
         
+        this.clipsize = clipsize;
+        this.numBullets = numBullets;
+        this.ammo = ammo;
 	}
 	
 // --------------------------------DRAW METHODS-------------------------------- //
@@ -127,5 +142,13 @@ public class Weapon extends Item{
 	
 	public void setOwner(Movable m){
 		owner = m;
+	}
+	
+	public int getAmmo(){
+		return ammo;
+	}
+	
+	public int getNumBullets(){
+		return numBullets;
 	}
 }

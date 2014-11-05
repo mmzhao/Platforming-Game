@@ -1,5 +1,7 @@
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
@@ -13,8 +15,12 @@ import java.awt.Transparency;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
-import java.awt.image.VolatileImage;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
@@ -57,9 +63,8 @@ public class GamePanel extends JPanel implements Runnable{
 	
 //	dbg: graphics of the game
 //	dbImage: image that is drawn to the screen for the painting part of the game loop
-	private Graphics2D db;
-//	private VolatileImage dbImage = null;
-	private BufferedImage dbImage = null;
+	private Graphics db;
+	private Image dbImage = null;
 
 //	Background: Not moving, Background2: Moving
 	private BufferedImage background;
@@ -89,6 +94,7 @@ public class GamePanel extends JPanel implements Runnable{
 //	GUIs
 	private WeaponGUI weaponGUI;
 	private HealthGUI healthGUI;
+	private Font font;
 	
 // --------------------------------CONSTRUCTOR-------------------------------- //
 	
@@ -111,12 +117,19 @@ public class GamePanel extends JPanel implements Runnable{
 		offsetY = 0;
 		setScale();
 		
+		weaponGUI = new WeaponGUI( screenW - (int)(screenW/3), screenH - (int)(screenW/3 * .289), (int)(screenW/3), (int)(screenW/3 * .289));
+		healthGUI = new HealthGUI(0, 0, (int)(2*screenW/3));
+		try {
+			font = resizefont(loadFont("src/berylium.bold-italic.ttf"), 32);
+		} catch (FontFormatException e1) {System.out.println("potato1");} catch (IOException e1) {System.out.println("potato2");}
+		
 		try {
 			initialState();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
+		setBackground(Color.white);
 		setPreferredSize(new Dimension(screenW, screenH));
 		setDoubleBuffered(true);
 		setFocusable(true);
@@ -244,11 +257,12 @@ public class GamePanel extends JPanel implements Runnable{
 				sleepTime = 0;
 			}
 			
-//			try {
-//				Thread.sleep(sleepTime);
-//			}
-//			catch(InterruptedException ex){}
+			try {
+				Thread.sleep(sleepTime);
+			}
+			catch(InterruptedException ex){}
 			
+			beforeTime = System.currentTimeMillis();
 		}
 		System.exit(0);
 	}
@@ -268,6 +282,10 @@ public class GamePanel extends JPanel implements Runnable{
 			player.update();
 			el.update();
 			healthGUI.setHealthPercent(player.getHealth());
+			if(player.getCurrentWeapon() != null){
+				weaponGUI.setAmmo(player.getCurrentWeapon().getAmmo());
+				weaponGUI.setClip(player.getCurrentWeapon().getNumBullets());
+			}
 			
 			setOffset();
 			setScale();
@@ -305,19 +323,24 @@ public class GamePanel extends JPanel implements Runnable{
 			return;
 		}
 		else{
-			db = (Graphics2D) dbImage.getGraphics();
+			db = dbImage.getGraphics();
 		}
-//		dbg.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		Graphics2D dbg = (Graphics2D) db;
+		dbg.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 //		dbg.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 //	    dbg.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 //	    dbg.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 //	    dbg.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
 	    
+		//Setting Font
 		
-		db.setColor(Color.white);
-		db.fillRect(0, 0, screenW, screenH);
-		db.drawImage(background, 0, 0, screenW, screenH, null, null);
-		db.drawImage(background2, 0, 0, screenW, screenH, getOffsetX() * 2, getOffsetY() * 2, screenW + getOffsetX() * 2, screenH + getOffsetY() * 2, null);
+		dbg.setFont(font);
+		
+		dbg.setColor(Color.white);
+		dbg.fillRect(0, 0, screenW, screenH);
+		dbg.drawImage(background,0, 0, screenW, screenH, null, null);
+		//dbg.drawImage(background2,0, 0, screenW, screenH, null, null);
+		dbg.drawImage(background2, 0, 0, screenW, screenH, getOffsetX() * 2, getOffsetY() * 2, screenW + getOffsetX() * 2, screenH + getOffsetY() * 2, null);
 		//dbg.drawImage(background2, 0, 0, screenW, screenH, 0 + getOffsetX(), 0 + getOffsetY(), (int)((screenW + getOffsetX()) * scaleX), (int)((screenH + getOffsetY()) * scaleY), null);
 		
 		
@@ -325,29 +348,29 @@ public class GamePanel extends JPanel implements Runnable{
 
 		if(player.getCurrentWeapon() instanceof RangedWeapon){
 			for(Projectile p: ((RangedWeapon) player.getCurrentWeapon()).getProjectiles()){
-//				p.draw(db, offsetX, offsetY);
-				p.draw(db, offsetX, offsetY, scaleX, scaleY);
+//				p.draw(dbg, offsetX, offsetY);
+				p.draw(dbg, offsetX, offsetY, scaleX, scaleY);
 			}
 		}
 		for(Entity e: el.getEntities(getCurrScreen())){
-//			e.draw(db, offsetX, offsetY);
+//			e.draw(dbg, offsetX, offsetY);
 			if(e instanceof Baddie){
-				e.draw(db, offsetX, offsetY, scaleX, scaleY);
+				e.draw(dbg, offsetX, offsetY, scaleX, scaleY);
 			}
 		}
 		
-//		player.draw(db, offsetX, offsetY);
-		player.draw(db, offsetX, offsetY, scaleX, scaleY);
+//		player.draw(dbg, offsetX, offsetY);
+		player.draw(dbg, offsetX, offsetY, scaleX, scaleY);
 		
 		
 		// draw game elements
-		weaponGUI.draw(db, offsetX, offsetY, scaleX, scaleY);
-		healthGUI.draw(db, offsetX, offsetY, scaleX, scaleY);
+		weaponGUI.draw(dbg, offsetX, offsetY, scaleX, scaleY);
+		healthGUI.draw(dbg, offsetX, offsetY, scaleX, scaleY);
 		
-		db.setColor(Color.red);
-		db.drawString(updateCycle + "", 50, 250);
-		db.drawString(updateCycle/((System.currentTimeMillis() - startTime)/1000 + 1) + "", 50, 275);
-		db.drawString("updateTime: " + (int) ((double)updateTime/(((double)System.currentTimeMillis() - (double)startTime) + 1) * 100) + ",  renderTime: " + (int) ((double)renderTime/((double)(System.currentTimeMillis() - (double)startTime) + 1) * 100) + ", paintTime:  " + (int) ((double)paintTime/(((double)System.currentTimeMillis() - (double)startTime) + 1) * 100), 50, 300);
+		dbg.setColor(Color.red);
+		dbg.drawString(updateCycle + "", 50, 250);
+		dbg.drawString(updateCycle/((System.currentTimeMillis() - startTime)/1000 + 1) + "", 50, 275);
+		dbg.drawString("updateTime: " + (int) ((double)updateTime/(((double)System.currentTimeMillis() - (double)startTime) + 1) * 100) + ",  renderTime: " + (int) ((double)renderTime/((double)(System.currentTimeMillis() - (double)startTime) + 1) * 100) + ", paintTime:  " + (int) ((double)paintTime/(((double)System.currentTimeMillis() - (double)startTime) + 1) * 100), 50, 300);
 
 		
 		if(gameOver){
@@ -446,6 +469,16 @@ public class GamePanel extends JPanel implements Runnable{
 			img = ImageIO.read(getClass().getResource(path));
 		} catch(IOException e){}
 		return img;
+	}
+	
+	public Font loadFont(String path) throws FontFormatException, IOException{
+		InputStream myStream = new BufferedInputStream(new FileInputStream(path));
+		Font font = Font.createFont(Font.TRUETYPE_FONT, myStream);
+		return font;
+	}
+	
+	public Font resizefont(Font font, double size){
+	    return font.deriveFont((float) size);
 	}
 	
 // --------------------------------GET/SET METHODS-------------------------------- //
