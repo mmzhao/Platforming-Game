@@ -81,7 +81,7 @@ public class Player extends Movable {
 		this.currentWeapon = currentWeapon;
 		standardStep = 7; //only reaches ~4 when standard step is 5
 		accelSpeed = .04;
-		runningAni = new Animation("Running2.svg", 1171, 474, 6, 2, 3);
+		runningAni = new Animation("Running2.svg", 1171, 474, 6, 2, .2);
 	}
 
 	// --------------------------------DRAW METHODS-------------------------------- //
