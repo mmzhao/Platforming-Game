@@ -48,6 +48,7 @@ public class WeaponGUI {
 			ycoordinates[i] = (int)(ycoordinates[i] * scaleConstant);	
 		}
 		length = (int)(length * scaleConstant);
+		
 		for(int i = 0; i < WEAPONS.length; i ++){
 //			System.out.println(WEAPONS[i] + "Icon.svg");
 //			m.put(WEAPONS[i], ImageGetter.getSVG(WEAPONS[i] + "Icon.svg", length, length));
@@ -59,7 +60,6 @@ public class WeaponGUI {
 		leftCircleX = (int)(1735*scaleConstant + x);
 		leftCircleY = (int)(302*scaleConstant + y);
 
-		
 		gui = GamePanel.getMap().getDict("WeaponGUI");
 		background = GamePanel.getMap().getDict("WeaponGUIBackground");
 	}

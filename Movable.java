@@ -14,6 +14,7 @@ public class Movable extends Entity{
 //	health: how much health remains until this movable needs to be removed
 //	facingRight: whether or not this movable is facing right
 	protected Vector v;
+	protected Vector a;
 	protected boolean southC;
 	protected boolean eastC;
 	protected boolean westC;
@@ -30,6 +31,12 @@ public class Movable extends Entity{
 	protected Vector g = new Vector(0, .5); //positive acceleration goes SOUTH and EAST
 	protected final double TIME_UNIT = .7;
 	protected final double TERMINAL_VELOCITY = 10;
+	
+	protected double accelSpeed;
+	protected double standardStep;
+	protected boolean applyMoveAccel;
+	
+	protected int runningdir = 0;
 
 // --------------------------------CONTRUCTOR-------------------------------- //
 	
@@ -145,6 +152,22 @@ public class Movable extends Entity{
 	
 // --------------------------------GET/SET METHODS-------------------------------- //
 
+	public Vector getA(){
+		return a;
+	}
+	
+	public void setA(Vector a){
+		this.a = a;
+	}
+	
+	public void setXA(double xa){
+		a.setCX(xa);
+	}
+	
+	public void setYA(double ya){
+		a.setCY(ya);
+	}
+	
 	public double speed(){
 		return v.magnitude();
 	}
@@ -211,6 +234,22 @@ public class Movable extends Entity{
 	
 	public int getFacingRight(){
 		return facingRight;
+	}
+	
+	public int getRunningdir(){
+		return runningdir;
+	}
+	
+	public double getStandardStep(){
+		return standardStep;
+	}
+	
+	public double getAccelSpeed(){
+		return accelSpeed;
+	}
+	
+	public boolean shouldApplyMoveAccel(){
+		return applyMoveAccel;
 	}
 
 	public double getMouseX() {

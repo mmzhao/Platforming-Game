@@ -25,6 +25,7 @@ public class HealthGUI {
 		this.h = (int)(w * ratio);
 //		gui = ImageGetter.getSVG("HealthGUI.svg", w, h);
 //		bar = ImageGetter.getSVG("HealthBar.svg", w, h);
+//		System.out.println(w + " " + h);
 		gui = GamePanel.getMap().getDict("HealthGUI");
 		bar = GamePanel.getMap().getDict("HealthBar");
 	}

@@ -1,3 +1,5 @@
+import java.awt.Toolkit;
+
 import javax.swing.JFrame;
 
 // This is the main entry point..
@@ -8,10 +10,15 @@ public class Game extends JFrame {
 	public Game() {	 //old 420x330
 		int entireW = 1000;
 		int entireH = 400;
-		int w = 592;
-		int h = 333;
-		int screenW = 592 * 2;
-		int screenH = 333 * 2;
+//		System.out.println(Toolkit.getDefaultToolkit().getScreenSize().getWidth());
+//		System.out.println(Toolkit.getDefaultToolkit().getScreenSize().getHeight());
+//		1280 by 800
+//		int w = 592;
+//		int h = 333;
+		int w = 640;
+		int h = 360;
+		int screenW = w * 2;
+		int screenH = h * 2;
 		setSize(screenW, screenH);
 		setResizable(false);
 		setTitle("Game Frame"); 

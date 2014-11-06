@@ -14,8 +14,6 @@ import javax.imageio.ImageIO;
 
 public class Player extends Movable {
 
-	protected Vector a;
-
 	// isRightHeld: whether or not right move button is held
 	// isLeftHeld: whether or not left move button is held
 	// isUpHeld: whether or not up move button is held
@@ -55,8 +53,8 @@ public class Player extends Movable {
 	// isRightPressed: whether or not the right move key is pressed this frame
 	// isLeftPressed: whether or not the left move key is pressed this frame
 	protected Weapon currentWeapon;
-	protected double standardStep;
-	protected double accelSpeed;
+//	protected double standardStep;
+//	protected double accelSpeed;
 	protected boolean isRightPressed = false;
 	protected boolean isLeftPressed = false;
 
@@ -66,7 +64,7 @@ public class Player extends Movable {
 	protected Vector jump = new Vector(0, -18);
 	
 	//
-	private int runningdir = 0;
+//	private int runningdir = 0;
 	
 	protected final double minChange = 1;
 
@@ -127,6 +125,7 @@ public class Player extends Movable {
 
 	public void update(double time) {
 		setMousePos();
+		applyMoveAccel = false;
 //		System.out.println(isHit + " " + health);
 		if(System.currentTimeMillis() > hitTimer + 1000){
 			isHit = false;
@@ -140,13 +139,15 @@ public class Player extends Movable {
 		}
 		
 		if (isRightHeld && !isLeftHeld) {
-			runningdir = -1;
-			a.add(completeAccel());
+			runningdir = 1;
+//			a.add(completeAccel());
+			applyMoveAccel = true;
 			if (southC)
 				runningAni.start();
 		} else if (isLeftHeld && !isRightHeld) {
-			runningdir = 1;
-			a.add(completeAccel().scale(-1));
+			runningdir = -1;
+//			a.add(completeAccel().scale(-1));
+			applyMoveAccel = true;
 			if (southC)
 				runningAni.start();
 		}
@@ -156,16 +157,16 @@ public class Player extends Movable {
 		if(mouseX - x < 0)
 			facingRight = -1;
 		
-		if (a.magnitude() == 0) {
-			if (southC) {
-				a.add(stoppingFriction().scale(-(v.getCX() + .001) / Math.abs(v.getCX() + .001)));
-			} else {
-				a.add(stoppingFriction().scale(-.1 * (v.getCX() + .001) / Math.abs(v.getCX() + .001)));
-			}
-		}
+//		if (a.magnitude() == 0) {
+//			if (southC) {
+//				a.add(stoppingFriction().scale(-(v.getCX() + .001) / Math.abs(v.getCX() + .001)));
+//			} else {
+//				a.add(stoppingFriction().scale(-.1 * (v.getCX() + .001) / Math.abs(v.getCX() + .001)));
+//			}
+//		}
 		
 		if (southC) {
-			a.add(normalForce());
+//			a.add(normalForce());
 			if (v.getCY() > 0)
 				v.setCY(0);
 			if (isUpHeld) {
@@ -174,12 +175,14 @@ public class Player extends Movable {
 				// currently 1 less magnitude than "space key" jump velocity
 			}
 		} 
-		a.add(g);
+//		a.add(g);
 		
 //		a.print();
 		
+		Physics.apply(this);
+//		System.out.println(v.getCX() + "    " + v.getCY());
 		v.add(a.scale(time));
-
+//		System.out.println(a.scale(1).getCX() + "    " + a.scale(1).getCY());
 		
 		if(eastC){
 			if(v.getCX() > 0) v.setCX(0);
@@ -224,12 +227,14 @@ public class Player extends Movable {
 
 		isRightPressed = false;
 		isLeftPressed = false;
+		
+		System.out.println(v.getCX() + "    " + v.getCY());
 	}
 	
 	// --------------------------------FORCE METHODS-------------------------------- //
 
 	public Vector completeAccel() {// (C1 - v)^2/C1*C2
-		double accel = (standardStep + runningdir * v.getCX()) * accelSpeed;
+		double accel = (standardStep - runningdir * v.getCX()) * accelSpeed;
 		if(accel > 0) return new Vector(accel, 0);
 		return new Vector(0, 0);
 		// return (double)(Math.pow(standardStep - Math.abs(xv), 2)/
@@ -267,21 +272,21 @@ public class Player extends Movable {
 
 	// --------------------------------GET/SET METHODS-------------------------------- //
 
-	public Vector getA(){
-		return a;
-	}
-	
-	public void setA(Vector a){
-		this.a = a;
-	}
-	
-	public void setXA(double xa){
-		a.setCX(xa);
-	}
-	
-	public void setYA(double ya){
-		a.setCY(ya);
-	}
+//	public Vector getA(){
+//		return a;
+//	}
+//	
+//	public void setA(Vector a){
+//		this.a = a;
+//	}
+//	
+//	public void setXA(double xa){
+//		a.setCX(xa);
+//	}
+//	
+//	public void setYA(double ya){
+//		a.setCY(ya);
+//	}
 	
 	public Weapon getCurrentWeapon() {
 		return currentWeapon;

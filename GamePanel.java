@@ -143,7 +143,7 @@ public class GamePanel extends JPanel implements Runnable{
 		currMap = new Map("Map1.txt");
 		currMap.initializeMap(this);
 		
-		weaponGUI = new WeaponGUI( screenW - (int)(screenW/3), screenH - (int)(screenW/3 * .289), (int)(screenW/3), (int)(screenW/3 * .289));
+		weaponGUI = new WeaponGUI(screenW - (int)(screenW/3), screenH - (int)(screenW/3 * .289), (int)(screenW/3), (int)(screenW/3 * .289));
 		healthGUI = new HealthGUI(0, 0, (int)(2*screenW/3));
 		
 //		player = new Player(ImageGetter.getSVG("Standing2.svg", 832, 1080), 100, 93, 47, 60, 100, null);
