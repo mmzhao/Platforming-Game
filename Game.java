@@ -20,7 +20,7 @@ public class Game extends JFrame {
 		panel.setDoubleBuffered(true);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
-		pack();
+//		pack();
 	}
 	
 // --------------------------------MAIN METHOD-------------------------------- //

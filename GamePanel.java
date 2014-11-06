@@ -117,8 +117,7 @@ public class GamePanel extends JPanel implements Runnable{
 		offsetY = 0;
 		setScale();
 		
-		weaponGUI = new WeaponGUI( screenW - (int)(screenW/3), screenH - (int)(screenW/3 * .289), (int)(screenW/3), (int)(screenW/3 * .289));
-		healthGUI = new HealthGUI(0, 0, (int)(2*screenW/3));
+
 		try {
 			font = resizefont(loadFont("src/berylium.bold-italic.ttf"), 32);
 		} catch (FontFormatException e1) {System.out.println("potato1");} catch (IOException e1) {System.out.println("potato2");}
