@@ -29,6 +29,7 @@ public class CollisionHandler {
 				}
 			} else if (e instanceof Platform) {
 				
+				
 				if (e.makeRect().intersects(p.makeRect())) {
 					double distx = Math.abs(p.getSave().getMidX() - e.getMidX())
 							- p.getSave().getW() / 2 - e.getW() / 2;
@@ -74,6 +75,8 @@ public class CollisionHandler {
 						}
 					}
 				}
+				
+				
 			}
 		}
 		p.reset();

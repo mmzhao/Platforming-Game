@@ -1,3 +1,5 @@
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.Toolkit;
 
 import javax.swing.JFrame;
@@ -15,10 +17,10 @@ public class Game extends JFrame {
 //		1280 by 800
 //		int w = 592;
 //		int h = 333;
-		int w = 640;
-		int h = 360;
-		int screenW = w * 2;
-		int screenH = h * 2;
+		int w = 640 * 1;
+		int h = 400 * 1;
+		int screenW = w * 2 * 1;
+		int screenH = h * 2 * 1;
 		setSize(screenW, screenH);
 		setResizable(false);
 		setTitle("Game Frame"); 
@@ -27,7 +29,7 @@ public class Game extends JFrame {
 		panel.setDoubleBuffered(true);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
-//		pack();
+		pack();
 	}
 	
 // --------------------------------MAIN METHOD-------------------------------- //

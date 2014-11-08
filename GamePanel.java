@@ -326,10 +326,10 @@ public class GamePanel extends JPanel implements Runnable{
 		}
 		Graphics2D dbg = (Graphics2D) db;
 		dbg.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-//		dbg.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-//	    dbg.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-//	    dbg.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-//	    dbg.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+		dbg.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+	    dbg.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+	    dbg.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+	    dbg.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
 	    
 		//Setting Font
 		
@@ -383,6 +383,9 @@ public class GamePanel extends JPanel implements Runnable{
 			g = this.getGraphics();
 			if((g != null) && (dbImage != null)){
 				g.drawImage(dbImage, 0, 0, this);
+//				g.drawImage(dbImage, 0, 0,
+//					    dbImage.getWidth(this)/2,
+//					    dbImage.getHeight(this)/2, this);
 			}
 			Toolkit.getDefaultToolkit().sync();
 			g.dispose();

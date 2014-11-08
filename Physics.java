@@ -26,9 +26,16 @@ public abstract class Physics {
 	}
 	
 	public static void applyFriction(Movable m) {
-		double friction = ((- m.getRunningdir()) * Math.abs(m.getV().getCX())) * m.getAccelSpeed();
+		double friction = ((- Math.signum(m.getV().getCX())) * Math.abs(m.getV().getCX())) * m.getAccelSpeed();
 //		System.out.println(friction);
-		m.getA().add(new Vector(friction, 0));
+		double scale = 1;
+//		System.out.println(((double) m.getRunningdir()) * friction + " " + m.getRunningdir() + " " + friction);
+//		System.out.println(m.getV().getCX() * friction);
+		if(m.getV().getCX() * m.getRunningdir() < 0){
+			System.out.println("e");
+			scale = 3;
+		}
+		m.getA().add(new Vector(scale * friction, 0));
 	}
 	
 	public static Vector normalForce(){

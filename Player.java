@@ -74,7 +74,8 @@ public class Player extends Movable {
 			int health, Weapon currentWeapon) {
 		super(b, x, y, w, h, true, 0, 0, health, 1);
 		a = new Vector(0, 0);
-		standingImg = b;
+//		standingImg = b;
+		standingImg = ImageGetter.getSVG("SampleGuy.svg", (int) w * 4, (int) h * 4);
 		currentImg = b;
 		this.currentWeapon = currentWeapon;
 		standardStep = 7; //only reaches ~4 when standard step is 5
@@ -228,7 +229,7 @@ public class Player extends Movable {
 		isRightPressed = false;
 		isLeftPressed = false;
 		
-		System.out.println(v.getCX() + "    " + v.getCY());
+//		System.out.println(v.getCX() + "    " + v.getCY());
 	}
 	
 	// --------------------------------FORCE METHODS-------------------------------- //
