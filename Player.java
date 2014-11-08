@@ -67,6 +67,8 @@ public class Player extends Movable {
 //	private int runningdir = 0;
 	
 	protected final double minChange = 1;
+	
+	
 
 	// --------------------------------CONSTRUCTOR-------------------------------- //
 
@@ -75,7 +77,8 @@ public class Player extends Movable {
 		super(b, x, y, w, h, true, 0, 0, health, 1);
 		a = new Vector(0, 0);
 //		standingImg = b;
-		standingImg = ImageGetter.getSVG("SampleGuy.svg", (int) w * 4, (int) h * 4);
+		standingImg = ImageGetter.getSVG("SampleGuy.svg", (int)w * 4, (int)h * 4);
+//		System.out.println(standingImg.getWidth() + " " + standingImg.getHeight()); 629 924
 		currentImg = b;
 		this.currentWeapon = currentWeapon;
 		standardStep = 7; //only reaches ~4 when standard step is 5

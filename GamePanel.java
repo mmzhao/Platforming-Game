@@ -96,6 +96,8 @@ public class GamePanel extends JPanel implements Runnable{
 	private HealthGUI healthGUI;
 	private Font font;
 	
+
+	
 // --------------------------------CONSTRUCTOR-------------------------------- //
 	
 	public GamePanel(int w, int h){
@@ -341,7 +343,6 @@ public class GamePanel extends JPanel implements Runnable{
 		//dbg.drawImage(background2,0, 0, screenW, screenH, null, null);
 		dbg.drawImage(background2, 0, 0, screenW, screenH, getOffsetX() * 2, getOffsetY() * 2, screenW + getOffsetX() * 2, screenH + getOffsetY() * 2, null);
 		//dbg.drawImage(background2, 0, 0, screenW, screenH, 0 + getOffsetX(), 0 + getOffsetY(), (int)((screenW + getOffsetX()) * scaleX), (int)((screenH + getOffsetY()) * scaleY), null);
-		
 		
 //		dbg.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 

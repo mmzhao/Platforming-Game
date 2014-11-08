@@ -12,8 +12,8 @@ public class Game extends JFrame {
 	public Game() {	 //old 420x330
 		int entireW = 1000;
 		int entireH = 400;
-//		System.out.println(Toolkit.getDefaultToolkit().getScreenSize().getWidth());
-//		System.out.println(Toolkit.getDefaultToolkit().getScreenSize().getHeight());
+		System.out.println(Toolkit.getDefaultToolkit().getScreenSize().getWidth());
+		System.out.println(Toolkit.getDefaultToolkit().getScreenSize().getHeight());
 //		1280 by 800
 //		int w = 592;
 //		int h = 333;
