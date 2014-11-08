@@ -6,8 +6,10 @@ import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.Transparency;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.net.URL;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 import org.apache.batik.transcoder.Transcoder;
@@ -18,6 +20,14 @@ import org.apache.commons.io.output.ByteArrayOutputStream;
 
 
 public class ImageGetter {
+	
+	public static BufferedImage loadImage(String path){
+		BufferedImage img = null;
+		try{
+			img = ImageIO.read(ImageGetter.class.getResource(path));
+		} catch(IOException e){}
+		return img;
+	}
 	
 	public static BufferedImage getSVG(String path, int x, int y){
 	    // Create a PNG transcoder.
