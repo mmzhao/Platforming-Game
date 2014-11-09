@@ -158,7 +158,7 @@ public class Player extends Movable {
 		
 		
 		facingRight = 1;
-		if(mouseX - x < 0)
+		if(mouseX - getMidX() < 0)
 			facingRight = -1;
 		
 //		if (a.magnitude() == 0) {
